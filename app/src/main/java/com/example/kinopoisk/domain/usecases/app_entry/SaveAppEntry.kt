@@ -1,4 +1,4 @@
-package com.example.kinopoisk.domain.usecases
+package com.example.kinopoisk.domain.usecases.app_entry
 
 import com.example.kinopoisk.domain.manager.LocalUserManager
 

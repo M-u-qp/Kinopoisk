@@ -1,16 +1,14 @@
 package com.example.kinopoisk.presentation.navgraph
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.kinopoisk.presentation.home.HomeScreen
+import com.example.kinopoisk.presentation.home.HomeViewModel
 import com.example.kinopoisk.presentation.onboarding.OnBoardingScreen
 import com.example.kinopoisk.presentation.onboarding.OnBoardingViewModel
 
@@ -41,12 +39,9 @@ fun NavGraph(
             composable(
                 route = Route.KinopoiskNavigatorScreen.route
             ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "New Screen")
-                }
+                val viewModel: HomeViewModel = hiltViewModel()
+                val movies = viewModel.topPopularAll.collectAsLazyPagingItems()
+                HomeScreen(movies = movies, navigateToSearch = {}, navigateToDetails = {})
             }
         }
     }

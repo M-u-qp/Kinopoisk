@@ -1,4 +1,4 @@
-package com.example.kinopoisk.domain.usecases
+package com.example.kinopoisk.domain.usecases.app_entry
 
 data class AppEntryUseCases(
     val readAppEntry: ReadAppEntry,

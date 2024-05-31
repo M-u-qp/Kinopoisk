@@ -7,8 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="onboarding_text_color">#FF272727</color>
-    <color name="onboarding_skip_color">#FFB5B5C9</color>
+    <color name="black_text">#FF272727</color>
+    <color name="light_gray_text">#FFB5B5C9</color>
     <color name="splash_dark">#FF1C1E21</color>
     <color name="splash_light">#FFFFFF</color>
+    <color name="gray_text">#FF838390</color>
+    <color name="placeholder">#A0A3BD</color>
+    <color name="shimmer">#C3C3C3</color>
+    <color name="body">#4E4B66</color>
+    <color name="input_background">#fff</color>
 </resources>

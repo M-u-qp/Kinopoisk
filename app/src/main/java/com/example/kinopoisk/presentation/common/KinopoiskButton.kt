@@ -49,7 +49,7 @@ fun KinopoiskTextButton(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = SmallFontSize1
             ),
-            color = colorResource(id = R.color.onboarding_skip_color)
+            color = colorResource(id = R.color.light_gray_text)
         )
     }
 }

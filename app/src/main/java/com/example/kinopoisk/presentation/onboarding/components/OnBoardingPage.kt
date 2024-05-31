@@ -50,7 +50,7 @@ fun OnBoardingPage(
                 fontSize = MediumFontSize1
             ),
             text = page.description,
-            color = colorResource(id = R.color.onboarding_text_color)
+            color = colorResource(id = R.color.black_text)
         )
     }
 }

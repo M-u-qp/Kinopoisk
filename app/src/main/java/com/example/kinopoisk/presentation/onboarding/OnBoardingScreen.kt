@@ -60,12 +60,12 @@ fun OnBoardingScreen(
                     fontWeight = FontWeight.Bold
                 ),
                 text = stringResource(id = R.string.app_name),
-                color = colorResource(id = R.color.onboarding_text_color)
+                color = colorResource(id = R.color.black_text)
             )
             KinopoiskTextButton(
                 text = "Пропустить",
                 onClick = {
-//TODO: Navigate to Home Screen
+                    event(OnBoardingEvent.SaveAppEntry)
                 }
             )
         }

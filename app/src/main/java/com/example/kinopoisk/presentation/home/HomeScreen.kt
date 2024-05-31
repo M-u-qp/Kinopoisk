@@ -25,7 +25,7 @@ import com.example.kinopoisk.presentation.Dimens.LargePadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.SmallFontSize1
-import com.example.kinopoisk.presentation.common.MoviesList
+import com.example.kinopoisk.presentation.common.MoviesListCollection
 import com.example.kinopoisk.presentation.common.TitleCollections
 import com.example.kinopoisk.presentation.navgraph.Route
 
@@ -96,7 +96,7 @@ fun HomeScreen(
             )
         }
 
-        MoviesList(
+        MoviesListCollection(
             modifier = Modifier.padding(top = MediumPadding1),
             movies = movies,
             onClick = { navigateToDetails(it) }

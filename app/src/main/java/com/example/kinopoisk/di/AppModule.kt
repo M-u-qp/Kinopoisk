@@ -11,6 +11,8 @@ import com.example.kinopoisk.domain.usecases.app_entry.ReadAppEntry
 import com.example.kinopoisk.domain.usecases.app_entry.SaveAppEntry
 import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
 import com.example.kinopoisk.domain.usecases.collections.GetCollections
+import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
+import com.example.kinopoisk.domain.usecases.movies.SearchMovies
 import com.example.kinopoisk.util.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -66,6 +68,16 @@ object AppModule {
     ): CollectionsUseCases {
         return CollectionsUseCases(
             getCollections = GetCollections(kinopoiskRepository)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideMoviesUseCases(
+        kinopoiskRepository: KinopoiskRepository
+    ): MoviesUseCases {
+        return MoviesUseCases(
+            searchMovies = SearchMovies(kinopoiskRepository)
         )
     }
 }

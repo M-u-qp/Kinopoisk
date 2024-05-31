@@ -11,6 +11,8 @@ import com.example.kinopoisk.presentation.home.HomeScreen
 import com.example.kinopoisk.presentation.home.HomeViewModel
 import com.example.kinopoisk.presentation.onboarding.OnBoardingScreen
 import com.example.kinopoisk.presentation.onboarding.OnBoardingViewModel
+import com.example.kinopoisk.presentation.search.SearchScreen
+import com.example.kinopoisk.presentation.search.SearchViewModel
 
 @Composable
 fun NavGraph(
@@ -41,7 +43,19 @@ fun NavGraph(
             ) {
                 val viewModel: HomeViewModel = hiltViewModel()
                 val movies = viewModel.topPopularAll.collectAsLazyPagingItems()
-                HomeScreen(movies = movies, navigateToSearch = {}, navigateToDetails = {})
+                HomeScreen(
+                    movies = movies,
+                    navigateToSearch = { navController.navigate(Route.SearchScreen.route) },
+                    navigateToDetails = { navController.navigate(Route.DetailsScreen.route) })
+            }
+            composable(
+                route = Route.SearchScreen.route
+            ) {
+                val viewModel: SearchViewModel = hiltViewModel()
+                SearchScreen(state = viewModel.state.value, event = viewModel::onEvent,
+                    navigate = {
+//                        navController.navigate(Route.DetailsScreen.route)
+                    })
             }
         }
     }

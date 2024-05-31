@@ -8,9 +8,11 @@ object Dimens {
     val MediumPadding1 = 24.dp
     val MediumPadding2 = 26.dp
     val MediumPadding3 = 30.dp
+    val SmallPadding1 = 16.dp
     val ExtraSmallPadding1 = 6.dp
     val ExtraSmallPadding2 = 8.dp
     val ExtraSmallPadding3 = 2.dp
+    val ExtraSmallPadding4 = 4.dp
 
     val IndicatorSize = 14.dp
 
@@ -26,4 +28,7 @@ object Dimens {
 
     val MovieCardSizeWidth = 111.dp
     val MovieCardSizeHeight = 156.dp
+
+    val MovieCardSearchWidth = 96.dp
+    val MovieCardSearchHeight = 132.dp
 }

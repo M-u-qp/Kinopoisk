@@ -18,11 +18,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.kinopoisk.R
-import com.example.kinopoisk.domain.model.Genre
 import com.example.kinopoisk.domain.model.Item
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallFontSize1
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding1
@@ -36,7 +34,7 @@ import com.example.kinopoisk.presentation.Dimens.SmallFontSize1
 import com.example.kinopoisk.presentation.Dimens.SmallFontSize2
 
 @Composable
-fun MovieCard(
+fun MovieCardCollection(
     modifier: Modifier = Modifier,
     item: Item,
     onClick: () -> Unit

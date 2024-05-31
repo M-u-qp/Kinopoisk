@@ -14,7 +14,7 @@ import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding3
 
 @Composable
-fun MoviesList(
+fun MoviesListCollection(
     modifier: Modifier = Modifier,
     movies: LazyPagingItems<Item>,
     onClick: (Item) -> Unit
@@ -28,7 +28,7 @@ fun MoviesList(
         ) {
             items(count = movies.itemCount){ index ->
                 movies[index]?.let {
-                    MovieCard(item = it, onClick = {onClick(it)})
+                    MovieCardCollection(item = it, onClick = {onClick(it)})
                 }
             }
         }
@@ -70,7 +70,7 @@ private fun ShimmerEffect() {
         horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
     ) {
         repeat(10) {
-            MovieCardShimmerEffect()
+            MovieCardCollectionShimmerEffect()
         }
     }
 }

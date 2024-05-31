@@ -34,7 +34,7 @@ fun Modifier.shimmerEffect() = composed {
 }
 
 @Composable
-fun MovieCardShimmerEffect(
+fun MovieCardCollectionShimmerEffect(
     modifier: Modifier = Modifier
 ) {
 
@@ -45,6 +45,25 @@ fun MovieCardShimmerEffect(
             Box(
                 modifier = modifier
                     .size(width = Dimens.MovieCardSizeWidth, height = Dimens.MovieCardSizeHeight)
+                    .clip(MaterialTheme.shapes.medium)
+                    .shimmerEffect(),
+            )
+        }
+    }
+}
+
+@Composable
+fun MovieCardSearchShimmerEffect(
+    modifier: Modifier = Modifier
+) {
+
+    Column(
+        modifier = modifier,
+    ) {
+        Box(modifier = modifier) {
+            Box(
+                modifier = modifier
+                    .size(width = Dimens.MovieCardSearchWidth, height = Dimens.MovieCardSearchHeight)
                     .clip(MaterialTheme.shapes.medium)
                     .shimmerEffect(),
             )

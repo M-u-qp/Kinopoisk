@@ -66,7 +66,7 @@ fun MovieCardSearch(
             ) {
                 //Рейтинг Кинопоиск
                 Text(
-                    text = film.rating ?: "",
+                    text = film.rating,
                     color = colorResource(id = R.color.black_text),
 
                     fontSize = Dimens.ExtraSmallFontSize1,
@@ -82,7 +82,7 @@ fun MovieCardSearch(
 
             //Название фильма
             Text(
-                text = film.nameRu ?: film.nameEn ?: "",
+                text = film.let { it.nameRu ?: it.nameEn },
                 style = MaterialTheme.typography.labelMedium.copy(
                     fontSize = Dimens.SmallFontSize1
                 ),
@@ -104,7 +104,7 @@ fun MovieCardSearch(
                 )
                 //Жанр фильма
                 Text(
-                    text = film.genres.joinToString(separator = "", limit = 1) { it?.genre ?: "" },
+                    text = film.genres.joinToString(separator = "", limit = 1) { it.genre  },
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = Dimens.SmallFontSize2
                     ),

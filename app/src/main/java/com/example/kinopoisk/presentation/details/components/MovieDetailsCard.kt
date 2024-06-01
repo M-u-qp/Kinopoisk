@@ -17,13 +17,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.kinopoisk.R
-import com.example.kinopoisk.domain.model.Country
-import com.example.kinopoisk.domain.model.Genre
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.MoviePosterHeight
@@ -56,13 +53,13 @@ fun MovieDetailsCard(
         ) {
             Row {
                 //Рейтинг
-                Text(text = (movie.ratingKinopoisk ?: "").toString() + " ",
+                Text(text = (movie.ratingKinopoisk).toString() + " ",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = Dimens.SmallFontSize2
                     ),
                     color = colorResource(id = R.color.body_icon))
                 //Название
-                Text(text = movie.nameRu ?: movie.nameEn ?: "",
+                Text(text = movie.let { it.nameRu ?: movie.nameEn },
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = Dimens.SmallFontSize2
                     ),
@@ -76,7 +73,7 @@ fun MovieDetailsCard(
                     ),
                     color = colorResource(id = R.color.body_icon))
                 //Жанр
-                Text(text = movie.genres.joinToString(separator = "", limit = 1) { it?.genre ?: "" },
+                Text(text = movie.genres.joinToString(separator = "", limit = 1) { it.genre },
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = Dimens.SmallFontSize2
                     ),
@@ -84,19 +81,19 @@ fun MovieDetailsCard(
             }
             Row {
                 //Страна
-                Text(text = movie.countries.joinToString(separator = "", limit = 1) { it?.country ?: "" } + ", ",
+                Text(text = movie.countries.joinToString(separator = "", limit = 1) { it.country } + ", ",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = Dimens.SmallFontSize2
                     ),
                     color = colorResource(id = R.color.body_icon))
                 //Продолжительность
-                Text(text = (movie.filmLength ?: "").toString() + " мин, ",
+                Text(text = (movie.filmLength).toString() + " мин, ",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = Dimens.SmallFontSize2
                     ),
                     color = colorResource(id = R.color.body_icon))
                 //Возрастное ограничение
-                Text(text = (movie.ratingAgeLimits ?: "").toString() ,
+                Text(text = movie.ratingAgeLimits,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = Dimens.SmallFontSize2
                     ),

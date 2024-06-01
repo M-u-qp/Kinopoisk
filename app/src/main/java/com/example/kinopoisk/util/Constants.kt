@@ -5,4 +5,6 @@ object Constants {
     const val APP_ENTRY = "appEntry"
 
     const val BASE_URL = "https://kinopoiskapiunofficial.tech"
+
+    const val MOVIES_DATABASE_NAME = "movies_db"
 }

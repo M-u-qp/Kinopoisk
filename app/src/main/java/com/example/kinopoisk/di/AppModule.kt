@@ -1,6 +1,10 @@
 package com.example.kinopoisk.di
 
 import android.app.Application
+import androidx.room.Room
+import com.example.kinopoisk.data.local.MoviesDao
+import com.example.kinopoisk.data.local.MoviesDatabase
+import com.example.kinopoisk.data.local.MoviesTypeConvertor
 import com.example.kinopoisk.data.manager.LocalUserManagerImpl
 import com.example.kinopoisk.data.remote.KinopoiskApi
 import com.example.kinopoisk.data.repository.KinopoiskRepositoryImpl
@@ -82,4 +86,26 @@ object AppModule {
             getMovie = GetMovie(kinopoiskRepository)
         )
     }
+
+    @Provides
+    @Singleton
+    fun provideMoviesDatabase(
+        application: Application
+    ): MoviesDatabase {
+//        return Room.databaseBuilder(
+        return Room.inMemoryDatabaseBuilder(
+            context = application,
+            klass = MoviesDatabase::class.java
+//            name = MOVIES_DATABASE_NAME
+        )
+            .addTypeConverter(MoviesTypeConvertor())
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMoviesDao(
+        moviesDatabase: MoviesDatabase
+    ): MoviesDao = moviesDatabase.moviesDao
 }

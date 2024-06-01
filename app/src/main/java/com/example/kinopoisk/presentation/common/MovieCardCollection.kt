@@ -68,7 +68,7 @@ fun MovieCardCollection(
             ) {
                 //Рейтинг Кинопоиск
                 Text(
-                    text = (item.ratingKinopoisk ?: "").toString(),
+                    text = (item.ratingKinopoisk).toString(),
                     color = colorResource(id = R.color.white),
 
                     fontSize = ExtraSmallFontSize1,
@@ -92,7 +92,7 @@ fun MovieCardCollection(
         //Жанр фильма
         Text(
             modifier = modifier.padding(top = ExtraSmallPadding3),
-            text = item.genres.joinToString(separator = "", limit = 1) { it?.genre ?: "" },
+            text = item.genres.joinToString(separator = "", limit = 1) { it.genre },
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontSize = SmallFontSize2
             ),

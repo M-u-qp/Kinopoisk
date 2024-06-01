@@ -11,6 +11,7 @@ import com.example.kinopoisk.domain.usecases.app_entry.ReadAppEntry
 import com.example.kinopoisk.domain.usecases.app_entry.SaveAppEntry
 import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
 import com.example.kinopoisk.domain.usecases.collections.GetCollections
+import com.example.kinopoisk.domain.usecases.movies.GetMovie
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
 import com.example.kinopoisk.domain.usecases.movies.SearchMovies
 import com.example.kinopoisk.util.Constants.BASE_URL
@@ -77,7 +78,8 @@ object AppModule {
         kinopoiskRepository: KinopoiskRepository
     ): MoviesUseCases {
         return MoviesUseCases(
-            searchMovies = SearchMovies(kinopoiskRepository)
+            searchMovies = SearchMovies(kinopoiskRepository),
+            getMovie = GetMovie(kinopoiskRepository)
         )
     }
 }

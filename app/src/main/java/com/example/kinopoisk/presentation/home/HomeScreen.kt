@@ -33,7 +33,7 @@ import com.example.kinopoisk.presentation.navgraph.Route
 fun HomeScreen(
     movies: LazyPagingItems<Item>,
     navigateToSearch: (String) -> Unit,
-    navigateToDetails: (Item) -> Unit
+    navigateToDetails: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -63,16 +63,6 @@ fun HomeScreen(
             }
         }
 
-//        SearchBar(
-//            modifier = Modifier.padding(horizontal = MediumPadding2),
-//            text = "",
-//            readOnly = true,
-//            onValueChange = {},
-//            onClick = {
-//                navigateToSearch(Route.SearchScreen.route)
-//            },
-//            onSearch = {}
-//        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -101,7 +91,5 @@ fun HomeScreen(
             movies = movies,
             onClick = { navigateToDetails(it) }
         )
-
-
     }
 }

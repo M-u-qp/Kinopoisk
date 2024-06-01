@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.kinopoisk.presentation.details.DetailsScreen
 import com.example.kinopoisk.presentation.home.HomeScreen
 import com.example.kinopoisk.presentation.home.HomeViewModel
 import com.example.kinopoisk.presentation.onboarding.OnBoardingScreen
@@ -54,8 +55,14 @@ fun NavGraph(
                 val viewModel: SearchViewModel = hiltViewModel()
                 SearchScreen(state = viewModel.state.value, event = viewModel::onEvent,
                     navigate = {
-//                        navController.navigate(Route.DetailsScreen.route)
+                        navController.navigate(Route.DetailsScreen.route)
                     })
+            }
+            composable(
+                route = Route.DetailsScreen.route
+            ) {
+
+//                DetailsScreen()
             }
         }
     }

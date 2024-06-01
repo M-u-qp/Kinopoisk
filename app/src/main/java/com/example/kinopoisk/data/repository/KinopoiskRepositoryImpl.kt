@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.example.kinopoisk.R
 import com.example.kinopoisk.data.remote.CollectionsPagingSource
 import com.example.kinopoisk.data.remote.KinopoiskApi
 import com.example.kinopoisk.data.remote.SearchMoviesPagingSource
 import com.example.kinopoisk.domain.model.Film
 import com.example.kinopoisk.domain.model.Item
+import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.repository.KinopoiskRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -39,6 +41,13 @@ class KinopoiskRepositoryImpl(
                 )
             }
         ).flow
+    }
+
+    override suspend fun getMovie(id: Int): Movie {
+        return kinopoiskApi.getMovie(
+            apiKey = context.getString(R.string.API_KEY),
+            id = id
+        ).movie
     }
 
 }

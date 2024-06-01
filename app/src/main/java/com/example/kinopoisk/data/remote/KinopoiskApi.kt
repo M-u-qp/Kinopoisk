@@ -2,8 +2,10 @@ package com.example.kinopoisk.data.remote
 
 import com.example.kinopoisk.data.remote.dto.CollectionsResponse
 import com.example.kinopoisk.data.remote.dto.MoviesResponse
+import com.example.kinopoisk.data.remote.dto.SearchMoviesResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface KinopoiskApi {
@@ -19,5 +21,11 @@ interface KinopoiskApi {
         @Header("X-API-KEY") apiKey: String,
         @Query("keyword") keyword: String,
         @Query("page") page: Int
+    ): SearchMoviesResponse
+
+    @GET("/api/v2.2/films/{id}")
+    suspend fun getMovie(
+        @Header("X-API-KEY") apiKey: String,
+        @Path("id") id: Int
     ): MoviesResponse
 }

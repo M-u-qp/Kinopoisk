@@ -17,7 +17,7 @@ import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding3
 fun MoviesListCollection(
     modifier: Modifier = Modifier,
     movies: LazyPagingItems<Item>,
-    onClick: (Item) -> Unit
+    onClick: (Int) -> Unit
 ) {
     val handlePagingResult = handlePagingResult(movies = movies)
     if (handlePagingResult) {
@@ -28,7 +28,7 @@ fun MoviesListCollection(
         ) {
             items(count = movies.itemCount){ index ->
                 movies[index]?.let {
-                    MovieCardCollection(item = it, onClick = {onClick(it)})
+                    MovieCardCollection(item = it, onClick = {onClick(it.kinopoiskId)})
                 }
             }
         }

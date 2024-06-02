@@ -19,4 +19,7 @@ interface MoviesDao {
 
     @Query("SELECT * FROM Movie")
     fun getMovies(): Flow<List<Movie>>
+
+    @Query("SELECT * FROM Movie WHERE kinopoiskId=:kinopoiskId")
+    suspend fun getMovie(kinopoiskId: Int): Movie?
 }

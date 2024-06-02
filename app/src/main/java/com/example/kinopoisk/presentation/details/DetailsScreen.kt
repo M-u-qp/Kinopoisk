@@ -43,7 +43,7 @@ fun DetailsScreen(
                 MovieDetailsCard(movie = movie)
                 DetailsTopBar(
                     onLikeClick = { event(DetailsEvent.LikeMovie) },
-                    onBookmarkClick = { event(DetailsEvent.SaveMovie) },
+                    onBookmarkClick = { event(DetailsEvent.UpsertDeleteMovie(movie)) },
                     onShareClick = {
                         Intent(Intent.ACTION_SEND).also {
                             it.putExtra(Intent.EXTRA_TEXT, movie.webUrl)

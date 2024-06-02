@@ -33,7 +33,6 @@ fun MoviesListSearch(
             }
         }
     }
-
 }
 
 @Composable

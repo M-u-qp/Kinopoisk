@@ -1,5 +1,7 @@
 package com.example.kinopoisk.presentation.details
 
+import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,8 +15,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val moviesUseCases: MoviesUseCases
+    private val moviesUseCases: MoviesUseCases,
 ) : ViewModel() {
+
+    private val _state = mutableStateOf(DetailsState())
+    val state: State<DetailsState> = _state
 
     var sideEffect by mutableStateOf<String?>(null)
         private set
@@ -24,7 +29,7 @@ class DetailsViewModel @Inject constructor(
             is DetailsEvent.UpsertDeleteMovie -> {
                 viewModelScope.launch {
                     val movie = moviesUseCases.selectMovie(event.movie.kinopoiskId)
-                    if (movie == null){
+                    if (movie == null) {
                         upsertMovie(event.movie)
                     } else {
                         deleteMovie(event.movie)
@@ -33,7 +38,9 @@ class DetailsViewModel @Inject constructor(
             }
 
             is DetailsEvent.LikeMovie -> {}
-            is DetailsEvent.RemoveSideEffect -> { sideEffect = null }
+            is DetailsEvent.RemoveSideEffect -> {
+                sideEffect = null
+            }
         }
     }
 
@@ -47,7 +54,11 @@ class DetailsViewModel @Inject constructor(
         sideEffect = "Фильм сохранен"
     }
 
-    suspend fun getMovie(id: Int) {
-        moviesUseCases.getMovie(id)
+    fun getMovie(movieId: Int) {
+        viewModelScope.launch {
+            val movie = moviesUseCases.getMovie(movieId)
+            _state.value = _state.value.copy(movie = movie)
+            Log.d("TAG", "DVM state - ${state.value.movie}")
+        }
     }
 }

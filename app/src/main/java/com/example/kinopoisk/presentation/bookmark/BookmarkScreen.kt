@@ -16,13 +16,12 @@ import com.example.kinopoisk.R
 import com.example.kinopoisk.presentation.Dimens.MediumFontSize1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding3
-import com.example.kinopoisk.presentation.common.MoviesListDatabase
-import com.example.kinopoisk.presentation.navgraph.Route
+import com.example.kinopoisk.presentation.bookmark.components.MoviesListDatabase
 
 @Composable
 fun BookmarkScreen(
     state: BookmarkState,
-    navigate: (String) -> Unit
+    navigateToDetails: (Int) -> Unit
 ) {
 
     Column(
@@ -44,7 +43,7 @@ fun BookmarkScreen(
 
         MoviesListDatabase(
             movies = state.movies,
-            onClick = { navigate(Route.DetailsScreen.route) }
+            onClick = { navigateToDetails(it.kinopoiskId) }
         )
     }
 }

@@ -1,4 +1,4 @@
-package com.example.kinopoisk.presentation.common
+package com.example.kinopoisk.presentation.search.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,13 +22,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.kinopoisk.R
-import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.model.Film
 import com.example.kinopoisk.presentation.Dimens
+import com.example.kinopoisk.presentation.Dimens.SmallPadding1
 
 @Composable
-fun MovieCardDatabase(
+fun MovieCardSearch(
     modifier: Modifier = Modifier,
-    movie: Movie,
+    film: Film,
     onClick: () -> Unit
 ) {
     val context = LocalContext.current
@@ -48,7 +49,7 @@ fun MovieCardDatabase(
                         height = Dimens.MovieCardSearchHeight
                     )
                     .clip(MaterialTheme.shapes.medium),
-                model = ImageRequest.Builder(context).data(movie.posterUrl).build(),
+                model = ImageRequest.Builder(context).data(film.posterUrl).build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
@@ -65,7 +66,7 @@ fun MovieCardDatabase(
             ) {
                 //Рейтинг Кинопоиск
                 Text(
-                    text = movie.ratingKinopoisk.toString(),
+                    text = film.rating,
                     color = colorResource(id = R.color.black_text),
 
                     fontSize = Dimens.ExtraSmallFontSize1,
@@ -76,12 +77,12 @@ fun MovieCardDatabase(
         }
 
         Column(
-            modifier = modifier.padding(start = Dimens.SmallPadding1)
+            modifier = modifier.padding(start = SmallPadding1)
         ) {
 
             //Название фильма
             Text(
-                text = movie.let { it.nameRu ?: it.nameEn },
+                text = film.let { it.nameRu ?: it.nameEn },
                 style = MaterialTheme.typography.labelMedium.copy(
                     fontSize = Dimens.SmallFontSize1
                 ),
@@ -95,7 +96,7 @@ fun MovieCardDatabase(
             ) {
                 //Год выхода фильма
                 Text(
-                    text = (movie.year).toString() + ", ",
+                    text = film.year + ", ",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = Dimens.SmallFontSize2
                     ),
@@ -103,7 +104,7 @@ fun MovieCardDatabase(
                 )
                 //Жанр фильма
                 Text(
-                    text = movie.genres.joinToString(separator = "", limit = 1) { it.genre  },
+                    text = film.genres.joinToString(separator = "", limit = 1) { it.genre  },
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = Dimens.SmallFontSize2
                     ),

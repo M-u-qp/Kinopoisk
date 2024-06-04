@@ -1,4 +1,4 @@
-package com.example.kinopoisk.presentation.common
+package com.example.kinopoisk.presentation.bookmark.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues

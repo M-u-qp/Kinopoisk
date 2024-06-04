@@ -11,15 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
-import com.example.kinopoisk.presentation.common.MoviesListSearch
+import com.example.kinopoisk.presentation.search.components.MoviesListSearch
 import com.example.kinopoisk.presentation.common.SearchBar
-import com.example.kinopoisk.presentation.navgraph.Route
 
 @Composable
 fun SearchScreen(
     state: SearchState,
     event: (SearchEvent) -> Unit,
-    navigate: (String) -> Unit
+    navigateToDetails: (Int) -> Unit
 ) {
 
     Column(
@@ -37,11 +36,11 @@ fun SearchScreen(
 
         Spacer(modifier = Modifier.height(MediumPadding1))
 
-        state.movies?.let {
-            val movies = it.collectAsLazyPagingItems()
+        state.movies?.let { listMovies ->
+            val movies = listMovies.collectAsLazyPagingItems()
             MoviesListSearch(
                 movies = movies,
-                onClick = { navigate(Route.DetailsScreen.route) }
+                onClick = { navigateToDetails(it.filmId) }
             )
         }
     }

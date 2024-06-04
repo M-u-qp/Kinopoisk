@@ -1,4 +1,4 @@
-package com.example.kinopoisk.presentation.common
+package com.example.kinopoisk.presentation.home.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,13 +37,13 @@ import com.example.kinopoisk.presentation.Dimens.SmallFontSize2
 fun MovieCardCollection(
     modifier: Modifier = Modifier,
     item: Item,
-    onClick: () -> Unit
+    onClick: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
 
     Column(
         modifier = modifier
-            .clickable { onClick() }
+            .clickable { onClick?.invoke() }
     ) {
         Box(modifier = modifier) {
             //Постер фильма
@@ -116,8 +116,8 @@ private fun normalizeTitleMovie(item: Item): String {
             currentLine += " $word"
         } else {
             lines.add(currentLine)
-            currentLine = if (word.length >=10) {
-                word.substring(0,10) + "..."
+            currentLine = if (word.length >= 10) {
+                word.substring(0, 10) + "..."
             } else {
                 word
             }

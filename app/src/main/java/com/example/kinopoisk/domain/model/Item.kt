@@ -1,5 +1,9 @@
 package com.example.kinopoisk.domain.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Item(
     val countries: List<Country>,
     val genres: List<Genre>,
@@ -13,4 +17,4 @@ data class Item(
     val ratingKinopoisk: Double,
     val type: String,
     val year: String
-)
+): Parcelable

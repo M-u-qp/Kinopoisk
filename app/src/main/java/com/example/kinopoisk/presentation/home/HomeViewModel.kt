@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val collectionsUseCases: CollectionsUseCases
+    private val collectionsUseCases: CollectionsUseCases,
 ) : ViewModel() {
 
     val topPopularAll = collectionsUseCases.getCollections().cachedIn(viewModelScope)

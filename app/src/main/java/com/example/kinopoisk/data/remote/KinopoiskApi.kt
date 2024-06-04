@@ -1,7 +1,8 @@
 package com.example.kinopoisk.data.remote
 
+import com.example.kinopoisk.data.remote.dto.ApiKeyCountResponse
 import com.example.kinopoisk.data.remote.dto.CollectionsResponse
-import com.example.kinopoisk.data.remote.dto.MoviesResponse
+import com.example.kinopoisk.data.remote.dto.MovieResponse
 import com.example.kinopoisk.data.remote.dto.SearchMoviesResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -9,6 +10,11 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface KinopoiskApi {
+
+    @GET("/api/v1/api_keys/{apiKey}")
+    fun checkApiCount(
+        @Path("apiKey") apiKey: String
+    ): ApiKeyCountResponse
 
     @GET("/api/v2.2/films/collections?type=TOP_POPULAR_ALL")
     suspend fun getTopPopularAll(
@@ -27,5 +33,5 @@ interface KinopoiskApi {
     suspend fun getMovie(
         @Header("X-API-KEY") apiKey: String,
         @Path("id") id: Int
-    ): MoviesResponse
+    ): MovieResponse
 }

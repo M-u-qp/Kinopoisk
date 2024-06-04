@@ -15,6 +15,7 @@ import com.example.kinopoisk.domain.usecases.app_entry.ReadAppEntry
 import com.example.kinopoisk.domain.usecases.app_entry.SaveAppEntry
 import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
 import com.example.kinopoisk.domain.usecases.collections.GetCollections
+import com.example.kinopoisk.domain.usecases.common.ApiCount
 import com.example.kinopoisk.domain.usecases.movies.DeleteMovie
 import com.example.kinopoisk.domain.usecases.movies.GetMovie
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
@@ -27,6 +28,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -34,6 +37,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Provides
+    @Singleton
+    fun provideApiCount(kinopoiskRepository: KinopoiskRepository): ApiCount = ApiCount(kinopoiskRepository)
 
     @Provides
     @Singleton
@@ -54,6 +61,11 @@ object AppModule {
     @Singleton
     fun provideKinopoiskApi(): KinopoiskApi {
         return Retrofit.Builder()
+            .client(
+                OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().also {
+                    it.level = HttpLoggingInterceptor.Level.BODY
+                }).build()
+            )
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -64,10 +76,12 @@ object AppModule {
     @Singleton
     fun provideKinopoiskRepository(
         kinopoiskApi: KinopoiskApi,
-        application: Application
+        application: Application,
+        moviesDao: MoviesDao
     ): KinopoiskRepository = KinopoiskRepositoryImpl(
         kinopoiskApi = kinopoiskApi,
-        context = application
+        context = application,
+        moviesDao = moviesDao
     )
 
     @Provides
@@ -84,15 +98,14 @@ object AppModule {
     @Singleton
     fun provideMoviesUseCases(
         kinopoiskRepository: KinopoiskRepository,
-        moviesDao: MoviesDao
     ): MoviesUseCases {
         return MoviesUseCases(
             searchMovies = SearchMovies(kinopoiskRepository),
             getMovie = GetMovie(kinopoiskRepository),
-            upsertMovie = UpsertMovie(moviesDao),
-            deleteMovie = DeleteMovie(moviesDao),
-            selectMovies = SelectMovies(moviesDao),
-            selectMovie = SelectMovie(moviesDao)
+            upsertMovie = UpsertMovie(kinopoiskRepository),
+            deleteMovie = DeleteMovie(kinopoiskRepository),
+            selectMovies = SelectMovies(kinopoiskRepository),
+            selectMovie = SelectMovie(kinopoiskRepository)
         )
     }
 

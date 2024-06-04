@@ -73,7 +73,8 @@ fun MovieDetailsCard(
                     ),
                     color = colorResource(id = R.color.body_icon))
                 //Жанр
-                Text(text = movie.genres.joinToString(separator = "", limit = 1) { it.genre },
+                Text(
+                    text = movie.genres.joinToString(separator = "", limit = 1) { it.genre },
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = Dimens.SmallFontSize2
                     ),
@@ -103,16 +104,3 @@ fun MovieDetailsCard(
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun PreviewMovieDetailsCard() {
-//    MovieDetailsCard(movie = Movie(
-//        nameRu = "Топи",
-//        ratingKinopoisk = 6.9,
-//        genres = listOf(Genre("триллер, драма")),
-//        countries = listOf(Country("Россия, Бельгия")),
-//        filmLength = 55, year = 2021,
-//        ratingAgeLimits = "18+"
-//    ))
-//}

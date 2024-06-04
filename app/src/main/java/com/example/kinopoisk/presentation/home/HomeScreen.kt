@@ -25,14 +25,13 @@ import com.example.kinopoisk.presentation.Dimens.LargePadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.SmallFontSize1
-import com.example.kinopoisk.presentation.common.MoviesListCollection
+import com.example.kinopoisk.presentation.home.components.MoviesListCollection
 import com.example.kinopoisk.presentation.common.TitleCollections
-import com.example.kinopoisk.presentation.navgraph.Route
 
 @Composable
 fun HomeScreen(
     movies: LazyPagingItems<Item>,
-    navigateToSearch: (String) -> Unit,
+    navigateToSearch: () -> Unit,
     navigateToDetails: (Int) -> Unit
 ) {
     Column(
@@ -55,7 +54,7 @@ fun HomeScreen(
                 text = stringResource(id = R.string.app_name),
                 color = colorResource(id = R.color.black_text)
             )
-            IconButton(onClick = { navigateToSearch(Route.SearchScreen.route) }) {
+            IconButton(onClick = { navigateToSearch() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_search),
                     contentDescription = null

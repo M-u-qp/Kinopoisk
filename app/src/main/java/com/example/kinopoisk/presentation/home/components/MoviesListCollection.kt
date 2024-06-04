@@ -1,43 +1,46 @@
-package com.example.kinopoisk.presentation.common
+package com.example.kinopoisk.presentation.home.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import com.example.kinopoisk.domain.model.Film
-import com.example.kinopoisk.presentation.Dimens
+import com.example.kinopoisk.domain.model.Item
+import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
+import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding3
+import com.example.kinopoisk.presentation.common.EmptyScreen
+import com.example.kinopoisk.presentation.common.MovieCardCollectionShimmerEffect
 
 @Composable
-fun MoviesListSearch(
+fun MoviesListCollection(
     modifier: Modifier = Modifier,
-    movies: LazyPagingItems<Film>,
-    onClick: (Film) -> Unit
+    movies: LazyPagingItems<Item>,
+    onClick: (Int) -> Unit
 ) {
-    val handlePagingResultSearch = handlePagingResultSearch(movies = movies)
-
-    if (handlePagingResultSearch) {
-        LazyColumn(
+    val handlePagingResult = handlePagingResult(movies = movies)
+    if (handlePagingResult) {
+        LazyRow(
             modifier = modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(Dimens.ExtraSmallPadding2),
-            contentPadding = PaddingValues(all = Dimens.ExtraSmallPadding3)
+            horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
+            contentPadding = PaddingValues(all = ExtraSmallPadding3)
         ) {
-            items(count = movies.itemCount) { index ->
+            items(count = movies.itemCount){ index ->
                 movies[index]?.let {
-                    MovieCardSearch(film = it, onClick = { onClick(it) })
+                    MovieCardCollection(item = it, onClick = {onClick(it.kinopoiskId)})
                 }
             }
         }
     }
+
 }
 
 @Composable
-fun handlePagingResultSearch(
-    movies: LazyPagingItems<Film>
+fun handlePagingResult(
+    movies: LazyPagingItems<Item>
 ): Boolean {
     val loadState = movies.loadState
     val error = when {
@@ -65,11 +68,11 @@ fun handlePagingResultSearch(
 
 @Composable
 private fun ShimmerEffect() {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(Dimens.ExtraSmallPadding2)
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
     ) {
         repeat(10) {
-            MovieCardSearchShimmerEffect()
+            MovieCardCollectionShimmerEffect()
         }
     }
 }

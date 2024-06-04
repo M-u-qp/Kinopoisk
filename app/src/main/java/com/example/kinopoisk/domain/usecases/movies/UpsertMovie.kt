@@ -1,13 +1,13 @@
 package com.example.kinopoisk.domain.usecases.movies
 
-import com.example.kinopoisk.data.local.MoviesDao
 import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.repository.KinopoiskRepository
 
 class UpsertMovie(
-    private val moviesDao: MoviesDao
+    private val kinopoiskRepository: KinopoiskRepository
 ) {
 
     suspend operator fun invoke(movie: Movie) {
-        moviesDao.upsert(movie)
+        kinopoiskRepository.upsertMovie(movie)
     }
 }

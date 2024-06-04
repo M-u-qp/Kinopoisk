@@ -1,18 +1,15 @@
-package com.example.kinopoisk.domain.model
+package com.example.kinopoisk.data.remote.dto
 
 import android.os.Parcelable
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-@Entity
-data class Movie(
-    val countries: List<Country>,
+data class MovieResponse(
+    val countries: List<Countries>,
     val description: String,
     val filmLength: Int,
-    val genres: List<Genre>,
-    @PrimaryKey val kinopoiskId: Int,
+    val genres: List<Genres>,
+    val kinopoiskId: Int,
     val logoUrl: String,
     val nameEn: String,
     val nameRu: String,
@@ -24,3 +21,14 @@ data class Movie(
     val webUrl: String,
     val year: Int
 ): Parcelable
+
+@Parcelize
+data class Genres(
+    val genre: String
+): Parcelable
+
+@Parcelize
+data class Countries(
+    val country: String
+): Parcelable
+

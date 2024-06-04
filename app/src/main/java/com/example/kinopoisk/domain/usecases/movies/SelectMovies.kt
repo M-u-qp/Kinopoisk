@@ -1,14 +1,14 @@
 package com.example.kinopoisk.domain.usecases.movies
 
-import com.example.kinopoisk.data.local.MoviesDao
 import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.repository.KinopoiskRepository
 import kotlinx.coroutines.flow.Flow
 
 class SelectMovies(
-    private val moviesDao: MoviesDao
+    private val kinopoiskRepository: KinopoiskRepository
 ) {
 
     operator fun invoke(): Flow<List<Movie>> {
-        return moviesDao.getMovies()
+        return kinopoiskRepository.selectMovies()
     }
 }

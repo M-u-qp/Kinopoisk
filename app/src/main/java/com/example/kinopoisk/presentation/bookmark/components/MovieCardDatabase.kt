@@ -81,7 +81,7 @@ fun MovieCardDatabase(
 
             //Название фильма
             Text(
-                text = movie.let { it.nameRu ?: it.nameEn },
+                text = movie.let { it.nameRu ?: it.nameEn }.toString(),
                 style = MaterialTheme.typography.labelMedium.copy(
                     fontSize = Dimens.SmallFontSize1
                 ),

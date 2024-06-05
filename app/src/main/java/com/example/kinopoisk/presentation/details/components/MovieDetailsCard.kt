@@ -59,7 +59,7 @@ fun MovieDetailsCard(
                     ),
                     color = colorResource(id = R.color.body_icon))
                 //Название
-                Text(text = movie.let { it.nameRu ?: movie.nameEn },
+                Text(text = movie.let { it.nameRu ?: movie.nameEn }.toString(),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = Dimens.SmallFontSize2
                     ),
@@ -94,7 +94,7 @@ fun MovieDetailsCard(
                     ),
                     color = colorResource(id = R.color.body_icon))
                 //Возрастное ограничение
-                Text(text = movie.ratingAgeLimits,
+                Text(text = movie.ratingAgeLimits.toString(),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = Dimens.SmallFontSize2
                     ),

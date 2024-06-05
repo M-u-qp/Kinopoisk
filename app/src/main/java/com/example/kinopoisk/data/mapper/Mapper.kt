@@ -49,19 +49,19 @@ fun MovieEntity.toMovie(): Movie {
 fun Movie.toMovieEntity(): MovieEntity {
     return MovieEntity(
         countries = countries.map { country -> Country(country = country.country) },
-        description = description,
-        filmLength = filmLength,
+        description = description.toString(),
+        filmLength = filmLength ?: 0,
         genres = genres.map { genre -> Genre(genre = genre.genre) },
         kinopoiskId = kinopoiskId,
-        logoUrl = logoUrl,
-        nameEn = nameEn,
-        nameRu = nameRu,
-        posterUrl = posterUrl,
-        posterUrlPreview = posterUrlPreview,
-        ratingAgeLimits = ratingAgeLimits,
-        ratingKinopoisk = ratingKinopoisk,
-        shortDescription = shortDescription,
-        webUrl = webUrl,
-        year = year
+        logoUrl = logoUrl.toString(),
+        nameEn = nameEn.toString(),
+        nameRu = nameRu.toString(),
+        posterUrl = posterUrl.toString(),
+        posterUrlPreview = posterUrlPreview.toString(),
+        ratingAgeLimits = ratingAgeLimits.toString(),
+        ratingKinopoisk = ratingKinopoisk ?: 0.0,
+        shortDescription = shortDescription.toString(),
+        webUrl = webUrl.toString(),
+        year = year ?: 0
     )
 }

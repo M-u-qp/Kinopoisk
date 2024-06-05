@@ -71,7 +71,7 @@ fun DetailsScreen(
                         .padding(horizontal = MediumPadding2)
                 ) {
                     Text(
-                        text = movie.shortDescription,
+                        text = movie.shortDescription ?: "",
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Bold,
                             fontSize = Dimens.MediumFontSize2
@@ -79,7 +79,7 @@ fun DetailsScreen(
                         color = colorResource(id = R.color.black_text)
                     )
                     Text(
-                        text = movie.description,
+                        text = movie.description ?: "",
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Medium,
                             fontSize = Dimens.MediumFontSize2

@@ -5,6 +5,7 @@ import com.example.kinopoisk.domain.model.DailyQuota
 import com.example.kinopoisk.domain.model.Film
 import com.example.kinopoisk.domain.model.Item
 import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface KinopoiskRepository {
@@ -15,7 +16,7 @@ interface KinopoiskRepository {
 
     fun searchMovies(keyword: String): Flow<PagingData<Film>>
 
-    suspend fun getMovie(id: Int): Movie
+    suspend fun getMovie(id: Int): Resource<Movie>
 
     suspend fun upsertMovie(movie: Movie)
 

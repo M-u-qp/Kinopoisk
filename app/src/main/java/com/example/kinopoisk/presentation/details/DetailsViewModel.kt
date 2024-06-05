@@ -57,7 +57,7 @@ class DetailsViewModel @Inject constructor(
     fun getMovie(movieId: Int) {
         viewModelScope.launch {
             val movie = moviesUseCases.getMovie(movieId)
-            _state.value = _state.value.copy(movie = movie)
+            _state.value = _state.value.copy(movie = movie.data)
             Log.d("TAG", "DVM state - ${state.value.movie}")
         }
     }

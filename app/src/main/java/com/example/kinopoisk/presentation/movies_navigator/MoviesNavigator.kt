@@ -1,6 +1,5 @@
 package com.example.kinopoisk.presentation.movies_navigator
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -34,7 +33,6 @@ import com.example.kinopoisk.presentation.movies_navigator.components.MoviesBott
 import com.example.kinopoisk.presentation.navgraph.Route
 import com.example.kinopoisk.presentation.search.SearchScreen
 import com.example.kinopoisk.presentation.search.SearchViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun MoviesNavigator() {
@@ -147,7 +145,6 @@ fun MoviesNavigator() {
                 navController.previousBackStackEntry?.savedStateHandle?.get<Int>("movieId")
                     ?.let { movieId ->
                         viewModel.getMovie(movieId)
-                        if (state.movie != null)
                         DetailsScreen(
                             state = state,
                             event = viewModel::onEvent,

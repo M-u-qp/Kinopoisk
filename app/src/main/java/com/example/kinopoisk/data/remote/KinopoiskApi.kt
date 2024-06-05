@@ -4,6 +4,7 @@ import com.example.kinopoisk.data.remote.dto.ApiKeyCountResponse
 import com.example.kinopoisk.data.remote.dto.CollectionsResponse
 import com.example.kinopoisk.data.remote.dto.MovieResponse
 import com.example.kinopoisk.data.remote.dto.SearchMoviesResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path
@@ -33,5 +34,5 @@ interface KinopoiskApi {
     suspend fun getMovie(
         @Header("X-API-KEY") apiKey: String,
         @Path("id") id: Int
-    ): MovieResponse
+    ): Response<MovieResponse>
 }

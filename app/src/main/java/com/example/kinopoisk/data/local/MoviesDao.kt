@@ -5,21 +5,21 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.data.local.entity.MovieEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MoviesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(movie: Movie)
+    suspend fun upsert(movie: MovieEntity)
 
     @Delete
-    suspend fun delete(movie: Movie)
+    suspend fun delete(movie: MovieEntity)
 
-    @Query("SELECT * FROM Movie")
-    fun getMovies(): Flow<List<Movie>>
+    @Query("SELECT * FROM MovieEntity")
+    fun getMovies(): Flow<List<MovieEntity>>
 
-    @Query("SELECT * FROM Movie WHERE kinopoiskId=:kinopoiskId")
-    suspend fun getMovie(kinopoiskId: Int): Movie?
+    @Query("SELECT * FROM MovieEntity WHERE kinopoiskId=:kinopoiskId")
+    suspend fun getMovie(kinopoiskId: Int): MovieEntity?
 }

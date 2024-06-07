@@ -4,7 +4,7 @@ import com.example.kinopoisk.domain.model.DailyQuota
 import com.example.kinopoisk.domain.model.TotalQuota
 
 data class ApiKeyCountResponse(
-    val accountType: String,
+    val totalQuota: TotalQuota,
     val dailyQuota: DailyQuota,
-    val totalQuota: TotalQuota
+    val accountType: String
 )

@@ -6,7 +6,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.kinopoisk.R
 import com.example.kinopoisk.data.local.MoviesDao
-import com.example.kinopoisk.data.local.entity.MovieEntity
 import com.example.kinopoisk.data.mapper.toMovie
 import com.example.kinopoisk.data.mapper.toMovieEntity
 import com.example.kinopoisk.data.remote.CollectionsPagingSource
@@ -37,7 +36,10 @@ class KinopoiskRepositoryImpl(
     }
 
     override suspend fun getApiCount(): DailyQuota {
-        return kinopoiskApi.checkApiCount(apiKey = context.getString(R.string.API_KEY)).dailyQuota
+        return kinopoiskApi.checkApiCount(
+            xApiKey = context.getString(R.string.API_KEY),
+            apiKey = context.getString(R.string.API_KEY)
+        ).dailyQuota
     }
 
     override fun getTopPopularAll(): Flow<PagingData<Item>> {

@@ -7,7 +7,7 @@ class ApiCount(
     private val kinopoiskRepository: KinopoiskRepository
 ) {
 
-    suspend fun invoke(): DailyQuota {
+    suspend operator fun invoke(): DailyQuota {
         return kinopoiskRepository.getApiCount()
     }
 }

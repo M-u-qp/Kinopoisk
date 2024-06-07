@@ -16,6 +16,7 @@ import com.example.kinopoisk.domain.usecases.app_entry.SaveAppEntry
 import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
 import com.example.kinopoisk.domain.usecases.collections.GetCollections
 import com.example.kinopoisk.domain.usecases.common.ApiCount
+import com.example.kinopoisk.domain.usecases.common.CommonUseCases
 import com.example.kinopoisk.domain.usecases.movies.DeleteMovie
 import com.example.kinopoisk.domain.usecases.movies.GetMovie
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
@@ -40,7 +41,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideApiCount(kinopoiskRepository: KinopoiskRepository): ApiCount = ApiCount(kinopoiskRepository)
+    fun provideCommonUseCases(kinopoiskRepository: KinopoiskRepository): CommonUseCases {
+        return CommonUseCases(
+            apiCount = ApiCount(kinopoiskRepository)
+        )
+    }
 
     @Provides
     @Singleton

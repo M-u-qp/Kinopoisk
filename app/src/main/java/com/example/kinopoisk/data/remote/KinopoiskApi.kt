@@ -14,6 +14,7 @@ interface KinopoiskApi {
 
     @GET("/api/v1/api_keys/{apiKey}")
     fun checkApiCount(
+        @Header("X-API-KEY") xApiKey: String,
         @Path("apiKey") apiKey: String
     ): ApiKeyCountResponse
 

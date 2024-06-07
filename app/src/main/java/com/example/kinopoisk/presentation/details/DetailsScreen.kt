@@ -11,11 +11,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kinopoisk.R
 import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
@@ -25,12 +27,13 @@ import com.example.kinopoisk.presentation.details.components.MovieDetailsCard
 
 @Composable
 fun DetailsScreen(
-    state: DetailsState,
+    viewModel: DetailsViewModel = hiltViewModel(),
     event: (DetailsEvent) -> Unit,
     navigateUp: () -> Unit
 ) {
 
     val context = LocalContext.current
+    val state = viewModel.state.collectAsState().value
 
 
     LazyColumn(
@@ -93,3 +96,4 @@ fun DetailsScreen(
         }
     }
 }
+

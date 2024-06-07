@@ -1,6 +1,5 @@
 package com.example.kinopoisk.presentation.details
 
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,6 +9,8 @@ import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
 import com.example.kinopoisk.domain.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,8 +19,8 @@ class DetailsViewModel @Inject constructor(
     private val moviesUseCases: MoviesUseCases,
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(DetailsState())
-    val state: State<DetailsState> = _state
+    private val _state = MutableStateFlow(DetailsState())
+    val state: StateFlow<DetailsState> = _state
 
     var sideEffect by mutableStateOf<String?>(null)
         private set

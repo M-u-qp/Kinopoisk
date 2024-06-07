@@ -134,7 +134,6 @@ fun MoviesNavigator() {
             }
             composable(route = Route.DetailsScreen.route) {
                 val viewModel: DetailsViewModel = hiltViewModel()
-                val state = viewModel.state.value
                 if (viewModel.sideEffect != null) {
                     Toast.makeText(LocalContext.current, viewModel.sideEffect, Toast.LENGTH_SHORT)
                         .show()
@@ -144,7 +143,7 @@ fun MoviesNavigator() {
                     ?.let { movieId ->
                         viewModel.getMovie(movieId)
                         DetailsScreen(
-                            state = state,
+                            viewModel = viewModel,
                             event = viewModel::onEvent,
                             navigateUp = { navController.navigateUp() }
                         )

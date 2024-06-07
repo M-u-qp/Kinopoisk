@@ -55,6 +55,11 @@ fun handlePagingResultSearch(
         }
 
         error != null -> {
+            EmptyScreen(error = error)
+            false
+        }
+
+        movies.itemCount == 0 -> {
             EmptyScreen()
             false
         }

@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.presentation.Dimens
+import com.example.kinopoisk.presentation.common.EmptyScreen
 
 @Composable
 fun MoviesListDatabase(
@@ -15,15 +16,18 @@ fun MoviesListDatabase(
     movies: List<Movie>,
     onClick: (Movie) -> Unit
 ) {
-        LazyColumn(
-            modifier = modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(Dimens.ExtraSmallPadding2),
-            contentPadding = PaddingValues(all = Dimens.ExtraSmallPadding3)
-        ) {
-            items(count = movies.size) { index ->
-               val movie = movies[index]
-                    MovieCardDatabase(movie = movie, onClick = { onClick(movie) })
-            }
+    if (movies.isEmpty()){
+        EmptyScreen()
+    }
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(Dimens.ExtraSmallPadding2),
+        contentPadding = PaddingValues(all = Dimens.ExtraSmallPadding3)
+    ) {
+        items(count = movies.size) { index ->
+            val movie = movies[index]
+            MovieCardDatabase(movie = movie, onClick = { onClick(movie) })
         }
+    }
 
 }

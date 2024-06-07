@@ -52,7 +52,7 @@ fun EmptyScreen(error: LoadState.Error? = null) {
 
     val alphaAnimation by animateFloatAsState(
         targetValue = if (startAnimation) 0.3f else 0f,
-        animationSpec = tween(durationMillis = 1000), label = ""
+        animationSpec = tween(durationMillis = 1500), label = ""
     )
     LaunchedEffect(key1 = true) {
         startAnimation = true

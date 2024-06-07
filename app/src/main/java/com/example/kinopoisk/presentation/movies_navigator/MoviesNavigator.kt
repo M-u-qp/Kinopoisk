@@ -141,8 +141,8 @@ fun MoviesNavigator() {
                 }
                 navController.previousBackStackEntry?.savedStateHandle?.get<Int>("movieId")
                     ?.let { movieId ->
-                        viewModel.getMovie(movieId)
                         DetailsScreen(
+                            movieId = movieId,
                             viewModel = viewModel,
                             event = viewModel::onEvent,
                             navigateUp = { navController.navigateUp() }

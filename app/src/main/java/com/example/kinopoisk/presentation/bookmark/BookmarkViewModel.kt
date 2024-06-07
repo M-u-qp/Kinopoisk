@@ -19,10 +19,10 @@ class BookmarkViewModel @Inject constructor(
     val state: State<BookmarkState> = _state
 
     init {
-        getMovies()
+        getMoviesInDB()
     }
 
-    private fun getMovies() {
+    private fun getMoviesInDB() {
         moviesUseCases.selectMovies().onEach {
             _state.value = _state.value.copy(movies = it.asReversed())
         }.launchIn(viewModelScope)

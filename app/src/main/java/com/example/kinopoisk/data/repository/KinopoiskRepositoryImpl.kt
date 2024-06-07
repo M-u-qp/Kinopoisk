@@ -93,11 +93,11 @@ class KinopoiskRepositoryImpl(
     }
 
     override fun selectMovies(): Flow<List<Movie>> {
-        return moviesDao.getMovies().map { list -> list.map { movies -> movies.toMovie() } }
+        return moviesDao.getMoviesInDB().map { list -> list.map { movies -> movies.toMovie() } }
     }
 
     override suspend fun selectMovie(id: Int): Movie? {
-        return moviesDao.getMovie(id)?.toMovie()
+        return moviesDao.getMovieInDB(id)?.toMovie()
     }
 }
 

@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -27,10 +28,15 @@ import com.example.kinopoisk.presentation.details.components.MovieDetailsCard
 
 @Composable
 fun DetailsScreen(
+    movieId: Int,
     viewModel: DetailsViewModel = hiltViewModel(),
     event: (DetailsEvent) -> Unit,
     navigateUp: () -> Unit
 ) {
+
+    LaunchedEffect(key1 = true) {
+        viewModel.getMovie(movieId)
+    }
 
     val context = LocalContext.current
     val state = viewModel.state.collectAsState().value

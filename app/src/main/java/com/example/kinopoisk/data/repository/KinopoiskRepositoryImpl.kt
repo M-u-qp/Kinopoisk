@@ -6,11 +6,14 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.kinopoisk.R
 import com.example.kinopoisk.data.local.MoviesDao
+import com.example.kinopoisk.data.mapper.toCollectionDB
+import com.example.kinopoisk.data.mapper.toCollectionEntity
 import com.example.kinopoisk.data.mapper.toMovie
 import com.example.kinopoisk.data.mapper.toMovieEntity
 import com.example.kinopoisk.data.remote.CollectionsPagingSource
 import com.example.kinopoisk.data.remote.KinopoiskApi
 import com.example.kinopoisk.data.remote.SearchMoviesPagingSource
+import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.DailyQuota
 import com.example.kinopoisk.domain.model.Film
 import com.example.kinopoisk.domain.model.Item
@@ -98,6 +101,22 @@ class KinopoiskRepositoryImpl(
 
     override suspend fun selectMovie(id: Int): Movie? {
         return moviesDao.getMovieInDB(id)?.toMovie()
+    }
+
+    override fun selectCollections(): Flow<List<CollectionDB>> {
+        return moviesDao.getCollectionsInDB().map { list -> list.map { collections -> collections.toCollectionDB() } }
+    }
+
+    override suspend fun selectCollection(nameCollection: String): CollectionDB? {
+        return moviesDao.getCollectionInDB(nameCollection)?.toCollectionDB()
+    }
+
+    override suspend fun addCollection(collectionDB: CollectionDB) {
+        moviesDao.addCollection(collectionDB.toCollectionEntity())
+    }
+
+    override suspend fun deleteCollection(collectionDB: CollectionDB) {
+        moviesDao.deleteCollection(collectionDB.toCollectionEntity())
     }
 }
 

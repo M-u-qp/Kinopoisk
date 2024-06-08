@@ -70,10 +70,8 @@ fun MovieCardCollection(
                 Text(
                     text = (item.ratingKinopoisk).toString(),
                     color = colorResource(id = R.color.white),
-
                     fontSize = ExtraSmallFontSize1,
                     fontWeight = FontWeight.Medium
-
                 )
             }
         }

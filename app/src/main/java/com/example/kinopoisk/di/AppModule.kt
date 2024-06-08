@@ -14,7 +14,11 @@ import com.example.kinopoisk.domain.usecases.app_entry.AppEntryUseCases
 import com.example.kinopoisk.domain.usecases.app_entry.ReadAppEntry
 import com.example.kinopoisk.domain.usecases.app_entry.SaveAppEntry
 import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
+import com.example.kinopoisk.domain.usecases.collections.DeleteCollection
+import com.example.kinopoisk.domain.usecases.collections.GetCollectionInDB
 import com.example.kinopoisk.domain.usecases.collections.GetCollections
+import com.example.kinopoisk.domain.usecases.collections.GetCollectionsInDB
+import com.example.kinopoisk.domain.usecases.collections.AddCollection
 import com.example.kinopoisk.domain.usecases.common.ApiCount
 import com.example.kinopoisk.domain.usecases.common.CommonUseCases
 import com.example.kinopoisk.domain.usecases.movies.DeleteMovie
@@ -95,7 +99,11 @@ object AppModule {
         kinopoiskRepository: KinopoiskRepository
     ): CollectionsUseCases {
         return CollectionsUseCases(
-            getCollections = GetCollections(kinopoiskRepository)
+            getCollections = GetCollections(kinopoiskRepository),
+            getCollectionInDB = GetCollectionInDB(kinopoiskRepository),
+            getCollectionsInDB = GetCollectionsInDB(kinopoiskRepository),
+            addCollection = AddCollection(kinopoiskRepository),
+            deleteCollection = DeleteCollection(kinopoiskRepository)
         )
     }
 

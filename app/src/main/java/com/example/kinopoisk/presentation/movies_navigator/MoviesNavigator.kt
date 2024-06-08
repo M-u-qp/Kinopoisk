@@ -30,6 +30,8 @@ import com.example.kinopoisk.presentation.home.HomeViewModel
 import com.example.kinopoisk.presentation.movies_navigator.components.BottomNavigationItem
 import com.example.kinopoisk.presentation.movies_navigator.components.MoviesBottomNavigation
 import com.example.kinopoisk.presentation.navgraph.Route
+import com.example.kinopoisk.presentation.profile.ProfileScreen
+import com.example.kinopoisk.presentation.profile.ProfileViewModel
 import com.example.kinopoisk.presentation.search.SearchScreen
 import com.example.kinopoisk.presentation.search.SearchViewModel
 
@@ -103,6 +105,7 @@ fun MoviesNavigator() {
                 val viewModel: HomeViewModel = hiltViewModel()
                 val movies = viewModel.topPopularAll.collectAsLazyPagingItems()
                 HomeScreen(
+                    viewModel = viewModel,
                     movies = movies,
                     navigateToSearch = {
                         navigateToTab(
@@ -149,19 +152,27 @@ fun MoviesNavigator() {
                         )
                     }
             }
-            composable(route = Route.BookmarkScreen.route) {
-                val viewModel: BookmarkViewModel = hiltViewModel()
+            composable(route = Route.ProfileScreen.route) {
+                val viewModel: ProfileViewModel = hiltViewModel()
                 val state = viewModel.state.value
-                BookmarkScreen(
+                ProfileScreen(
                     state = state,
-                    navigateToDetails = { movieId ->
-                        navigateToDetails(
-                            navController = navController,
-                            movieId = movieId
-                        )
-                    }
+                    viewModel = viewModel
                 )
             }
+//            composable(route = Route.BookmarkScreen.route) {
+//                val viewModel: BookmarkViewModel = hiltViewModel()
+//                val state = viewModel.state.value
+//                BookmarkScreen(
+//                    state = state,
+//                    navigateToDetails = { movieId ->
+//                        navigateToDetails(
+//                            navController = navController,
+//                            movieId = movieId
+//                        )
+//                    }
+//                )
+//            }
         }
     }
 }

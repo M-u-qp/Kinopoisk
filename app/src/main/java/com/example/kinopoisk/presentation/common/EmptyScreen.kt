@@ -42,7 +42,7 @@ fun EmptyScreen(error: LoadState.Error? = null) {
     }
 
     if (error == null) {
-        message = "Error"
+        message = "Отсутствуют сохранения"
         icon = R.drawable.ic_search_document
     }
 
@@ -94,15 +94,15 @@ fun EmptyContent(
 fun parseErrorMessage(error: LoadState.Error?): String {
     return when (error?.error) {
         is SocketTimeoutException -> {
-            "Server Unavailable"
+            "Ошибка сервера"
         }
 
         is ConnectException -> {
-            "Internet Unavailable"
+            "Проблема с интернетом"
         }
 
         else -> {
-            "Unknown Error"
+            "Неизвестная ошибка"
         }
     }
 }

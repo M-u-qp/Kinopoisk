@@ -12,28 +12,36 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import com.example.kinopoisk.R
+import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.Item
 import com.example.kinopoisk.presentation.Dimens.LargePadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.SmallFontSize1
+import com.example.kinopoisk.presentation.common.TitleCollectionsEnum
 import com.example.kinopoisk.presentation.home.components.MoviesListCollection
-import com.example.kinopoisk.presentation.common.TitleCollections
 
 @Composable
 fun HomeScreen(
+    viewModel: HomeViewModel = hiltViewModel(),
     movies: LazyPagingItems<Item>,
     navigateToSearch: () -> Unit,
     navigateToDetails: (Int) -> Unit
 ) {
+    LaunchedEffect(key1 = true) {
+        viewModel.addBookmarkCollection(CollectionDB(id = 0, nameCollection = "Хочу посмотреть", moviesList = emptyList()))
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -73,7 +81,7 @@ fun HomeScreen(
                 style = MaterialTheme.typography.displaySmall.copy(
                     fontWeight = FontWeight.Bold
                 ),
-                text = TitleCollections.TOP_POPULAR_ALL.value,
+                text = TitleCollectionsEnum.TOP_POPULAR_ALL.value,
                 color = colorResource(id = R.color.black_text)
             )
             Text(

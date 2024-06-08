@@ -1,7 +1,9 @@
 package com.example.kinopoisk.data.mapper
 
+import com.example.kinopoisk.data.local.entity.CollectionEntity
 import com.example.kinopoisk.data.local.entity.MovieEntity
 import com.example.kinopoisk.data.remote.dto.MovieResponse
+import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.Country
 import com.example.kinopoisk.domain.model.Genre
 import com.example.kinopoisk.domain.model.Movie
@@ -63,5 +65,20 @@ fun Movie.toMovieEntity(): MovieEntity {
         shortDescription = shortDescription.toString(),
         webUrl = webUrl.toString(),
         year = year ?: 0
+    )
+}
+
+fun CollectionDB.toCollectionEntity(): CollectionEntity {
+    return CollectionEntity(
+        nameCollection = nameCollection,
+        moviesList = moviesList.map { movie -> movie.toMovieEntity() }
+    )
+}
+
+fun CollectionEntity.toCollectionDB(): CollectionDB {
+    return CollectionDB(
+        id = id,
+        nameCollection = nameCollection,
+        moviesList = moviesList.map { movieEntity -> movieEntity.toMovie() }
     )
 }

@@ -1,7 +1,14 @@
 <resources>
     <string name="app_name">Kinopoisk</string>
-    <string name="onboarding1">Узнавай о премьерах</string>
-    <string name="onboarding2">Создавай коллекции</string>
-    <string name="onboarding3">Делись с друзьями</string>
+
+    <!-- Home -->
     <string name="All">Все</string>
+
+    <!-- Onboarding -->
+    <string name="Skip">Пропустить</string>
+
+    <!-- Profile -->
+    <string name="Viewed">Просмотрено</string>
+    <string name="Collections">Коллекции</string>
+    <string name="Create_collection">Создать свою коллекцию</string>
 </resources>

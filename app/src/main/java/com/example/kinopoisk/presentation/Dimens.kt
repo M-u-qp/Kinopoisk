@@ -5,9 +5,11 @@ import androidx.compose.ui.unit.sp
 
 object Dimens {
     val LargePadding1 = 47.dp
+    val LargePadding2 = 56.dp
     val MediumPadding1 = 24.dp
     val MediumPadding2 = 26.dp
     val MediumPadding3 = 40.dp
+    val MediumPadding4 = 36.dp
     val SmallPadding1 = 16.dp
     val ExtraSmallPadding1 = 6.dp
     val ExtraSmallPadding2 = 8.dp
@@ -30,9 +32,8 @@ object Dimens {
 
     val MovieCardSizeWidth = 111.dp
     val MovieCardSizeHeight = 156.dp
-
     val MovieCardSearchWidth = 96.dp
     val MovieCardSearchHeight = 132.dp
-
     val MoviePosterHeight = 400.dp
+    val CardCollectionSize = 146.dp
 }

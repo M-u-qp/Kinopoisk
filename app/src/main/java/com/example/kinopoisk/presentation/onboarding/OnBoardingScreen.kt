@@ -63,7 +63,7 @@ fun OnBoardingScreen(
                 color = colorResource(id = R.color.black_text)
             )
             KinopoiskTextButton(
-                text = "Пропустить",
+                text = stringResource(id = R.string.Skip),
                 onClick = {
                     event(OnBoardingEvent.SaveAppEntry)
                 }

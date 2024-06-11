@@ -1,15 +1,14 @@
 package com.example.kinopoisk.domain.usecases.movies
 
-import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.repository.KinopoiskRepository
 
-class UpsertMovie(
+class DeleteMovieById(
     private val kinopoiskRepository: KinopoiskRepository
 ) {
 
-    suspend operator fun invoke(movie: Movie) {
-        kinopoiskRepository.upsertMovie(
-            movie = movie
+    suspend operator fun invoke(id: Int) {
+        kinopoiskRepository.deleteMovieById(
+            id = id
         )
     }
 }

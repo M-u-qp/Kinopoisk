@@ -39,7 +39,18 @@ fun HomeScreen(
     navigateToDetails: (Int) -> Unit
 ) {
     LaunchedEffect(key1 = true) {
-        viewModel.addBookmarkCollection(CollectionDB(id = 0, nameCollection = "Хочу посмотреть", moviesList = emptyList()))
+        viewModel.addBookmarkCollection(
+            CollectionDB(
+                id = 0,
+                nameCollection = "Хочу посмотреть"
+            )
+        )
+        viewModel.addBookmarkCollection(
+            CollectionDB(
+                id = 1,
+                nameCollection = "Понравилось"
+            )
+        )
     }
 
     Column(

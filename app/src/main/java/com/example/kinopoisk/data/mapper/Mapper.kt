@@ -10,6 +10,8 @@ import com.example.kinopoisk.domain.model.Movie
 
 fun MovieResponse.toMovie(): Movie {
     return Movie(
+        id = 0,
+        collectionName = "",
         countries = countries.map { country -> Country(country = country.country) },
         description = description,
         filmLength = filmLength,
@@ -30,6 +32,8 @@ fun MovieResponse.toMovie(): Movie {
 
 fun MovieEntity.toMovie(): Movie {
     return Movie(
+        id = 0,
+        collectionName = "",
         countries = countries.map { country -> Country(country = country.country) },
         description = description,
         filmLength = filmLength,
@@ -50,6 +54,7 @@ fun MovieEntity.toMovie(): Movie {
 
 fun Movie.toMovieEntity(): MovieEntity {
     return MovieEntity(
+        collectionName = collectionName,
         countries = countries.map { country -> Country(country = country.country) },
         description = description.toString(),
         filmLength = filmLength ?: 0,
@@ -70,15 +75,13 @@ fun Movie.toMovieEntity(): MovieEntity {
 
 fun CollectionDB.toCollectionEntity(): CollectionEntity {
     return CollectionEntity(
-        nameCollection = nameCollection,
-        moviesList = moviesList.map { movie -> movie.toMovieEntity() }
+        nameCollection = nameCollection
     )
 }
 
 fun CollectionEntity.toCollectionDB(): CollectionDB {
     return CollectionDB(
         id = id,
-        nameCollection = nameCollection,
-        moviesList = moviesList.map { movieEntity -> movieEntity.toMovie() }
+        nameCollection = nameCollection
     )
 }

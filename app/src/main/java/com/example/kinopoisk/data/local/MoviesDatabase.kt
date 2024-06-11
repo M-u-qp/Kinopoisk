@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.example.kinopoisk.data.local.entity.CollectionEntity
 import com.example.kinopoisk.data.local.entity.MovieEntity
 
-@Database(entities = [MovieEntity::class, CollectionEntity::class], version = 1)
+@Database(entities = [CollectionEntity::class, MovieEntity::class], version = 1)
 @TypeConverters(MoviesTypeConvertor::class)
 abstract class MoviesDatabase : RoomDatabase() {
 

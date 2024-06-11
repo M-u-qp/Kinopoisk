@@ -8,5 +8,5 @@ sealed class DetailsEvent {
 
     data object RemoveSideEffect : DetailsEvent()
 
-    data object LikeMovie: DetailsEvent()
+    data class LikeMovie(val movie: Movie) : DetailsEvent()
 }

@@ -8,6 +8,8 @@ class DeleteMovie(
 ) {
 
     suspend operator fun invoke(movie: Movie) {
-        kinopoiskRepository.deleteMovie(movie)
+        kinopoiskRepository.deleteMovie(
+            movie = movie
+        )
     }
 }

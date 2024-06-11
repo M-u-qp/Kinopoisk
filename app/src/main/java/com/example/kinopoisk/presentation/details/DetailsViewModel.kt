@@ -1,11 +1,13 @@
 package com.example.kinopoisk.presentation.details
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
 import com.example.kinopoisk.domain.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
     private val moviesUseCases: MoviesUseCases,
+    private val collectionsUseCases: CollectionsUseCases
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(DetailsState())
@@ -25,16 +28,43 @@ class DetailsViewModel @Inject constructor(
     var sideEffect by mutableStateOf<String?>(null)
         private set
 
+    init {
+        viewModelScope.launch {
+            getCollection("Хочу посмотреть")
+        }
+    }
+
+    private suspend fun getCollection(collectionName: String) {
+        collectionsUseCases.getCollectionInDB(collectionName).collect {
+            _state.value = _state.value.copy(
+                listMovie = it
+            )
+        }
+    }
+
     fun onEvent(event: DetailsEvent) {
         when (event) {
             is DetailsEvent.UpsertDeleteMovie -> {
                 viewModelScope.launch {
-                    val movie = moviesUseCases.selectMovie(event.movie.kinopoiskId)
-                    if (movie == null) {
-                        upsertMovie(event.movie)
+                    Log.d("TAG", "${state.value.listMovie}")
+                    val movieForDB = event.movie.copy(id = 1, collectionName = "Хочу посмотреть")
+                    if (state.value.listMovie.isEmpty()) {
+                        upsertMovie(movieForDB)
                     } else {
-                        deleteMovie(event.movie)
+                        state.value.listMovie.onEach { movie ->
+                            if (event.movie.kinopoiskId == movie?.kinopoiskId) {
+                                deleteMovie(
+                                    movie.id
+                                )
+                            } else {
+                                val dbIdMovie = state.value.listMovie.last()?.id
+                                upsertMovie(
+                                    movieForDB
+                                )
+                            }
+                        }
                     }
+
                 }
             }
 
@@ -45,8 +75,12 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun deleteMovie(movie: Movie) {
-        moviesUseCases.deleteMovie(movie = movie)
+    private fun changeCollectionName() {
+
+    }
+
+    private suspend fun deleteMovie(id: Int) {
+        moviesUseCases.deleteMovieById(id = id)
         sideEffect = "Фильм удален"
     }
 
@@ -74,6 +108,7 @@ class DetailsViewModel @Inject constructor(
                         error = movie.exception.toString()
                     )
                 }
+
                 else -> Unit
             }
         }

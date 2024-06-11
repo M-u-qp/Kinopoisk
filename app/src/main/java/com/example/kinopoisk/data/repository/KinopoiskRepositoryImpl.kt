@@ -14,7 +14,6 @@ import com.example.kinopoisk.data.remote.CollectionsPagingSource
 import com.example.kinopoisk.data.remote.KinopoiskApi
 import com.example.kinopoisk.data.remote.SearchMoviesPagingSource
 import com.example.kinopoisk.domain.model.CollectionDB
-import com.example.kinopoisk.domain.model.DailyQuota
 import com.example.kinopoisk.domain.model.Film
 import com.example.kinopoisk.domain.model.Item
 import com.example.kinopoisk.domain.model.Movie
@@ -36,13 +35,6 @@ class KinopoiskRepositoryImpl(
             "5" -> "Ошибка сервера"
             else -> "Неизвестная ошибка"
         }
-    }
-
-    override suspend fun getApiCount(): DailyQuota {
-        return kinopoiskApi.checkApiCount(
-            xApiKey = context.getString(R.string.API_KEY),
-            apiKey = context.getString(R.string.API_KEY)
-        ).dailyQuota
     }
 
     override fun getTopPopularAll(): Flow<PagingData<Item>> {
@@ -88,27 +80,27 @@ class KinopoiskRepositoryImpl(
     }
 
     override suspend fun upsertMovie(movie: Movie) {
-        moviesDao.upsert(movie.toMovieEntity())
+        moviesDao.upsert(
+            movie = movie.toMovieEntity()
+        )
     }
 
     override suspend fun deleteMovie(movie: Movie) {
-        moviesDao.delete(movie.toMovieEntity())
+        moviesDao.delete(
+            movie.toMovieEntity()
+        )
     }
 
-    override fun selectMovies(): Flow<List<Movie>> {
-        return moviesDao.getMoviesInDB().map { list -> list.map { movies -> movies.toMovie() } }
-    }
-
-    override suspend fun selectMovie(id: Int): Movie? {
-        return moviesDao.getMovieInDB(id)?.toMovie()
+    override suspend fun deleteMovieById(id: Int) {
+        moviesDao.deleteMovieById(id)
     }
 
     override fun selectCollections(): Flow<List<CollectionDB>> {
         return moviesDao.getCollectionsInDB().map { list -> list.map { collections -> collections.toCollectionDB() } }
     }
 
-    override suspend fun selectCollection(nameCollection: String): CollectionDB? {
-        return moviesDao.getCollectionInDB(nameCollection)?.toCollectionDB()
+    override  fun selectCollection(collectionName: String): Flow<List<Movie?>> {
+        return moviesDao.getCollectionInDB(collectionName).map { list -> list.map { movieEntity -> movieEntity?.toMovie() } }
     }
 
     override suspend fun addCollection(collectionDB: CollectionDB) {

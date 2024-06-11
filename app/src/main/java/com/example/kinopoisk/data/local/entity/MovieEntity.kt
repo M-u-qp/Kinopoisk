@@ -5,13 +5,16 @@ import androidx.room.PrimaryKey
 import com.example.kinopoisk.domain.model.Country
 import com.example.kinopoisk.domain.model.Genre
 
+
 @Entity
 data class MovieEntity(
+    @PrimaryKey var id: Int = 0,
+    val collectionName: String,
     val countries: List<Country>,
     val description: String,
     val filmLength: Int,
     val genres: List<Genre>,
-    @PrimaryKey val kinopoiskId: Int,
+    val kinopoiskId: Int,
     val logoUrl: String,
     val nameEn: String,
     val nameRu: String,

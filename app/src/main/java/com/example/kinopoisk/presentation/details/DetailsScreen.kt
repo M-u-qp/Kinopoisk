@@ -52,7 +52,7 @@ fun DetailsScreen(
                 Box(modifier = Modifier) {
                     MovieDetailsCard(movie = movie)
                     DetailsTopBar(
-                        onLikeClick = { event(DetailsEvent.LikeMovie) },
+                        onLikeClick = { event(DetailsEvent.LikeMovie(movie)) },
                         onBookmarkClick = { event(DetailsEvent.UpsertDeleteMovie(movie)) },
                         onShareClick = {
                             Intent(Intent.ACTION_SEND).also {

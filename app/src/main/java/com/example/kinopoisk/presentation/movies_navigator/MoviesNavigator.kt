@@ -54,7 +54,7 @@ fun MoviesNavigator() {
         when (backstackState?.destination?.route) {
             Route.HomeScreen.route -> 0
             Route.SearchScreen.route -> 1
-            Route.BookmarkScreen.route -> 2
+            Route.ProfileScreen.route -> 2
             else -> 0
         }
     }
@@ -63,7 +63,7 @@ fun MoviesNavigator() {
     val isBottomBarVisible = remember(key1 = backstackState) {
         backstackState?.destination?.route == Route.HomeScreen.route ||
                 backstackState?.destination?.route == Route.SearchScreen.route ||
-                backstackState?.destination?.route == Route.BookmarkScreen.route
+                backstackState?.destination?.route == Route.ProfileScreen.route
     }
 
     Scaffold(
@@ -87,7 +87,7 @@ fun MoviesNavigator() {
 
                             2 -> navigateToTab(
                                 navController = navController,
-                                route = Route.BookmarkScreen.route
+                                route = Route.ProfileScreen.route
                             )
                         }
                     }

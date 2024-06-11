@@ -5,8 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class CollectionEntity(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
-    val nameCollection: String,
-    val moviesList: List<MovieEntity>
+    @PrimaryKey var id: Int = 0,
+    val nameCollection: String
 )

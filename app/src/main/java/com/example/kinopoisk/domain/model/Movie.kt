@@ -2,6 +2,8 @@ package com.example.kinopoisk.domain.model
 
 
 data class Movie(
+    val id: Int,
+    val collectionName: String,
     val countries: List<Country>,
     val description: String?,
     val filmLength: Int?,

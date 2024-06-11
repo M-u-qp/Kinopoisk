@@ -2,7 +2,6 @@ package com.example.kinopoisk.domain.repository
 
 import androidx.paging.PagingData
 import com.example.kinopoisk.domain.model.CollectionDB
-import com.example.kinopoisk.domain.model.DailyQuota
 import com.example.kinopoisk.domain.model.Film
 import com.example.kinopoisk.domain.model.Item
 import com.example.kinopoisk.domain.model.Movie
@@ -10,9 +9,6 @@ import com.example.kinopoisk.domain.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface KinopoiskRepository {
-
-    //Доп
-    suspend fun getApiCount(): DailyQuota
 
     //Получение коллекций
     fun getTopPopularAll(): Flow<PagingData<Item>>
@@ -28,13 +24,11 @@ interface KinopoiskRepository {
 
     suspend fun deleteMovie(movie: Movie)
 
-    fun selectMovies(): Flow<List<Movie>>
-
-    suspend fun selectMovie(id: Int): Movie?
+    suspend fun deleteMovieById(id: Int)
 
     fun selectCollections(): Flow<List<CollectionDB>>
 
-    suspend fun selectCollection(nameCollection: String): CollectionDB?
+     fun selectCollection(collectionName: String): Flow<List<Movie?>>
 
     suspend fun addCollection(collectionDB: CollectionDB)
 

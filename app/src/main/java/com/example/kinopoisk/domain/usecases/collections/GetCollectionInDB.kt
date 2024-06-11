@@ -1,13 +1,14 @@
 package com.example.kinopoisk.domain.usecases.collections
 
-import com.example.kinopoisk.domain.model.CollectionDB
+import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.repository.KinopoiskRepository
+import kotlinx.coroutines.flow.Flow
 
 class GetCollectionInDB(
     private val kinopoiskRepository: KinopoiskRepository
 ) {
 
-    suspend operator fun invoke(nameCollection: String): CollectionDB? {
-        return kinopoiskRepository.selectCollection(nameCollection = nameCollection)
+    suspend operator fun invoke(collectionName: String): Flow<List<Movie?>> {
+        return kinopoiskRepository.selectCollection(collectionName = collectionName)
     }
 }

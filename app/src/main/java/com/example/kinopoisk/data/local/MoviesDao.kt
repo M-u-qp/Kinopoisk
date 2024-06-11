@@ -12,31 +12,24 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MoviesDao {
 
-    //Операции с фильмом
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(movie: MovieEntity)
 
     @Delete
     suspend fun delete(movie: MovieEntity)
 
-    @Query("SELECT * FROM MovieEntity WHERE kinopoiskId=:kinopoiskId")
-    suspend fun getMovieInDB(kinopoiskId: Int): MovieEntity?
+    @Query("DELETE FROM MovieEntity WHERE id=:id")
+    suspend fun deleteMovieById(id: Int)
 
-    //Операции с коллекциями
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCollection(collectionEntity: CollectionEntity)
 
     @Delete
     suspend fun deleteCollection(collectionEntity: CollectionEntity)
 
-    @Query("SELECT * FROM MovieEntity")
-    fun getMoviesInDB(): Flow<List<MovieEntity>>
-
     @Query("SELECT * FROM CollectionEntity")
     fun getCollectionsInDB(): Flow<List<CollectionEntity>>
 
-    @Query("SELECT * FROM CollectionEntity WHERE nameCollection=:nameCollection")
-    suspend fun getCollectionInDB(nameCollection: String): CollectionEntity?
+    @Query("SELECT * FROM MovieEntity WHERE collectionName=:collectionName")
+    fun getCollectionInDB(collectionName: String): Flow<List<MovieEntity?>>
 }

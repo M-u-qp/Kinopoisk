@@ -32,4 +32,7 @@ interface MoviesDao {
 
     @Query("SELECT * FROM MovieEntity WHERE collectionName=:collectionName")
     fun getCollectionInDB(collectionName: String): Flow<List<MovieEntity?>>
+
+    @Query("SELECT * FROM MovieEntity")
+    fun getAllMoviesInDB(): Flow<List<MovieEntity?>>
 }

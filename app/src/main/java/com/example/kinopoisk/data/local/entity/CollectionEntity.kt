@@ -5,6 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class CollectionEntity(
-    @PrimaryKey var id: Int = 0,
-    val nameCollection: String
+    @PrimaryKey(autoGenerate = true) var id: Int = 0,
+    var nameCollection: String = ""
 )

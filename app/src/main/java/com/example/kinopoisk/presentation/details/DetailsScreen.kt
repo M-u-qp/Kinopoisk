@@ -20,11 +20,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kinopoisk.R
+import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding3
+import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import com.example.kinopoisk.presentation.details.components.DetailsTopBar
 import com.example.kinopoisk.presentation.details.components.MovieDetailsCard
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 fun DetailsScreen(
@@ -34,13 +38,19 @@ fun DetailsScreen(
     navigateUp: () -> Unit
 ) {
 
-    LaunchedEffect(key1 = true) {
-        viewModel.getMovie(movieId)
-    }
-
     val context = LocalContext.current
     val state = viewModel.state.collectAsState().value
 
+    LaunchedEffect(key1 = true) {
+        withContext(Dispatchers.IO) {
+            viewModel.getMovie(movieId)
+        }
+    }
+    LaunchedEffect(key1 = true) {
+        withContext(Dispatchers.IO){
+            viewModel.getAllMoviesInDB()
+        }
+    }
 
     LazyColumn(
         modifier = Modifier

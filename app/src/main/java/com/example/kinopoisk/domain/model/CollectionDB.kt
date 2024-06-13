@@ -1,6 +1,6 @@
 package com.example.kinopoisk.domain.model
 
 data class CollectionDB(
-    val id: Int,
+    var id: Int = 0,
     val nameCollection: String
 )

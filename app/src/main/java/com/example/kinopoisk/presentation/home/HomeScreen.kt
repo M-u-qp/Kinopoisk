@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -28,8 +29,11 @@ import com.example.kinopoisk.presentation.Dimens.LargePadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.SmallFontSize1
-import com.example.kinopoisk.presentation.common.TitleCollectionsEnum
+import com.example.kinopoisk.presentation.common.TitleCollections
+import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import com.example.kinopoisk.presentation.home.components.MoviesListCollection
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 fun HomeScreen(
@@ -38,19 +42,28 @@ fun HomeScreen(
     navigateToSearch: () -> Unit,
     navigateToDetails: (Int) -> Unit
 ) {
-    LaunchedEffect(key1 = true) {
-        viewModel.addBookmarkCollection(
-            CollectionDB(
-                id = 0,
-                nameCollection = "Хочу посмотреть"
-            )
-        )
-        viewModel.addBookmarkCollection(
-            CollectionDB(
-                id = 1,
-                nameCollection = "Понравилось"
-            )
-        )
+
+    val state = viewModel.state.collectAsState().value
+    val collectionsToAdd = listOf(
+        CollectionDB(nameCollection = TitleCollectionsDB.READY_TO_VIEW.value),
+        CollectionDB(nameCollection =  TitleCollectionsDB.LIKE.value)
+    )
+    for (collectionToAdd in collectionsToAdd) {
+        if (state.listCollections.isEmpty()) {
+            LaunchedEffect(true) {
+                withContext(Dispatchers.IO) {
+                    viewModel.addBookmarkCollection(collectionToAdd)
+                }
+            }
+        } else {
+            if (!state.listCollections.any { collectionDB -> collectionDB.nameCollection == collectionToAdd.nameCollection }) {
+                LaunchedEffect(true) {
+                    withContext(Dispatchers.IO) {
+                        viewModel.addBookmarkCollection(collectionToAdd)
+                    }
+                }
+            }
+        }
     }
 
     Column(
@@ -92,7 +105,7 @@ fun HomeScreen(
                 style = MaterialTheme.typography.displaySmall.copy(
                     fontWeight = FontWeight.Bold
                 ),
-                text = TitleCollectionsEnum.TOP_POPULAR_ALL.value,
+                text = TitleCollections.TOP_POPULAR_ALL.value,
                 color = colorResource(id = R.color.black_text)
             )
             Text(

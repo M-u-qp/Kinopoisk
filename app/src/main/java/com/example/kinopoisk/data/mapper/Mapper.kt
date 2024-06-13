@@ -32,8 +32,8 @@ fun MovieResponse.toMovie(): Movie {
 
 fun MovieEntity.toMovie(): Movie {
     return Movie(
-        id = 0,
-        collectionName = "",
+        id = id,
+        collectionName = collectionName,
         countries = countries.map { country -> Country(country = country.country) },
         description = description,
         filmLength = filmLength,
@@ -54,6 +54,7 @@ fun MovieEntity.toMovie(): Movie {
 
 fun Movie.toMovieEntity(): MovieEntity {
     return MovieEntity(
+        id = id,
         collectionName = collectionName,
         countries = countries.map { country -> Country(country = country.country) },
         description = description.toString(),
@@ -75,6 +76,7 @@ fun Movie.toMovieEntity(): MovieEntity {
 
 fun CollectionDB.toCollectionEntity(): CollectionEntity {
     return CollectionEntity(
+        id = id,
         nameCollection = nameCollection
     )
 }

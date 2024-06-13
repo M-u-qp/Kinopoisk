@@ -8,8 +8,8 @@ import com.example.kinopoisk.domain.model.Genre
 
 @Entity
 data class MovieEntity(
-    @PrimaryKey var id: Int = 0,
-    val collectionName: String,
+    @PrimaryKey(autoGenerate = true) var id: Int,
+    var collectionName: String,
     val countries: List<Country>,
     val description: String,
     val filmLength: Int,

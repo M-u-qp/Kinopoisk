@@ -28,6 +28,7 @@ fun DetailsTopBar(
     onBookmarkClick: () -> Unit,
     onShareClick: () -> Unit,
     onBrowsingClick: () -> Unit,
+    onDotsClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
 
@@ -93,7 +94,7 @@ fun DetailsTopBar(
                         tint = colorResource(id = R.color.body_icon)
                     )
                 }
-                IconButton(onClick = {}) {
+                IconButton(onClick = onDotsClick) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_dots),
                         contentDescription = null,

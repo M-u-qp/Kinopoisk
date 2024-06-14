@@ -30,10 +30,14 @@ object Dimens {
     val SmallFontSize2 = 12.sp
     val ExtraSmallFontSize1 = 6.sp
 
+    val DialogHeight = 200.dp
+
     val MovieCardSizeWidth = 111.dp
     val MovieCardSizeHeight = 156.dp
     val MovieCardSearchWidth = 96.dp
     val MovieCardSearchHeight = 132.dp
     val MoviePosterHeight = 400.dp
     val CardCollectionSize = 146.dp
+
+    val MediumRoundedCornerShape1 = 16.dp
 }

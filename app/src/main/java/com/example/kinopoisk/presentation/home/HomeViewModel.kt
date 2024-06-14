@@ -21,17 +21,17 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getAllCollection()
+            getAllCollectionInDB()
         }
     }
 
-    private suspend fun getAllCollection() {
+    private suspend fun getAllCollectionInDB() {
         collectionsUseCases.getCollectionsInDB().collect { listCollections ->
             _state.value = _state.value.copy(listCollections = listCollections)
         }
     }
 
-    suspend fun addBookmarkCollection(collectionDB: CollectionDB) {
+    suspend fun addCollectionInDB(collectionDB: CollectionDB) {
         collectionsUseCases.addCollection(collectionDB)
     }
 

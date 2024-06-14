@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
@@ -29,29 +30,29 @@ class DetailsViewModel @Inject constructor(
         private set
 
     init {
-//        viewModelScope.launch {
-//            getAllMoviesInDB()
-//        }
+        viewModelScope.launch {
+            getAllCollection()
+        }
 
     }
 
-//    suspend fun addBookmarkCollection(collectionDB: CollectionDB) {
-//        collectionsUseCases.addCollection(collectionDB)
-//    }
+    suspend fun addCollectionInDB(collectionDB: CollectionDB) {
+        collectionsUseCases.addCollection(collectionDB)
+    }
 
-//     suspend fun getAllCollection() {
-//        collectionsUseCases.getCollectionsInDB().collect{
-//            _state.value = _state.value.copy(
-//                listCollections = it
-//            )
-//        }
-//    }
-
-    private suspend fun getCollection(collectionName: String) {
-        collectionsUseCases.getCollectionInDB(collectionName).collect {
-            _state.value = _state.value.copy(listMovie = it)
+    private suspend fun getAllCollection() {
+        collectionsUseCases.getCollectionsInDB().collect {
+            _state.value = _state.value.copy(
+                listCollections = it
+            )
         }
     }
+
+//    private suspend fun getCollection(collectionName: String) {
+//        collectionsUseCases.getCollectionInDB(collectionName).collect {
+//            _state.value = _state.value.copy(listMovie = it)
+//        }
+//    }
 
     suspend fun getAllMoviesInDB() {
         moviesUseCases.getAllMoviesInDB().collect {
@@ -62,12 +63,28 @@ class DetailsViewModel @Inject constructor(
 
     fun onEvent(event: DetailsEvent) {
         when (event) {
-            is DetailsEvent.UpsertDeleteMovie -> {
+            //Клик по иконке Закладка ( добавить/удалить фильм из Хочу посмотреть )
+            is DetailsEvent.ReadyToViewMovie -> {
                 addDeleteMovieInDB(event.movie, TitleCollectionsDB.READY_TO_VIEW.value)
             }
 
-            is DetailsEvent.LikeMovie -> {
-                addDeleteMovieInDB(event.movie, TitleCollectionsDB.LIKE.value)
+            //Клик по иконке Лайк ( добавить/удалить фильм из Понравилось )
+            is DetailsEvent.FavoriteMovie -> {
+                addDeleteMovieInDB(event.movie, TitleCollectionsDB.FAVORITE.value)
+            }
+
+            //Клик по иконке Троеточие ( выбор своей коллекции из списка в диалоге )
+            is DetailsEvent.AddMovieInCollection -> {
+                val selectedCollection = state.value.selectedCollection
+                if (selectedCollection.isNotEmpty()) {
+                    addDeleteMovieInDB(event.movie, selectedCollection)
+                    _state.value = _state.value.copy(
+                        selectedCollection = "",
+                        showDialogForCollections = false
+                    )
+                } else {
+                    _state.value = _state.value.copy(showDialogForCollections = true)
+                }
             }
 
             is DetailsEvent.RemoveSideEffect -> {
@@ -96,8 +113,12 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    private fun changeCollectionName() {
+    fun updateShowDialog(isVisible: Boolean) {
+        _state.value = _state.value.copy(showDialogForCollections = isVisible)
+    }
 
+    fun updateSelectedCollection(selectedCollection: String) {
+        _state.value = _state.value.copy(selectedCollection = selectedCollection)
     }
 
     private suspend fun deleteMovie(id: Int) {

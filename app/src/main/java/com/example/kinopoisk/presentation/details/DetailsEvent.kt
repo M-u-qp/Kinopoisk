@@ -4,9 +4,11 @@ import com.example.kinopoisk.domain.model.Movie
 
 sealed class DetailsEvent {
 
-    data class UpsertDeleteMovie(val movie: Movie): DetailsEvent()
+    data class ReadyToViewMovie(val movie: Movie): DetailsEvent()
 
     data object RemoveSideEffect : DetailsEvent()
 
-    data class LikeMovie(val movie: Movie) : DetailsEvent()
+    data class FavoriteMovie(val movie: Movie) : DetailsEvent()
+
+    data class AddMovieInCollection(val movie: Movie) : DetailsEvent()
 }

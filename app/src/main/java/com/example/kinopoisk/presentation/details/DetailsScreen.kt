@@ -13,6 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -20,12 +22,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kinopoisk.R
-import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding3
-import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import com.example.kinopoisk.presentation.details.components.DetailsTopBar
+import com.example.kinopoisk.presentation.details.components.DialogCollections
 import com.example.kinopoisk.presentation.details.components.MovieDetailsCard
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -47,7 +48,7 @@ fun DetailsScreen(
         }
     }
     LaunchedEffect(key1 = true) {
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             viewModel.getAllMoviesInDB()
         }
     }
@@ -62,8 +63,8 @@ fun DetailsScreen(
                 Box(modifier = Modifier) {
                     MovieDetailsCard(movie = movie)
                     DetailsTopBar(
-                        onLikeClick = { event(DetailsEvent.LikeMovie(movie)) },
-                        onBookmarkClick = { event(DetailsEvent.UpsertDeleteMovie(movie)) },
+                        onLikeClick = { event(DetailsEvent.FavoriteMovie(movie)) },
+                        onBookmarkClick = { event(DetailsEvent.ReadyToViewMovie(movie)) },
                         onShareClick = {
                             Intent(Intent.ACTION_SEND).also {
                                 it.putExtra(Intent.EXTRA_TEXT, movie.webUrl)
@@ -81,6 +82,7 @@ fun DetailsScreen(
                                 }
                             }
                         },
+                        onDotsClick = { event(DetailsEvent.AddMovieInCollection(movie)) },
                         onBackClick = navigateUp
                     )
                 }
@@ -89,6 +91,12 @@ fun DetailsScreen(
                         .padding(top = MediumPadding3)
                         .padding(horizontal = MediumPadding2)
                 ) {
+
+                    //Диалог со списком моих коллекций
+                    if (state.showDialogForCollections) {
+                        DialogCollections(state = state, event = event)
+                    }
+
                     Text(
                         text = movie.shortDescription ?: "",
                         style = MaterialTheme.typography.bodyMedium.copy(

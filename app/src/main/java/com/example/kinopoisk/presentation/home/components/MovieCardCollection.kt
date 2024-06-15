@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
@@ -55,24 +56,28 @@ fun MovieCardCollection(
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
-            Box(
-                modifier = modifier
-                    .size(RatingMovieWidth, RatingMovieHeight)
-                    .padding(ExtraSmallPadding1)
-                    .background(
-                        MaterialTheme.colorScheme.primary,
-                        shape = ShapeDefaults.ExtraSmall
+            if (item.ratingKinopoisk != 0.0) {
+                Box(
+                    modifier = modifier
+                        .padding(top = ExtraSmallPadding1, end = ExtraSmallPadding1)
+                        .size(width = RatingMovieWidth, height = RatingMovieHeight)
+                        .background(
+                            MaterialTheme.colorScheme.primary,
+                            shape = ShapeDefaults.Medium
+                        )
+                        .align(Alignment.TopEnd),
+                    contentAlignment = Alignment.Center
+                ) {
+                    //Рейтинг Кинопоиск
+                    Text(
+                        text = (item.ratingKinopoisk).toString(),
+                        color = colorResource(id = R.color.white),
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontSize = ExtraSmallFontSize1,
+                            fontWeight = FontWeight.Medium
+                        )
                     )
-                    .align(Alignment.TopEnd),
-                contentAlignment = Alignment.Center
-            ) {
-                //Рейтинг Кинопоиск
-                Text(
-                    text = (item.ratingKinopoisk).toString(),
-                    color = colorResource(id = R.color.white),
-                    fontSize = ExtraSmallFontSize1,
-                    fontWeight = FontWeight.Medium
-                )
+                }
             }
         }
         //Название фильма

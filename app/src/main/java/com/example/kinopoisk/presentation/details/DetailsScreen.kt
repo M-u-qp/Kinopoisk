@@ -13,8 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -26,7 +24,7 @@ import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding3
 import com.example.kinopoisk.presentation.details.components.DetailsTopBar
-import com.example.kinopoisk.presentation.details.components.DialogCollections
+import com.example.kinopoisk.presentation.details.components.DialogAddMovieInCollections
 import com.example.kinopoisk.presentation.details.components.MovieDetailsCard
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -94,7 +92,7 @@ fun DetailsScreen(
 
                     //Диалог со списком моих коллекций
                     if (state.showDialogForCollections) {
-                        DialogCollections(state = state, event = event)
+                        DialogAddMovieInCollections(state = state, event = event)
                     }
 
                     Text(

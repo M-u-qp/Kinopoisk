@@ -10,37 +10,42 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kinopoisk.R
+import com.example.kinopoisk.domain.model.CollectionDB
+import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.LargePadding2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding4
+import com.example.kinopoisk.presentation.Dimens.SmallFontSize1
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
+import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import com.example.kinopoisk.presentation.profile.components.CollectionCard
+import com.example.kinopoisk.presentation.profile.components.DialogCreateCollection
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileScreen(
     state: ProfileState,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
-
-    LaunchedEffect(key1 = true) {
-        viewModel.getBookmarkCollection("Хочу посмотреть")
-    }
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -63,13 +68,27 @@ fun ProfileScreen(
                 ),
                 color = colorResource(id = R.color.black_text)
             )
-            Row {
-                Text(text = "10")
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_open_list),
-                    contentDescription = null
-                )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "10",
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontSize = SmallFontSize1,
+                        fontWeight = FontWeight.Medium
+                    ),
+                    color = MaterialTheme.colorScheme.primary)
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        modifier = Modifier.scale(1.5f),
+                        painter = painterResource(id = R.drawable.ic_open_list),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+
             }
+        }
+
             LazyRow(
                 modifier = Modifier
                     .padding(top = MediumPadding1)
@@ -89,11 +108,18 @@ fun ProfileScreen(
             )
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = SmallPadding1),
+                    .padding(vertical = SmallPadding1)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(painter = painterResource(id = R.drawable.ic_add), contentDescription = null)
+                IconButton(onClick = { viewModel.updateShowDialog(true) }) {
+                    Icon(
+                        modifier = Modifier.scale(1.5f),
+                        painter = painterResource(
+                            id = R.drawable.ic_add),
+                        contentDescription = null
+                    )
+                }
                 Text(
                     modifier = Modifier.padding(start = SmallPadding1),
                     text = stringResource(id = R.string.Create_collection),
@@ -103,11 +129,59 @@ fun ProfileScreen(
                     color = colorResource(id = R.color.black_text)
                 )
             }
-            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
-                items(state.allCollections.size) { item ->
-//CollectionCard(icon =, nameCollection = , sizeCollection = )
+
+        if (state.showDialogForCreateCollection){
+            DialogCreateCollection()
+        }
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(Dimens.ExtraSmallPadding2)
+        ) {
+            items(state.allCollections) { item ->
+                val sizeCollection = state.sizeAnyCollection[item.nameCollection]?.size ?: 0
+                when(item.nameCollection) {
+                    TitleCollectionsDB.READY_TO_VIEW.value -> {
+                        LaunchedEffect(key1 = true) {
+                            viewModel.getCollection(item.nameCollection)
+                        }
+                        CollectionCard(
+                            icon = R.drawable.ic_bookmark_border,
+                            nameCollection = item.nameCollection,
+                            sizeCollection = sizeCollection,
+                            onClickDelete = {}
+                        )
+                    }
+                    TitleCollectionsDB.FAVORITE.value -> {
+                        LaunchedEffect(key1 = true) {
+                            viewModel.getCollection(item.nameCollection)
+                        }
+                        CollectionCard(
+                            icon = R.drawable.ic_like_border,
+                            nameCollection = item.nameCollection,
+                            sizeCollection = sizeCollection,
+                            onClickDelete = {}
+                        )
+                    }
+                    else -> {
+                        LaunchedEffect(key1 = true) {
+                            viewModel.getCollection(item.nameCollection)
+                        }
+                        CollectionCard(
+                            icon = R.drawable.ic_profile_nav,
+                            nameCollection = item.nameCollection,
+                            sizeCollection = sizeCollection,
+                            onClickDelete = {
+                                scope.launch{
+                                    viewModel.deleteCollection(collectionName = item.nameCollection,
+                                        collectionDB = CollectionDB(item.id,item.nameCollection)
+                                    )
+                                }
+                            }
+                        )
+                    }
                 }
             }
         }
     }
+
 }

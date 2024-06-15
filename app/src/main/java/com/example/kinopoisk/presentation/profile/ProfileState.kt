@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.flowOf
 
 data class ProfileState(
     val allCollections: List<CollectionDB> = emptyList(),
-    val bookmarkCollection: Flow<List<Movie?>> = flowOf(emptyList()),
-    val favoriteCollection: CollectionDB? = null,
+    val anyCollection: List<Movie?> = emptyList(),
+    val sizeAnyCollection: Map<String, List<Movie?>> = mutableMapOf(),
+    var showDialogForCreateCollection: Boolean = false
 )

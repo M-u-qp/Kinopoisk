@@ -28,9 +28,9 @@ fun MoviesListCollection(
             horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
             contentPadding = PaddingValues(all = ExtraSmallPadding3)
         ) {
-            items(count = movies.itemCount){ index ->
+            items(count = movies.itemCount) { index ->
                 movies[index]?.let {
-                    MovieCardCollection(item = it, onClick = {onClick(it.kinopoiskId)})
+                    MovieCardCollection(item = it, onClick = { onClick(it.kinopoiskId) })
                 }
             }
         }

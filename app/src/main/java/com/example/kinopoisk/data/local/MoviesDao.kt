@@ -27,6 +27,9 @@ interface MoviesDao {
     @Delete
     suspend fun deleteCollection(collectionEntity: CollectionEntity)
 
+    @Query("DELETE FROM MovieEntity WHERE collectionName=:collectionName")
+    suspend fun deleteCollectionMovies(collectionName: String)
+
     @Query("SELECT * FROM CollectionEntity")
     fun getCollectionsInDB(): Flow<List<CollectionEntity>>
 

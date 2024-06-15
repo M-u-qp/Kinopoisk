@@ -114,5 +114,9 @@ class KinopoiskRepositoryImpl(
     override fun getAllMoviesInDB(): Flow<List<Movie?>> {
         return moviesDao.getAllMoviesInDB().map { listMovies -> listMovies.map { it?.toMovie() } }
     }
+
+    override suspend fun deleteCollectionMovies(collectionName: String) {
+        moviesDao.deleteCollectionMovies(collectionName)
+    }
 }
 

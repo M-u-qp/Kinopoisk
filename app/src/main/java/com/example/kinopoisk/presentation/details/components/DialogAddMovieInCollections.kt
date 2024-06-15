@@ -30,7 +30,7 @@ import com.example.kinopoisk.presentation.details.DetailsState
 import com.example.kinopoisk.presentation.details.DetailsViewModel
 
 @Composable
-fun DialogCollections(
+fun DialogAddMovieInCollections(
     state: DetailsState,
     event: (DetailsEvent) -> Unit
 ) {
@@ -44,10 +44,10 @@ fun DialogCollections(
     }) {
         Card(
             modifier = Modifier
+                .padding(MediumPadding2)
                 .alpha(0.9f)
                 .fillMaxWidth()
-                .height(DialogHeight)
-                .padding(MediumPadding2),
+                .height(DialogHeight),
             shape = RoundedCornerShape(MediumRoundedCornerShape1),
         ) {
             LazyColumn(

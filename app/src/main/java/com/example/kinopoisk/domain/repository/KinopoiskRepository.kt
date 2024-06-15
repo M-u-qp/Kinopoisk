@@ -35,4 +35,6 @@ interface KinopoiskRepository {
     suspend fun deleteCollection(collectionDB: CollectionDB)
 
     fun getAllMoviesInDB(): Flow<List<Movie?>>
+
+    suspend fun deleteCollectionMovies(collectionName: String)
 }

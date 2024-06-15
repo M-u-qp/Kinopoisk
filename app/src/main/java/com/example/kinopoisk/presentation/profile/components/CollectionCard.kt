@@ -45,10 +45,9 @@ fun CollectionCard(
     onClickDelete: () -> Unit
 ) {
 
-    val isShowDeleteCollection = remember { mutableStateOf(true) }
-//    if (nameCollection != TitleCollectionsDB.READY_TO_VIEW.value || nameCollection != TitleCollectionsDB.FAVORITE.value) {
-//        isShowDeleteCollection.value = false
-//    }
+    val showIconDeleteCollection = TitleCollectionsDB.entries.any { it.value == nameCollection }
+    val stateShowIconDeleteCollection = remember { mutableStateOf( showIconDeleteCollection) }
+
     Card(
         modifier = Modifier
             .size(CardCollectionSize),
@@ -59,7 +58,7 @@ fun CollectionCard(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            if (isShowDeleteCollection.value) {
+            if (!stateShowIconDeleteCollection.value) {
                 IconButton(
                     modifier = Modifier
                         .padding(top = ExtraSmallPadding5, end = ExtraSmallPadding5)

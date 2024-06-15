@@ -12,4 +12,5 @@
     <string name="Collections">Коллекции</string>
     <string name="Create_collection">Создать свою коллекцию</string>
     <string name="Create">Создать</string>
+    <string name="Enter_name_your_collection">Введи название своей коллекции</string>
 </resources>

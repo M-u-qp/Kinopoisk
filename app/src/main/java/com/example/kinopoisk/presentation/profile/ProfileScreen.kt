@@ -7,10 +7,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.CollectionDB
-import com.example.kinopoisk.presentation.Dimens
+import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
 import com.example.kinopoisk.presentation.Dimens.LargePadding2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
@@ -51,7 +52,6 @@ fun ProfileScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = MediumPadding2, top = LargePadding2)
-            .navigationBarsPadding()
     ) {
 
         Row(
@@ -71,12 +71,14 @@ fun ProfileScreen(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "10",
+                Text(
+                    text = "10",
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontSize = SmallFontSize1,
                         fontWeight = FontWeight.Medium
                     ),
-                    color = MaterialTheme.colorScheme.primary)
+                    color = MaterialTheme.colorScheme.primary
+                )
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         modifier = Modifier.scale(1.5f),
@@ -89,57 +91,60 @@ fun ProfileScreen(
             }
         }
 
-            LazyRow(
-                modifier = Modifier
-                    .padding(top = MediumPadding1)
-            ) {
+        LazyRow(
+            modifier = Modifier
+                .padding(top = MediumPadding1)
+        ) {
 
+        }
+
+        Spacer(modifier = Modifier.height(MediumPadding4))
+
+        Text(
+            modifier = Modifier,
+            text = stringResource(id = R.string.Collections),
+            style = MaterialTheme.typography.displaySmall.copy(
+                fontWeight = FontWeight.Bold
+            ),
+            color = colorResource(id = R.color.black_text)
+        )
+        Row(
+            modifier = Modifier
+                .padding(vertical = SmallPadding1)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = { viewModel.updateShowDialog(true) }) {
+                Icon(
+                    modifier = Modifier.scale(1.5f),
+                    painter = painterResource(
+                        id = R.drawable.ic_add
+                    ),
+                    contentDescription = null
+                )
             }
-
-            Spacer(modifier = Modifier.height(MediumPadding4))
-
             Text(
-                modifier = Modifier,
-                text = stringResource(id = R.string.Collections),
-                style = MaterialTheme.typography.displaySmall.copy(
-                    fontWeight = FontWeight.Bold
+                modifier = Modifier.padding(start = SmallPadding1),
+                text = stringResource(id = R.string.Create_collection),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Medium
                 ),
                 color = colorResource(id = R.color.black_text)
             )
-            Row(
-                modifier = Modifier
-                    .padding(vertical = SmallPadding1)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = { viewModel.updateShowDialog(true) }) {
-                    Icon(
-                        modifier = Modifier.scale(1.5f),
-                        painter = painterResource(
-                            id = R.drawable.ic_add),
-                        contentDescription = null
-                    )
-                }
-                Text(
-                    modifier = Modifier.padding(start = SmallPadding1),
-                    text = stringResource(id = R.string.Create_collection),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Medium
-                    ),
-                    color = colorResource(id = R.color.black_text)
-                )
-            }
-
-        if (state.showDialogForCreateCollection){
-            DialogCreateCollection()
         }
 
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(Dimens.ExtraSmallPadding2)
-        ) {
+        if (state.showDialogForCreateCollection) {
+            DialogCreateCollection()
+        }
+LazyVerticalGrid(
+    modifier = Modifier.padding(end = MediumPadding2),
+    columns = GridCells.Fixed(2),
+    horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
+    verticalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
+    ) {
             items(state.allCollections) { item ->
                 val sizeCollection = state.sizeAnyCollection[item.nameCollection]?.size ?: 0
-                when(item.nameCollection) {
+                when (item.nameCollection) {
                     TitleCollectionsDB.READY_TO_VIEW.value -> {
                         LaunchedEffect(key1 = true) {
                             viewModel.getCollection(item.nameCollection)
@@ -151,6 +156,7 @@ fun ProfileScreen(
                             onClickDelete = {}
                         )
                     }
+
                     TitleCollectionsDB.FAVORITE.value -> {
                         LaunchedEffect(key1 = true) {
                             viewModel.getCollection(item.nameCollection)
@@ -162,6 +168,7 @@ fun ProfileScreen(
                             onClickDelete = {}
                         )
                     }
+
                     else -> {
                         LaunchedEffect(key1 = true) {
                             viewModel.getCollection(item.nameCollection)
@@ -171,9 +178,10 @@ fun ProfileScreen(
                             nameCollection = item.nameCollection,
                             sizeCollection = sizeCollection,
                             onClickDelete = {
-                                scope.launch{
-                                    viewModel.deleteCollection(collectionName = item.nameCollection,
-                                        collectionDB = CollectionDB(item.id,item.nameCollection)
+                                scope.launch {
+                                    viewModel.deleteCollection(
+                                        collectionName = item.nameCollection,
+                                        collectionDB = CollectionDB(item.id, item.nameCollection)
                                     )
                                 }
                             }

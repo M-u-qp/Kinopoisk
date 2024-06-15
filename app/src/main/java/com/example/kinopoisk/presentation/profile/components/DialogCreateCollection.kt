@@ -17,6 +17,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.window.Dialog
@@ -50,14 +51,22 @@ fun DialogCreateCollection() {
         ) {
             Column(
                 modifier = Modifier
-                    .padding(horizontal = MediumPadding2),
+                    .padding(MediumPadding2),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 OutlinedTextField(
                     value = collectionName.value,
                     onValueChange = { collectionName.value = it },
-                    label = {}
+                    label = {
+                        Text(
+                            text = stringResource(id = R.string.Enter_name_your_collection),
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                color = colorResource(id = R.color.gray_text)
+                            )
+                        )
+                    },
+                    maxLines = 1
                 )
                 Button(
                     modifier = Modifier.padding(top = SmallPadding1),

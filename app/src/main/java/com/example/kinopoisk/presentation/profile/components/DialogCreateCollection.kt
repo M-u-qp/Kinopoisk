@@ -28,6 +28,7 @@ import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.MediumRoundedCornerShape1
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
+import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import com.example.kinopoisk.presentation.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 
@@ -70,9 +71,12 @@ fun DialogCreateCollection() {
                 )
                 Button(
                     modifier = Modifier.padding(top = SmallPadding1),
-                    enabled = collectionName.value.isNotEmpty(),
+                    enabled = collectionName.value.isNotEmpty() &&
+                            !(TitleCollectionsDB.entries.any { it.value == collectionName.value }),
                     onClick = {
-                        if (collectionName.value.isNotEmpty()) {
+                        if (collectionName.value.isNotEmpty() &&
+                            !(TitleCollectionsDB.entries.any { it.value == collectionName.value })
+                        ) {
                             scope.launch {
                                 viewModel.addCollectionInDB(CollectionDB(nameCollection = collectionName.value))
                             }

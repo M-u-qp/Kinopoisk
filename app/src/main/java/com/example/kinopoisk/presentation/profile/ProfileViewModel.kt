@@ -43,7 +43,7 @@ class ProfileViewModel @Inject constructor(
     suspend fun getCollection(nameCollection: String) {
         collectionsUseCases.getCollectionInDB(nameCollection).collect {
             _state.value = _state.value.copy(
-                sizeAnyCollection = _state.value.sizeAnyCollection.toMutableMap()
+                listCollectionsAndSize = _state.value.listCollectionsAndSize.toMutableMap()
                     .apply { put(nameCollection, it) })
         }
     }

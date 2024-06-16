@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -39,14 +40,18 @@ import com.example.kinopoisk.presentation.Dimens.SmallPadding1
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import com.example.kinopoisk.presentation.profile.components.CollectionCard
 import com.example.kinopoisk.presentation.profile.components.DialogCreateCollection
+import com.example.kinopoisk.presentation.profile.components.MovieCardProfile
 import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileScreen(
     state: ProfileState,
-    viewModel: ProfileViewModel = hiltViewModel()
+    viewModel: ProfileViewModel = hiltViewModel(),
+    navigateToDetails: (Int) -> Unit
 ) {
     val scope = rememberCoroutineScope()
+    val sizeViewedCollection =
+        state.listCollectionsAndSize[TitleCollectionsDB.VIEWED.value]?.size ?: 0
 
     Column(
         modifier = Modifier
@@ -72,7 +77,7 @@ fun ProfileScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "10",
+                    text = (sizeViewedCollection).toString(),
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontSize = SmallFontSize1,
                         fontWeight = FontWeight.Medium
@@ -93,9 +98,21 @@ fun ProfileScreen(
 
         LazyRow(
             modifier = Modifier
-                .padding(top = MediumPadding1)
+                .padding(top = MediumPadding1),
+            horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
         ) {
-
+            if (sizeViewedCollection != 0) {
+                state.listCollectionsAndSize[TitleCollectionsDB.VIEWED.value]?.let { collection ->
+                    items(collection) {
+                        it?.let { movie ->
+                            MovieCardProfile(
+                                movie = movie,
+                                onClick = { navigateToDetails(movie.kinopoiskId) }
+                            )
+                        }
+                    }
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(MediumPadding4))
@@ -136,14 +153,14 @@ fun ProfileScreen(
         if (state.showDialogForCreateCollection) {
             DialogCreateCollection()
         }
-LazyVerticalGrid(
-    modifier = Modifier.padding(end = MediumPadding2),
-    columns = GridCells.Fixed(2),
-    horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
-    verticalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
-    ) {
+        LazyVerticalGrid(
+            modifier = Modifier.padding(end = MediumPadding2),
+            columns = GridCells.Fixed(2),
+            horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
+            verticalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
+        ) {
             items(state.allCollections) { item ->
-                val sizeCollection = state.sizeAnyCollection[item.nameCollection]?.size ?: 0
+                val sizeCollection = state.listCollectionsAndSize[item.nameCollection]?.size ?: 0
                 when (item.nameCollection) {
                     TitleCollectionsDB.READY_TO_VIEW.value -> {
                         LaunchedEffect(key1 = true) {

@@ -9,5 +9,6 @@ enum class TitleCollections(val value: String) {
 
 enum class TitleCollectionsDB(val value: String) {
     READY_TO_VIEW("Хочу посмотреть"),
-    FAVORITE("Понравилось")
+    FAVORITE("Понравилось"),
+    VIEWED("Просмотрено")
 }

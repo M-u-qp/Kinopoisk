@@ -11,4 +11,6 @@ sealed class DetailsEvent {
     data class FavoriteMovie(val movie: Movie) : DetailsEvent()
 
     data class AddMovieInCollection(val movie: Movie) : DetailsEvent()
+
+    data class AutoAddMovieInViewed(val movie: Movie) : DetailsEvent()
 }

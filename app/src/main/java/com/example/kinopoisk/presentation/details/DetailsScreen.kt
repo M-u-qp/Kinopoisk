@@ -40,15 +40,21 @@ fun DetailsScreen(
     val context = LocalContext.current
     val state = viewModel.state.collectAsState().value
 
+    //Получить фильм с сети по кинопоиск айди
     LaunchedEffect(key1 = true) {
         withContext(Dispatchers.IO) {
             viewModel.getMovie(movieId)
         }
     }
+    //Получить все фильмы из базы
     LaunchedEffect(key1 = true) {
         withContext(Dispatchers.IO) {
             viewModel.getAllMoviesInDB()
         }
+    }
+    //Добавить фильм в просмотренные в авторежиме
+    state.movie?.let { movie ->
+        event(DetailsEvent.AutoAddMovieInViewed(movie))
     }
 
     LazyColumn(
@@ -81,7 +87,8 @@ fun DetailsScreen(
                             }
                         },
                         onDotsClick = { event(DetailsEvent.AddMovieInCollection(movie)) },
-                        onBackClick = navigateUp
+                        onBackClick = navigateUp,
+                        movieViewed = state.movieViewed
                     )
                 }
                 Column(
@@ -90,7 +97,7 @@ fun DetailsScreen(
                         .padding(horizontal = MediumPadding2)
                 ) {
 
-                    //Диалог со списком моих коллекций
+                    //Диалог со списком коллекций для выбора пользователем
                     if (state.showDialogForCollections) {
                         DialogAddMovieInCollections(state = state, event = event)
                     }

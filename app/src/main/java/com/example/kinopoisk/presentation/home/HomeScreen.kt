@@ -44,15 +44,11 @@ fun HomeScreen(
 ) {
 
     val state = viewModel.state.collectAsState().value
-    val collectionsToAdd = listOf(
-        CollectionDB(nameCollection = TitleCollectionsDB.READY_TO_VIEW.value),
-        CollectionDB(nameCollection = TitleCollectionsDB.FAVORITE.value)
-    )
-    collectionsToAdd.forEach { collectionToAdd ->
-        if (state.listCollections.none { collectionDB -> collectionDB.nameCollection == collectionToAdd.nameCollection }) {
+    TitleCollectionsDB.entries.forEach { collectionToAdd ->
+        if (state.listCollections.none { collectionDB -> collectionDB.nameCollection == collectionToAdd.value }) {
             LaunchedEffect(true) {
                 withContext(Dispatchers.IO) {
-                    viewModel.addCollectionInDB(collectionToAdd)
+                    viewModel.addCollectionInDB(CollectionDB(nameCollection = collectionToAdd.value))
                 }
             }
         }

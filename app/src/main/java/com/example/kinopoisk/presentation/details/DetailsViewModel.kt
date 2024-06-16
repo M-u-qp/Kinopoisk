@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
@@ -33,11 +32,6 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             getAllCollection()
         }
-
-    }
-
-    suspend fun addCollectionInDB(collectionDB: CollectionDB) {
-        collectionsUseCases.addCollection(collectionDB)
     }
 
     private suspend fun getAllCollection() {
@@ -47,12 +41,6 @@ class DetailsViewModel @Inject constructor(
             )
         }
     }
-
-//    private suspend fun getCollection(collectionName: String) {
-//        collectionsUseCases.getCollectionInDB(collectionName).collect {
-//            _state.value = _state.value.copy(listMovie = it)
-//        }
-//    }
 
     suspend fun getAllMoviesInDB() {
         moviesUseCases.getAllMoviesInDB().collect {
@@ -86,9 +74,34 @@ class DetailsViewModel @Inject constructor(
                     _state.value = _state.value.copy(showDialogForCollections = true)
                 }
             }
+            //Ивент авто добавления фильма в просмотренные
+            is DetailsEvent.AutoAddMovieInViewed -> {
+                autoAddMovieInViewed(event.movie, TitleCollectionsDB.VIEWED.value)
+            }
 
             is DetailsEvent.RemoveSideEffect -> {
                 sideEffect = null
+            }
+        }
+    }
+
+    private fun autoAddMovieInViewed(movie: Movie, collectionName: String) {
+        _state.value = _state.value.copy(movieViewed = false)
+        viewModelScope.launch {
+            val movieForDB = movie.copy(collectionName = collectionName)
+            if (state.value.listMovie.isEmpty()) {
+                moviesUseCases.upsertMovie(movieForDB)
+            } else {
+                var shouldAddMovie = true
+                state.value.listMovie.forEach { existingMovie ->
+                    if (movie.kinopoiskId == existingMovie?.kinopoiskId && existingMovie.collectionName == collectionName) {
+                        _state.value = _state.value.copy(movieViewed = true)
+                        shouldAddMovie = false
+                    }
+                }
+                if (shouldAddMovie) {
+                    moviesUseCases.upsertMovie(movieForDB)
+                }
             }
         }
     }

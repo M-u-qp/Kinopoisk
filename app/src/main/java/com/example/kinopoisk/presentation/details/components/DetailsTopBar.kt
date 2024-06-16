@@ -29,7 +29,8 @@ fun DetailsTopBar(
     onShareClick: () -> Unit,
     onBrowsingClick: () -> Unit,
     onDotsClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    movieViewed: Boolean
 ) {
 
     Box(
@@ -45,7 +46,8 @@ fun DetailsTopBar(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             IconButton(
-                onClick = onBackClick) {
+                onClick = onBackClick
+            ) {
                 Icon(
                     modifier = Modifier.size(IconBackSize),
                     painter = painterResource(id = R.drawable.ic_back),
@@ -73,9 +75,13 @@ fun DetailsTopBar(
                         tint = colorResource(id = R.color.body_icon)
                     )
                 }
-                IconButton(onClick = {}) {
+                IconButton(onClick = {}, enabled = false) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_unviewed),
+                        painter = if (!movieViewed) {
+                            painterResource(id = R.drawable.ic_unviewed)
+                        } else {
+                            painterResource(id = R.drawable.ic_viewed)
+                        },
                         contentDescription = null,
                         tint = colorResource(id = R.color.body_icon)
                     )

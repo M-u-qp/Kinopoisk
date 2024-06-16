@@ -11,5 +11,6 @@ data class DetailsState(
     val loadingCollections: Boolean = false,
     val listCollections: List<CollectionDB> = emptyList(),
     var showDialogForCollections: Boolean = false,
-    var selectedCollection: String = ""
+    var selectedCollection: String = "",
+    var movieViewed: Boolean = false
 )

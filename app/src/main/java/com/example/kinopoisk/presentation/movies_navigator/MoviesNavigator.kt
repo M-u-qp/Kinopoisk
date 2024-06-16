@@ -20,8 +20,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.kinopoisk.R
-import com.example.kinopoisk.presentation.bookmark.BookmarkScreen
-import com.example.kinopoisk.presentation.bookmark.BookmarkViewModel
 import com.example.kinopoisk.presentation.details.DetailsEvent
 import com.example.kinopoisk.presentation.details.DetailsScreen
 import com.example.kinopoisk.presentation.details.DetailsViewModel
@@ -157,22 +155,15 @@ fun MoviesNavigator() {
                 val state = viewModel.state.value
                 ProfileScreen(
                     state = state,
-                    viewModel = viewModel
+                    viewModel = viewModel,
+                    navigateToDetails = { movieId ->
+                        navigateToDetails(
+                            navController = navController,
+                            movieId = movieId
+                        )
+                    }
                 )
             }
-//            composable(route = Route.BookmarkScreen.route) {
-//                val viewModel: BookmarkViewModel = hiltViewModel()
-//                val state = viewModel.state.value
-//                BookmarkScreen(
-//                    state = state,
-//                    navigateToDetails = { movieId ->
-//                        navigateToDetails(
-//                            navController = navController,
-//                            movieId = movieId
-//                        )
-//                    }
-//                )
-//            }
         }
     }
 }

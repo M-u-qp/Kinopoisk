@@ -23,6 +23,7 @@ import coil.request.ImageRequest
 import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.presentation.Dimens
+import com.example.kinopoisk.presentation.common.normalizeTitleMovie
 
 @Composable
 fun MovieCardProfile(
@@ -71,7 +72,7 @@ fun MovieCardProfile(
             }
         }
         //Название фильма
-        val nameMovie = normalizeTitleMovie(movie)
+        val nameMovie = normalizeTitleMovie(movie.nameRu ?: movie.nameEn ?: "")
         Text(
             modifier = modifier.padding(top = Dimens.ExtraSmallPadding2),
             text = nameMovie,
@@ -92,33 +93,4 @@ fun MovieCardProfile(
             color = colorResource(id = R.color.gray_text),
         )
     }
-}
-
-//Перенос слов на вторую строку, если не убирается название фильма
-private fun normalizeTitleMovie(movie: Movie): String {
-    val text = movie.nameRu ?: movie.nameEn ?: ""
-    val words = text.split(" ")
-    val lines = mutableListOf<String>()
-    var currentLine = ""
-    for ((index, word) in words.withIndex()) {
-        if (index == 0 && word.length >= 13) {
-            currentLine = word.substring(0, 13)
-            lines.add(currentLine)
-            currentLine = ""
-        } else if (currentLine.length + word.length + 1 <= 13) {
-            currentLine += " $word"
-        } else {
-            lines.add(currentLine)
-            currentLine = if (word.length >= 10) {
-                word.substring(0, 10) + "..."
-            } else {
-                word
-            }
-
-        }
-    }
-    if (currentLine.isNotEmpty()) {
-        lines.add(currentLine)
-    }
-    return lines.joinToString("\n")
 }

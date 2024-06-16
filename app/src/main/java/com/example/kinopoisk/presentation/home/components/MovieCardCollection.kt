@@ -32,6 +32,7 @@ import com.example.kinopoisk.presentation.Dimens.RatingMovieHeight
 import com.example.kinopoisk.presentation.Dimens.RatingMovieWidth
 import com.example.kinopoisk.presentation.Dimens.SmallFontSize1
 import com.example.kinopoisk.presentation.Dimens.SmallFontSize2
+import com.example.kinopoisk.presentation.common.normalizeTitleMovie
 
 @Composable
 fun MovieCardCollection(
@@ -80,7 +81,7 @@ fun MovieCardCollection(
             }
         }
         //Название фильма
-        val nameMovie = normalizeTitleMovie(item)
+        val nameMovie = normalizeTitleMovie(item.nameRu ?: item.nameEn ?: "")
         Text(
             modifier = modifier.padding(top = ExtraSmallPadding2),
             text = nameMovie,
@@ -101,33 +102,4 @@ fun MovieCardCollection(
             color = colorResource(id = R.color.gray_text),
         )
     }
-}
-
-//Перенос слов на вторую строку, если не убирается название фильма
-private fun normalizeTitleMovie(item: Item): String {
-    val text = item.nameRu
-    val words = text.split(" ")
-    val lines = mutableListOf<String>()
-    var currentLine = ""
-    for ((index, word) in words.withIndex()) {
-        if (index == 0 && word.length >= 13) {
-            currentLine = word.substring(0, 13)
-            lines.add(currentLine)
-            currentLine = ""
-        } else if (currentLine.length + word.length + 1 <= 13) {
-            currentLine += " $word"
-        } else {
-            lines.add(currentLine)
-            currentLine = if (word.length >= 10) {
-                word.substring(0, 10) + "..."
-            } else {
-                word
-            }
-
-        }
-    }
-    if (currentLine.isNotEmpty()) {
-        lines.add(currentLine)
-    }
-    return lines.joinToString("\n")
 }

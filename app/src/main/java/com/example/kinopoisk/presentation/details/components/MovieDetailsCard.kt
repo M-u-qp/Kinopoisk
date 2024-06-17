@@ -1,7 +1,9 @@
 package com.example.kinopoisk.presentation.details.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -36,17 +40,33 @@ fun MovieDetailsCard(
             .fillMaxWidth()
             .height(MoviePosterHeight)
     ) {
+        Box(modifier = Modifier.fillMaxSize().clip(MaterialTheme.shapes.medium))
         AsyncImage(
             modifier = Modifier
-                .fillMaxSize()
-                .clip(MaterialTheme.shapes.medium),
+                .fillMaxSize(),
             model = ImageRequest.Builder(context).data(movie.posterUrl).build(),
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
 
-        Column(
+        //Градиент постера
+        BoxWithConstraints(
             modifier = Modifier.fillMaxSize()
+        ) {
+            val gradient = Brush.verticalGradient(
+                colors = listOf(Color.Transparent, Color.Black),
+                startY = 0f,
+                endY = constraints.maxHeight.toFloat()
+            )
+            Box(modifier = Modifier
+                    .fillMaxSize()
+                    .background(gradient)
+            )
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(bottom = 60.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom
@@ -59,7 +79,7 @@ fun MovieDetailsCard(
                     ),
                     color = colorResource(id = R.color.body_icon))
                 //Название
-                Text(text = movie.let { it.nameRu ?: movie.nameEn }.toString(),
+                Text(text = (movie.nameRu ?: movie.nameEn).toString(),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = Dimens.SmallFontSize2
                     ),

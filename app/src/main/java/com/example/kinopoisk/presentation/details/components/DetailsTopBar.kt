@@ -75,17 +75,17 @@ fun DetailsTopBar(
                         tint = colorResource(id = R.color.body_icon)
                     )
                 }
-                IconButton(onClick = {}, enabled = false) {
-                    Icon(
-                        painter = if (!movieViewed) {
-                            painterResource(id = R.drawable.ic_unviewed)
-                        } else {
-                            painterResource(id = R.drawable.ic_viewed)
-                        },
-                        contentDescription = null,
-                        tint = colorResource(id = R.color.body_icon)
-                    )
-                }
+//                IconButton(onClick = {}, enabled = false) {
+//                    Icon(
+//                        painter = if (!movieViewed) {
+//                            painterResource(id = R.drawable.ic_unviewed)
+//                        } else {
+//                            painterResource(id = R.drawable.ic_viewed)
+//                        },
+//                        contentDescription = null,
+//                        tint = colorResource(id = R.color.body_icon)
+//                    )
+//                }
                 IconButton(onClick = onShareClick) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_share),
@@ -108,9 +108,6 @@ fun DetailsTopBar(
                     )
                 }
             }
-
-
         }
-
     }
 }

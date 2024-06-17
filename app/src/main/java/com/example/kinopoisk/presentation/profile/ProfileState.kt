@@ -7,5 +7,6 @@ data class ProfileState(
     val allCollections: List<CollectionDB> = emptyList(),
     val anyCollection: List<Movie?> = emptyList(),
     val listCollectionsAndSize: Map<String, List<Movie?>> = mutableMapOf(),
-    var showDialogForCreateCollection: Boolean = false
+    var showDialogForCreateCollection: Boolean = false,
+    var showDialogAreYouSure: Boolean = false
 )

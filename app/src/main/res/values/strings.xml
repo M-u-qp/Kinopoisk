@@ -13,4 +13,9 @@
     <string name="Create_collection">Создать свою коллекцию</string>
     <string name="Create">Создать</string>
     <string name="Enter_name_your_collection">Введи название своей коллекции</string>
+
+    <!-- Common -->
+    <string name="Are_you_sure">Вы уверены?</string>
+    <string name="Yes">Да</string>
+    <string name="No">Нет</string>
 </resources>

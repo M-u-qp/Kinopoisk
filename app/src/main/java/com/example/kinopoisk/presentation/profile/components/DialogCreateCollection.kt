@@ -42,7 +42,7 @@ fun DialogCreateCollection() {
 
     Dialog(onDismissRequest = {
         showDialog.value = false
-        viewModel.updateShowDialog(showDialog.value)
+        viewModel.updateShowDialogForCreateCollection(showDialog.value)
     }) {
         Card(
             modifier = Modifier
@@ -82,7 +82,7 @@ fun DialogCreateCollection() {
                             }
                         }
                         showDialog.value = false
-                        viewModel.updateShowDialog(showDialog.value)
+                        viewModel.updateShowDialogForCreateCollection(showDialog.value)
                     }) {
                     Text(
                         text = stringResource(id = R.string.Create),

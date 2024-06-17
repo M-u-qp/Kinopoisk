@@ -37,6 +37,7 @@ import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding4
 import com.example.kinopoisk.presentation.Dimens.SmallFontSize1
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
+import com.example.kinopoisk.presentation.common.DialogAreYouSure
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import com.example.kinopoisk.presentation.profile.components.CollectionCard
 import com.example.kinopoisk.presentation.profile.components.DialogCreateCollection
@@ -131,7 +132,7 @@ fun ProfileScreen(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = { viewModel.updateShowDialog(true) }) {
+            IconButton(onClick = { viewModel.updateShowDialogForCreateCollection(true) }) {
                 Icon(
                     modifier = Modifier.scale(1.5f),
                     painter = painterResource(
@@ -153,6 +154,7 @@ fun ProfileScreen(
         if (state.showDialogForCreateCollection) {
             DialogCreateCollection()
         }
+
         LazyVerticalGrid(
             modifier = Modifier.padding(end = MediumPadding2),
             columns = GridCells.Fixed(2),
@@ -195,18 +197,31 @@ fun ProfileScreen(
                             nameCollection = item.nameCollection,
                             sizeCollection = sizeCollection,
                             onClickDelete = {
-                                scope.launch {
-                                    viewModel.deleteCollection(
-                                        collectionName = item.nameCollection,
-                                        collectionDB = CollectionDB(item.id, item.nameCollection)
-                                    )
-                                }
+                                viewModel.updateShowDialogAreYouSure(true)
                             }
                         )
+
+                        if (state.showDialogAreYouSure) {
+                            DialogAreYouSure(
+                                onClickYes = {
+                                    scope.launch {
+                                        viewModel.deleteCollection(
+                                            collectionName = item.nameCollection,
+                                            collectionDB = CollectionDB(
+                                                item.id,
+                                                item.nameCollection
+                                            )
+                                        )
+                                    }
+                                    viewModel.updateShowDialogAreYouSure(false)
+                                },
+                                onClickNo = { viewModel.updateShowDialogAreYouSure(false) },
+                                onDismiss = { viewModel.updateShowDialogAreYouSure(false) }
+                            )
+                        }
                     }
                 }
             }
         }
     }
-
 }

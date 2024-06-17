@@ -52,7 +52,11 @@ class ProfileViewModel @Inject constructor(
         collectionsUseCases.addCollection(collectionDB)
     }
 
-    fun updateShowDialog(isVisible: Boolean) {
-        _state.value = _state.value.copy(showDialogForCreateCollection = isVisible)
+    fun updateShowDialogForCreateCollection(show: Boolean) {
+        _state.value = _state.value.copy(showDialogForCreateCollection = show)
+    }
+
+    fun updateShowDialogAreYouSure(show: Boolean) {
+        _state.value = _state.value.copy(showDialogAreYouSure = show)
     }
 }

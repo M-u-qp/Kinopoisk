@@ -54,6 +54,10 @@ fun ProfileScreen(
     val sizeViewedCollection =
         state.listCollectionsAndSize[TitleCollectionsDB.VIEWED.value]?.size ?: 0
 
+    LaunchedEffect(key1 = true) {
+        viewModel.getCollection(TitleCollectionsDB.VIEWED.value)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -155,13 +159,17 @@ fun ProfileScreen(
             DialogCreateCollection()
         }
 
+        val listCollections = state.allCollections.filter { collection ->
+                    collection.nameCollection != TitleCollectionsDB.VIEWED.value
+        }
+
         LazyVerticalGrid(
             modifier = Modifier.padding(end = MediumPadding2),
             columns = GridCells.Fixed(2),
             horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
             verticalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
         ) {
-            items(state.allCollections) { item ->
+            items(listCollections) { item ->
                 val sizeCollection = state.listCollectionsAndSize[item.nameCollection]?.size ?: 0
                 when (item.nameCollection) {
                     TitleCollectionsDB.READY_TO_VIEW.value -> {

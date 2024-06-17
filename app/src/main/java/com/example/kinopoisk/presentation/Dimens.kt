@@ -18,7 +18,6 @@ object Dimens {
     val ExtraSmallPadding5 = 1.dp
 
     val IndicatorSize = 14.dp
-    val IconBackSize = 14.dp
 
     val IconSize = 20.dp
 
@@ -40,7 +39,6 @@ object Dimens {
     val MovieCardSizeHeight = 156.dp
     val MovieCardSearchWidth = 96.dp
     val MovieCardSearchHeight = 132.dp
-    val MoviePosterHeight = 400.dp
     val CardCollectionSize = 146.dp
 
     val MediumRoundedCornerShape1 = 16.dp

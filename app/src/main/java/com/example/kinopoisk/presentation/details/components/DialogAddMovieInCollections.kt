@@ -1,5 +1,6 @@
 package com.example.kinopoisk.presentation.details.components
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,13 +19,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.kinopoisk.R
 import com.example.kinopoisk.presentation.Dimens.DialogHeight
 import com.example.kinopoisk.presentation.Dimens.MediumFontSize2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.MediumRoundedCornerShape1
+import com.example.kinopoisk.presentation.Dimens.SmallPadding1
+import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import com.example.kinopoisk.presentation.details.DetailsEvent
 import com.example.kinopoisk.presentation.details.DetailsState
 import com.example.kinopoisk.presentation.details.DetailsViewModel
@@ -50,18 +55,39 @@ fun DialogAddMovieInCollections(
                 .height(DialogHeight),
             shape = RoundedCornerShape(MediumRoundedCornerShape1),
         ) {
+
+            Box(modifier = Modifier.padding(top = SmallPadding1).fillMaxWidth(),
+                contentAlignment = Alignment.Center){
+                Text(
+                    text = "Выберите вашу коллекцию\n или создайте её в профиле",
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        fontSize = MediumFontSize2,
+                        fontWeight = FontWeight.Bold,
+                        color = colorResource(id = R.color.black_text)
+                    )
+                )
+            }
+
+            val listCollections = state.listCollections.filter { collection ->
+                collection.nameCollection != TitleCollectionsDB.READY_TO_VIEW.value &&
+                        collection.nameCollection != TitleCollectionsDB.FAVORITE.value &&
+                        collection.nameCollection != TitleCollectionsDB.VIEWED.value
+            }
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .wrapContentSize(Alignment.Center),
             ) {
-                items(state.listCollections) { collection ->
+                items(listCollections) { collection ->
                     TextButton(
                         onClick = {
                             viewModel.updateSelectedCollection(collection.nameCollection)
                             showDialog.value = false
                             viewModel.updateShowDialog(showDialog.value)
-                            event(DetailsEvent.AddMovieInCollection(movie = state.movie!!))
+                            state.movie?.let {
+                                event(DetailsEvent.AddMovieInCollection(movie = it))
+                            }
                         }) {
                         Text(
                             text = collection.nameCollection,

@@ -35,7 +35,9 @@ import com.example.kinopoisk.presentation.Dimens.LargePadding2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding4
+import com.example.kinopoisk.presentation.Dimens.MovieCardSizeHeight
 import com.example.kinopoisk.presentation.Dimens.SmallFontSize1
+import com.example.kinopoisk.presentation.Dimens.SmallFontSize2
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
 import com.example.kinopoisk.presentation.common.DialogAreYouSure
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
@@ -119,6 +121,41 @@ fun ProfileScreen(
                     }
                 }
             }
+
+            if (sizeViewedCollection != 0) {
+                //Иконка очистки коллекции
+                item {
+                    Column(
+                        modifier = Modifier
+                            .padding(
+                                start = SmallPadding1,
+                                end = SmallPadding1
+                            )
+                            .height(MovieCardSizeHeight),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        IconButton(onClick = {
+                            scope.launch {
+                                viewModel.deleteMoviesInCollection(collectionName = TitleCollectionsDB.VIEWED.value)
+                            }
+                        }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_delete),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                        Text(
+                            text = stringResource(id = R.string.Clear_history),
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontSize = SmallFontSize2,
+                                color = colorResource(id = R.color.black_text)
+                            )
+                        )
+                    }
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(MediumPadding4))
@@ -161,7 +198,7 @@ fun ProfileScreen(
         }
 
         val listCollections = state.allCollections.filter { collection ->
-                    collection.nameCollection != TitleCollectionsDB.VIEWED.value
+            collection.nameCollection != TitleCollectionsDB.VIEWED.value
         }
 
         LazyVerticalGrid(
@@ -181,7 +218,8 @@ fun ProfileScreen(
                             icon = R.drawable.ic_bookmark_border,
                             nameCollection = item.nameCollection,
                             sizeCollection = sizeCollection,
-                            onClickDelete = {}
+                            onClickDelete = {},
+                            navigateToCollection = navigateToCollection
                         )
                     }
 
@@ -193,7 +231,8 @@ fun ProfileScreen(
                             icon = R.drawable.ic_like_border,
                             nameCollection = item.nameCollection,
                             sizeCollection = sizeCollection,
-                            onClickDelete = {}
+                            onClickDelete = {},
+                            navigateToCollection = navigateToCollection
                         )
                     }
 
@@ -207,7 +246,8 @@ fun ProfileScreen(
                             sizeCollection = sizeCollection,
                             onClickDelete = {
                                 viewModel.updateShowDialogAreYouSure(true)
-                            }
+                            },
+                            navigateToCollection = navigateToCollection
                         )
 
                         if (state.showDialogAreYouSure) {

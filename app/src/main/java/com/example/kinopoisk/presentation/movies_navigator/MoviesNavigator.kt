@@ -180,7 +180,14 @@ fun MoviesNavigator() {
                         CollectionDBScreen(
                             state = state,
                             viewModel = viewModel,
-                            nameCollection = nameCollection
+                            nameCollection = nameCollection,
+                            navigateToDetails = { movieId ->
+                                navigateToDetails(
+                                    navController = navController,
+                                    movieId = movieId
+                                )
+                            },
+                            navigateUp = { navController.navigateUp() }
                         )
                     }
             }

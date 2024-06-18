@@ -3,6 +3,7 @@ package com.example.kinopoisk.presentation.profile.components
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,7 +43,8 @@ fun CollectionCard(
     @DrawableRes icon: Int,
     nameCollection: String,
     sizeCollection: Int,
-    onClickDelete: () -> Unit
+    onClickDelete: () -> Unit,
+    navigateToCollection: (String) -> Unit
 ) {
 
     val showIconDeleteCollection = TitleCollectionsDB.entries.any { it.value == nameCollection }
@@ -50,7 +52,8 @@ fun CollectionCard(
 
     Card(
         modifier = Modifier
-            .size(CardCollectionSize),
+            .size(CardCollectionSize)
+            .clickable { navigateToCollection(nameCollection) },
         border = BorderStroke(color = colorResource(id = R.color.black), width = 1.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {

@@ -34,6 +34,10 @@ class ProfileViewModel @Inject constructor(
         moviesUseCases.deleteCollectionMovies(collectionName)
     }
 
+    suspend fun deleteMoviesInCollection(collectionName: String) {
+        moviesUseCases.deleteCollectionMovies(collectionName)
+    }
+
     private suspend fun getAllCollections() {
         collectionsUseCases.getCollectionsInDB().collect { listCollections ->
             _state.value = _state.value.copy(allCollections = listCollections)

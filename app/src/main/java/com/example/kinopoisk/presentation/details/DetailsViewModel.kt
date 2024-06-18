@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
+import com.example.kinopoisk.domain.usecases.staff.StaffUseCases
 import com.example.kinopoisk.domain.utils.Resource
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
     private val moviesUseCases: MoviesUseCases,
-    private val collectionsUseCases: CollectionsUseCases
+    private val collectionsUseCases: CollectionsUseCases,
+    private val staffUseCases: StaffUseCases
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(DetailsState())
@@ -34,6 +36,7 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
+    //Получение всех коллекций в БД
     private suspend fun getAllCollection() {
         collectionsUseCases.getCollectionsInDB().collect {
             _state.value = _state.value.copy(
@@ -42,6 +45,7 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
+    //Получение всех фильмов в БД
     suspend fun getAllMoviesInDB() {
         moviesUseCases.getAllMoviesInDB().collect {
             _state.value = _state.value.copy(listMovie = it)
@@ -85,6 +89,7 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
+    //Добавление фильма в коллекцию "Просмотрено" в БД
     private fun autoAddMovieInViewed(movie: Movie, collectionName: String) {
         _state.value = _state.value.copy(movieViewed = false)
         viewModelScope.launch {
@@ -106,6 +111,7 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
+    //Добавление/удаление фильмов из коллекции в БД
     private fun addDeleteMovieInDB(movie: Movie, collectionName: String) {
         viewModelScope.launch {
             val movieForDB = movie.copy(collectionName = collectionName)
@@ -144,11 +150,11 @@ class DetailsViewModel @Inject constructor(
         sideEffect = "Фильм сохранен"
     }
 
+    //Детальное инфо о фильме
     fun getMovie(movieId: Int) {
         viewModelScope.launch {
             _state.value = _state.value.copy(loadingMovie = true)
-            val movie = moviesUseCases.getMovie(movieId)
-            when (movie) {
+            when (val movie = moviesUseCases.getMovie(movieId)) {
                 is Resource.Success -> {
                     _state.value = _state.value.copy(
                         loadingMovie = false,
@@ -162,6 +168,29 @@ class DetailsViewModel @Inject constructor(
                         loadingMovie = false,
                         error = movie.exception.toString()
                     )
+                }
+
+                else -> Unit
+            }
+        }
+    }
+
+    //Список актеров и т.п.
+    fun getListStaff(filmId: Int) {
+        viewModelScope.launch {
+            when (val listStaff = staffUseCases.getListStaff(filmId)) {
+                is Resource.Success -> {
+                    val actors = listStaff.data?.filter { staff -> staff.professionKey == "ACTOR" }
+                    val otherStaff =
+                        listStaff.data?.filter { staff -> staff.professionKey != "ACTOR" }
+                    _state.value = _state.value.copy(
+                        listActors = actors ?: emptyList(),
+                        listOtherStaff = otherStaff ?: emptyList()
+                    )
+                }
+
+                is Resource.Error -> {
+                    _state.value = _state.value.copy(error = listStaff.exception.toString())
                 }
 
                 else -> Unit

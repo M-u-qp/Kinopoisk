@@ -31,16 +31,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
-import com.example.kinopoisk.presentation.Dimens.LargePadding2
+import com.example.kinopoisk.presentation.Dimens.LargePadding1
+import com.example.kinopoisk.presentation.Dimens.MediumFontSize2
+import com.example.kinopoisk.presentation.Dimens.MediumFontSize3
 import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding4
 import com.example.kinopoisk.presentation.Dimens.MovieCardSizeHeight
-import com.example.kinopoisk.presentation.Dimens.SmallFontSize1
 import com.example.kinopoisk.presentation.Dimens.SmallFontSize2
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
 import com.example.kinopoisk.presentation.common.DialogAreYouSure
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
+import com.example.kinopoisk.presentation.common.TitleCommon
 import com.example.kinopoisk.presentation.profile.components.CollectionCard
 import com.example.kinopoisk.presentation.profile.components.DialogCreateCollection
 import com.example.kinopoisk.presentation.profile.components.MovieCardProfile
@@ -64,49 +66,19 @@ fun ProfileScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = MediumPadding2, top = LargePadding2)
+            .padding(start = MediumPadding2, top = LargePadding1)
     ) {
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        TitleCommon(
+            nameTitle = TitleCollectionsDB.VIEWED.value,
+            count = sizeViewedCollection,
+            onClick = { navigateToCollection(TitleCollectionsDB.VIEWED.value) }
+        )
 
-            Text(
-                text = stringResource(id = R.string.Viewed),
-                style = MaterialTheme.typography.displaySmall.copy(
-                    fontWeight = FontWeight.Bold
-                ),
-                color = colorResource(id = R.color.black_text)
-            )
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = (sizeViewedCollection).toString(),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        fontSize = SmallFontSize1,
-                        fontWeight = FontWeight.Medium
-                    ),
-                    color = MaterialTheme.colorScheme.primary
-                )
-                IconButton(onClick = { navigateToCollection(TitleCollectionsDB.VIEWED.value) }) {
-                    Icon(
-                        modifier = Modifier.scale(1.5f),
-                        painter = painterResource(id = R.drawable.ic_open_list),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-
-            }
-        }
+        Spacer(modifier = Modifier.height(MediumPadding1))
 
         LazyRow(
-            modifier = Modifier
-                .padding(top = MediumPadding1),
+            modifier = Modifier,
             horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
         ) {
             if (sizeViewedCollection != 0) {
@@ -164,7 +136,8 @@ fun ProfileScreen(
             modifier = Modifier,
             text = stringResource(id = R.string.Collections),
             style = MaterialTheme.typography.displaySmall.copy(
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontSize = MediumFontSize3
             ),
             color = colorResource(id = R.color.black_text)
         )
@@ -187,7 +160,8 @@ fun ProfileScreen(
                 modifier = Modifier.padding(start = SmallPadding1),
                 text = stringResource(id = R.string.Create_collection),
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    fontSize = MediumFontSize2
                 ),
                 color = colorResource(id = R.color.black_text)
             )

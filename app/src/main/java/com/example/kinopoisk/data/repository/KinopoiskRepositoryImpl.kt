@@ -17,6 +17,7 @@ import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.Film
 import com.example.kinopoisk.domain.model.Item
 import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.model.Staff
 import com.example.kinopoisk.domain.repository.KinopoiskRepository
 import com.example.kinopoisk.domain.utils.Resource
 import kotlinx.coroutines.flow.Flow
@@ -37,6 +38,7 @@ class KinopoiskRepositoryImpl(
         }
     }
 
+    //Коллекции
     override fun getTopPopularAll(): Flow<PagingData<Item>> {
         return Pager(
             config = PagingConfig(pageSize = 10),
@@ -49,6 +51,7 @@ class KinopoiskRepositoryImpl(
         ).flow
     }
 
+    //Поиск
     override fun searchMovies(keyword: String): Flow<PagingData<Film>> {
         return Pager(
             config = PagingConfig(pageSize = 10),
@@ -62,6 +65,7 @@ class KinopoiskRepositoryImpl(
         ).flow
     }
 
+    //Детальное инфо о фильме
     override suspend fun getMovie(id: Int): Resource<Movie> {
         return try {
             val response = kinopoiskApi.getMovie(
@@ -79,6 +83,25 @@ class KinopoiskRepositoryImpl(
         }
     }
 
+    //Актеры и т.п.
+    override suspend fun getListStaff(filmId: Int): Resource<List<Staff>> {
+        return try {
+            val response = kinopoiskApi.getListStaff(
+                apiKey = context.getString(R.string.API_KEY),
+                filmId = filmId
+            )
+            if (response.body() != null) {
+                Resource.Success(response.body()!!)
+            } else {
+                Resource.Error(Exception(getResponseError(response.code())))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(e)
+        }
+    }
+
+    //БД
     override suspend fun upsertMovie(movie: Movie) {
         moviesDao.upsert(
             movie = movie.toMovieEntity()
@@ -96,11 +119,13 @@ class KinopoiskRepositoryImpl(
     }
 
     override fun selectCollections(): Flow<List<CollectionDB>> {
-        return moviesDao.getCollectionsInDB().map { list -> list.map { collections -> collections.toCollectionDB() } }
+        return moviesDao.getCollectionsInDB()
+            .map { list -> list.map { collections -> collections.toCollectionDB() } }
     }
 
-    override  fun selectCollection(collectionName: String): Flow<List<Movie?>> {
-        return moviesDao.getCollectionInDB(collectionName).map { list -> list.map { movieEntity -> movieEntity?.toMovie() } }
+    override fun selectCollection(collectionName: String): Flow<List<Movie?>> {
+        return moviesDao.getCollectionInDB(collectionName)
+            .map { list -> list.map { movieEntity -> movieEntity?.toMovie() } }
     }
 
     override suspend fun addCollection(collectionDB: CollectionDB) {

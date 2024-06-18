@@ -2,10 +2,19 @@ package com.example.kinopoisk.presentation.details
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,8 +31,10 @@ import com.example.kinopoisk.R
 import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding3
+import com.example.kinopoisk.presentation.common.TitleCommon
 import com.example.kinopoisk.presentation.details.components.DialogAddMovieInCollections
 import com.example.kinopoisk.presentation.details.components.MovieDetailsCard
+import com.example.kinopoisk.presentation.details.components.StaffCard
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -49,13 +61,19 @@ fun DetailsScreen(
             viewModel.getAllMoviesInDB()
         }
     }
+    //Получить список актеров и т.п.
+    LaunchedEffect(key1 = true) {
+        withContext(Dispatchers.IO) {
+            viewModel.getListStaff(movieId)
+        }
+    }
     //Добавить фильм в просмотренные в авторежиме
     state.movie?.let { movie ->
         event(DetailsEvent.AutoAddMovieInViewed(movie))
     }
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
     ) {
         item {
             state.movie?.let { movie ->
@@ -115,6 +133,22 @@ fun DetailsScreen(
                         maxLines = 5,
                         overflow = TextOverflow.Ellipsis
                     )
+
+                    Spacer(modifier = Modifier.height(Dimens.LargePadding1))
+
+                    val filmStars = stringResource(id = R.string.Film_stars)
+                    TitleCommon(
+                        nameTitle = filmStars,
+                        count = state.listActors.size,
+                        onClick = {}
+                    )
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(Dimens.ExtraSmallPadding2),
+                    ) {
+                        items(state.listActors) {
+                            StaffCard(staff = it)
+                        }
+                    }
                 }
             }
         }

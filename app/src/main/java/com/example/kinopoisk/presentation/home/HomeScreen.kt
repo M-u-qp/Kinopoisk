@@ -25,10 +25,10 @@ import androidx.paging.compose.LazyPagingItems
 import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.Item
-import com.example.kinopoisk.presentation.Dimens.LargePadding1
+import com.example.kinopoisk.presentation.Dimens.MediumFontSize1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
-import com.example.kinopoisk.presentation.Dimens.SmallFontSize1
+import com.example.kinopoisk.presentation.common.TitleCollection
 import com.example.kinopoisk.presentation.common.TitleCollections
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import com.example.kinopoisk.presentation.home.components.MoviesListCollection
@@ -69,7 +69,8 @@ fun HomeScreen(
         ) {
             Text(
                 style = MaterialTheme.typography.displaySmall.copy(
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Medium,
+                    fontSize = MediumFontSize1
                 ),
                 text = stringResource(id = R.string.app_name),
                 color = colorResource(id = R.color.black_text)
@@ -82,28 +83,7 @@ fun HomeScreen(
             }
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = LargePadding1, end = MediumPadding2),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                style = MaterialTheme.typography.displaySmall.copy(
-                    fontWeight = FontWeight.Bold
-                ),
-                text = TitleCollections.TOP_POPULAR_ALL.value,
-                color = colorResource(id = R.color.black_text)
-            )
-            Text(
-                text = stringResource(id = R.string.All),
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontSize = SmallFontSize1
-                ),
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
+        TitleCollection(nameCollection = TitleCollections.TOP_POPULAR_ALL.value)
 
         MoviesListCollection(
             modifier = Modifier.padding(top = MediumPadding1),

@@ -4,6 +4,10 @@
     <!-- Home -->
     <string name="All">Все</string>
 
+    <!-- Details -->
+    <string name="Film_stars">В фильме снимались</string>
+    <string name="Other_staff">Над фильмом работали</string>
+
     <!-- Onboarding -->
     <string name="Skip">Пропустить</string>
 

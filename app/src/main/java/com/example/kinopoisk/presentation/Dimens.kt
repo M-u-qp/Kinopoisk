@@ -29,6 +29,7 @@ object Dimens {
 
     val MediumFontSize1 = 32.sp
     val MediumFontSize2 = 16.sp
+    val MediumFontSize3 = 20.sp
     val SmallFontSize1 = 14.sp
     val SmallFontSize2 = 12.sp
     val ExtraSmallFontSize1 = 6.sp
@@ -40,6 +41,8 @@ object Dimens {
     val MovieCardSearchWidth = 96.dp
     val MovieCardSearchHeight = 132.dp
     val CardCollectionSize = 146.dp
+    val StaffCardInHomeWidth = 49.dp
+    val StaffCardInHomeHeight = 68.dp
 
     val MediumRoundedCornerShape1 = 16.dp
 }

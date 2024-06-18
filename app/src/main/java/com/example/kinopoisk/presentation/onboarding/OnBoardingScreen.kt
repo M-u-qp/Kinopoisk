@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.kinopoisk.R
+import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.common.KinopoiskButton
 import com.example.kinopoisk.presentation.common.KinopoiskTextButton
@@ -57,7 +58,8 @@ fun OnBoardingScreen(
         ) {
             Text(
                 style = MaterialTheme.typography.displaySmall.copy(
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Medium,
+                    fontSize = Dimens.MediumFontSize1
                 ),
                 text = stringResource(id = R.string.app_name),
                 color = colorResource(id = R.color.black_text)

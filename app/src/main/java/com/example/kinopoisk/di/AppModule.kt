@@ -27,6 +27,8 @@ import com.example.kinopoisk.domain.usecases.movies.GetMovie
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
 import com.example.kinopoisk.domain.usecases.movies.SearchMovies
 import com.example.kinopoisk.domain.usecases.movies.UpsertMovie
+import com.example.kinopoisk.domain.usecases.staff.GetListStaff
+import com.example.kinopoisk.domain.usecases.staff.StaffUseCases
 import com.example.kinopoisk.util.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -111,6 +113,16 @@ object AppModule {
             deleteMovieById = DeleteMovieById(kinopoiskRepository),
             getAllMoviesInDB = GetAllMoviesInDB(kinopoiskRepository),
             deleteCollectionMovies = DeleteCollectionMovies(kinopoiskRepository)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideStaffUseCases(
+        kinopoiskRepository: KinopoiskRepository
+    ): StaffUseCases {
+        return StaffUseCases(
+            getListStaff = GetListStaff(kinopoiskRepository)
         )
     }
 

@@ -22,9 +22,9 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.kinopoisk.R
 import com.example.kinopoisk.presentation.collectiondb.CollectionDBScreen
 import com.example.kinopoisk.presentation.collectiondb.CollectionDBViewModel
-import com.example.kinopoisk.presentation.details.DetailsEvent
-import com.example.kinopoisk.presentation.details.DetailsScreen
-import com.example.kinopoisk.presentation.details.DetailsViewModel
+import com.example.kinopoisk.presentation.details.details_movie.DetailsEvent
+import com.example.kinopoisk.presentation.details.details_movie.DetailsScreen
+import com.example.kinopoisk.presentation.details.details_movie.DetailsViewModel
 import com.example.kinopoisk.presentation.home.HomeScreen
 import com.example.kinopoisk.presentation.home.HomeViewModel
 import com.example.kinopoisk.presentation.movies_navigator.components.BottomNavigationItem

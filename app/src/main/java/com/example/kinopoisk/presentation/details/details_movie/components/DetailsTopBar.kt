@@ -1,4 +1,4 @@
-package com.example.kinopoisk.presentation.details.components
+package com.example.kinopoisk.presentation.details.details_movie.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

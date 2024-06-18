@@ -1,4 +1,4 @@
-package com.example.kinopoisk.presentation.details
+package com.example.kinopoisk.presentation.details.details_movie
 
 import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.Movie

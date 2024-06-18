@@ -1,4 +1,4 @@
-package com.example.kinopoisk.presentation.details.components
+package com.example.kinopoisk.presentation.details.details_movie.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,9 +30,9 @@ import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.MediumRoundedCornerShape1
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
-import com.example.kinopoisk.presentation.details.DetailsEvent
-import com.example.kinopoisk.presentation.details.DetailsState
-import com.example.kinopoisk.presentation.details.DetailsViewModel
+import com.example.kinopoisk.presentation.details.details_movie.DetailsEvent
+import com.example.kinopoisk.presentation.details.details_movie.DetailsState
+import com.example.kinopoisk.presentation.details.details_movie.DetailsViewModel
 
 @Composable
 fun DialogAddMovieInCollections(

@@ -1,4 +1,4 @@
-package com.example.kinopoisk.presentation.details
+package com.example.kinopoisk.presentation.details.details_movie
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

@@ -48,7 +48,8 @@ import kotlinx.coroutines.launch
 fun ProfileScreen(
     state: ProfileState,
     viewModel: ProfileViewModel = hiltViewModel(),
-    navigateToDetails: (Int) -> Unit
+    navigateToDetails: (Int) -> Unit,
+    navigateToCollection: (String) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val sizeViewedCollection =
@@ -89,7 +90,7 @@ fun ProfileScreen(
                     ),
                     color = MaterialTheme.colorScheme.primary
                 )
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navigateToCollection(TitleCollectionsDB.VIEWED.value) }) {
                     Icon(
                         modifier = Modifier.scale(1.5f),
                         painter = painterResource(id = R.drawable.ic_open_list),

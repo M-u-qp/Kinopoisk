@@ -20,6 +20,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.kinopoisk.R
+import com.example.kinopoisk.presentation.collectiondb.CollectionDBScreen
+import com.example.kinopoisk.presentation.collectiondb.CollectionDBViewModel
 import com.example.kinopoisk.presentation.details.DetailsEvent
 import com.example.kinopoisk.presentation.details.DetailsScreen
 import com.example.kinopoisk.presentation.details.DetailsViewModel
@@ -161,8 +163,26 @@ fun MoviesNavigator() {
                             navController = navController,
                             movieId = movieId
                         )
+                    },
+                    navigateToCollection = { nameCollection ->
+                        navigateToCollectionDB(
+                            navController = navController,
+                            nameCollection = nameCollection
+                        )
                     }
                 )
+            }
+            composable(route = Route.CollectionDBScreen.route) {
+                val viewModel: CollectionDBViewModel = hiltViewModel()
+                val state = viewModel.state.value
+                navController.previousBackStackEntry?.savedStateHandle?.get<String>("nameCollection")
+                    ?.let { nameCollection ->
+                        CollectionDBScreen(
+                            state = state,
+                            viewModel = viewModel,
+                            nameCollection = nameCollection
+                        )
+                    }
             }
         }
     }
@@ -183,4 +203,9 @@ private fun navigateToTab(navController: NavController, route: String) {
 private fun navigateToDetails(navController: NavController, movieId: Int) {
     navController.currentBackStackEntry?.savedStateHandle?.set("movieId", movieId)
     navController.navigate(route = Route.DetailsScreen.route)
+}
+
+private fun navigateToCollectionDB(navController: NavController, nameCollection: String) {
+    navController.currentBackStackEntry?.savedStateHandle?.set("nameCollection", nameCollection)
+    navController.navigate(route = Route.CollectionDBScreen.route)
 }

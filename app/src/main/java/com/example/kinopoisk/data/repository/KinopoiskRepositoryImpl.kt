@@ -10,6 +10,7 @@ import com.example.kinopoisk.data.mapper.toCollectionDB
 import com.example.kinopoisk.data.mapper.toCollectionEntity
 import com.example.kinopoisk.data.mapper.toMovie
 import com.example.kinopoisk.data.mapper.toMovieEntity
+import com.example.kinopoisk.data.mapper.toStaffInfo
 import com.example.kinopoisk.data.remote.CollectionsPagingSource
 import com.example.kinopoisk.data.remote.KinopoiskApi
 import com.example.kinopoisk.data.remote.SearchMoviesPagingSource
@@ -18,6 +19,7 @@ import com.example.kinopoisk.domain.model.Film
 import com.example.kinopoisk.domain.model.Item
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.model.Staff
+import com.example.kinopoisk.domain.model.StaffInfo
 import com.example.kinopoisk.domain.repository.KinopoiskRepository
 import com.example.kinopoisk.domain.utils.Resource
 import kotlinx.coroutines.flow.Flow
@@ -92,6 +94,23 @@ class KinopoiskRepositoryImpl(
             )
             if (response.body() != null) {
                 Resource.Success(response.body()!!)
+            } else {
+                Resource.Error(Exception(getResponseError(response.code())))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(e)
+        }
+    }
+
+    override suspend fun getStaff(id: Int): Resource<StaffInfo> {
+        return try {
+            val response = kinopoiskApi.getStaff(
+                apiKey = context.getString(R.string.API_KEY),
+                id = id
+            )
+            if (response.body() != null) {
+                Resource.Success(response.body()!!.toStaffInfo())
             } else {
                 Resource.Error(Exception(getResponseError(response.code())))
             }

@@ -24,11 +24,12 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kinopoisk.R
+import com.example.kinopoisk.domain.model.Staff
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
 import com.example.kinopoisk.presentation.Dimens.LargePadding1
+import com.example.kinopoisk.presentation.Dimens.LazyVerticalGridHeight
 import com.example.kinopoisk.presentation.Dimens.MediumFontSize2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding3
@@ -45,7 +46,9 @@ fun DetailsScreen(
     movieId: Int,
     viewModel: DetailsViewModel = hiltViewModel(),
     event: (DetailsEvent) -> Unit,
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
+    navigateToStaffInfo: (Int) -> Unit,
+    navigateToAllStaff: (List<Staff>) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -147,7 +150,7 @@ fun DetailsScreen(
                 modifier = Modifier
                     .padding(top = LargePadding1, start = MediumPadding2)
                     .fillMaxWidth()
-                    .height(400.dp)
+                    .height(LazyVerticalGridHeight)
             ) {
                 val filmStars = stringResource(id = R.string.Film_stars)
                 Box(
@@ -155,8 +158,8 @@ fun DetailsScreen(
                 ) {
                     TitleCommon(
                         nameTitle = filmStars,
-                        count = state.listActors.size,
-                        onClick = {}
+                        varParam = state.listActors.size.toString(),
+                        onClick = { navigateToAllStaff(state.listActors) }
                     )
                 }
                 LazyHorizontalGrid(
@@ -167,8 +170,11 @@ fun DetailsScreen(
                     horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
                     verticalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
                 ) {
-                    items(state.listActors) {
-                        StaffCard(staff = it)
+                    items(state.listActors) { staff ->
+                        StaffCard(
+                            staff = staff,
+                            onClick = { staff.staffId?.let { navigateToStaffInfo(it) } }
+                        )
                     }
                 }
             }
@@ -180,7 +186,7 @@ fun DetailsScreen(
                 modifier = Modifier
                     .padding(top = LargePadding1, start = MediumPadding2)
                     .fillMaxWidth()
-                    .height(400.dp)
+                    .height(LazyVerticalGridHeight)
             ) {
                 val filmOtherStaff = stringResource(id = R.string.Other_staff)
                 Box(
@@ -188,8 +194,8 @@ fun DetailsScreen(
                 ) {
                     TitleCommon(
                         nameTitle = filmOtherStaff,
-                        count = state.listOtherStaff.size,
-                        onClick = {}
+                        varParam = state.listOtherStaff.size.toString(),
+                        onClick = { navigateToAllStaff(state.listOtherStaff) }
                     )
                 }
                 LazyHorizontalGrid(
@@ -200,8 +206,11 @@ fun DetailsScreen(
                     horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
                     verticalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
                 ) {
-                    items(state.listOtherStaff) {
-                        StaffCard(staff = it)
+                    items(state.listOtherStaff) { staff ->
+                        StaffCard(
+                            staff = staff,
+                            onClick = { staff.staffId?.let { navigateToStaffInfo(it) } }
+                        )
                     }
                 }
             }

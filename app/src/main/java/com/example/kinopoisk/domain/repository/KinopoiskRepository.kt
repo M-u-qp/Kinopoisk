@@ -6,6 +6,7 @@ import com.example.kinopoisk.domain.model.Film
 import com.example.kinopoisk.domain.model.Item
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.model.Staff
+import com.example.kinopoisk.domain.model.StaffInfo
 import com.example.kinopoisk.domain.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -22,6 +23,8 @@ interface KinopoiskRepository {
 
     //Актеры и т.п.
      suspend fun getListStaff(filmId: Int): Resource<List<Staff>>
+
+     suspend fun getStaff(id: Int): Resource<StaffInfo>
 
     //Работа с БД
     suspend fun upsertMovie(movie: Movie)

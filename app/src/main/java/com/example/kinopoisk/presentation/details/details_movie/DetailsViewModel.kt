@@ -183,6 +183,7 @@ class DetailsViewModel @Inject constructor(
                     val actors = listStaff.data?.filter { staff -> staff.professionKey == "ACTOR" }
                     val otherStaff =
                         listStaff.data?.filter { staff -> staff.professionKey != "ACTOR" }
+                            ?.distinctBy { staff -> staff.nameRu ?: staff.nameEn }
                     _state.value = _state.value.copy(
                         listActors = actors ?: emptyList(),
                         listOtherStaff = otherStaff ?: emptyList()

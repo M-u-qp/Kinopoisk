@@ -20,11 +20,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.kinopoisk.R
+import com.example.kinopoisk.domain.model.Staff
+import com.example.kinopoisk.presentation.all_staff.AllStaffScreen
 import com.example.kinopoisk.presentation.collectiondb.CollectionDBScreen
 import com.example.kinopoisk.presentation.collectiondb.CollectionDBViewModel
 import com.example.kinopoisk.presentation.details.details_movie.DetailsEvent
 import com.example.kinopoisk.presentation.details.details_movie.DetailsScreen
 import com.example.kinopoisk.presentation.details.details_movie.DetailsViewModel
+import com.example.kinopoisk.presentation.details.details_staff.StaffScreen
+import com.example.kinopoisk.presentation.details.details_staff.StaffViewModel
 import com.example.kinopoisk.presentation.home.HomeScreen
 import com.example.kinopoisk.presentation.home.HomeViewModel
 import com.example.kinopoisk.presentation.movies_navigator.components.BottomNavigationItem
@@ -148,7 +152,19 @@ fun MoviesNavigator() {
                             movieId = movieId,
                             viewModel = viewModel,
                             event = viewModel::onEvent,
-                            navigateUp = { navController.navigateUp() }
+                            navigateUp = { navController.navigateUp() },
+                            navigateToStaffInfo = { id ->
+                                navigateToStaffInfo(
+                                    navController = navController,
+                                    id = id
+                                )
+                            },
+                            navigateToAllStaff = { listStaff ->
+                                navigateToAllStaff(
+                                    navController = navController,
+                                    listStaff = listStaff
+                                )
+                            }
                         )
                     }
             }
@@ -191,6 +207,41 @@ fun MoviesNavigator() {
                         )
                     }
             }
+            composable(route = Route.StaffScreen.route) {
+                val viewModel: StaffViewModel = hiltViewModel()
+                val state = viewModel.state.value
+                navController.previousBackStackEntry?.savedStateHandle?.get<Int>("id")
+                    ?.let { id ->
+                        StaffScreen(
+                            id = id,
+                            state = state,
+                            viewModel = viewModel,
+                            navigateToDetails = { movieId ->
+                                navigateToDetails(
+                                    navController = navController,
+                                    movieId = movieId
+                                )
+                            },
+                            navigateUp = { navController.navigateUp() }
+                        )
+                    }
+            }
+
+            composable(route = Route.AllStaff.route) {
+                navController.previousBackStackEntry?.savedStateHandle?.get<List<Staff>>("listStaff")
+                    ?.let { listStaff ->
+                        AllStaffScreen(
+                            listStaff = listStaff,
+                            navigateToStaffInfo = { id ->
+                                navigateToStaffInfo(
+                                    navController = navController,
+                                    id = id
+                                )
+                            },
+                            navigateUp = { navController.navigateUp() }
+                        )
+                    }
+            }
         }
     }
 }
@@ -212,7 +263,17 @@ private fun navigateToDetails(navController: NavController, movieId: Int) {
     navController.navigate(route = Route.DetailsScreen.route)
 }
 
+private fun navigateToStaffInfo(navController: NavController, id: Int) {
+    navController.currentBackStackEntry?.savedStateHandle?.set("id", id)
+    navController.navigate(route = Route.StaffScreen.route)
+}
+
 private fun navigateToCollectionDB(navController: NavController, nameCollection: String) {
     navController.currentBackStackEntry?.savedStateHandle?.set("nameCollection", nameCollection)
     navController.navigate(route = Route.CollectionDBScreen.route)
+}
+
+private fun navigateToAllStaff(navController: NavController, listStaff: List<Staff>) {
+    navController.currentBackStackEntry?.savedStateHandle?.set("listStaff", listStaff)
+    navController.navigate(route = Route.AllStaff.route)
 }

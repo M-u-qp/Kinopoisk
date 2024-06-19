@@ -36,6 +36,8 @@ object Dimens {
 
     val DialogHeight = 200.dp
 
+    val LazyVerticalGridHeight = 400.dp
+
     val MovieCardSizeWidth = 111.dp
     val MovieCardSizeHeight = 156.dp
     val MovieCardSearchWidth = 96.dp
@@ -43,6 +45,8 @@ object Dimens {
     val CardCollectionSize = 146.dp
     val StaffCardInHomeWidth = 49.dp
     val StaffCardInHomeHeight = 68.dp
+    val StaffCardWidth = 146.dp
+    val StaffCardHeight = 201.dp
 
     val MediumRoundedCornerShape1 = 16.dp
 }

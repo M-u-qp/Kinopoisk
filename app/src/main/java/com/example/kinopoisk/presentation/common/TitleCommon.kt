@@ -21,7 +21,7 @@ import com.example.kinopoisk.presentation.Dimens.SmallFontSize1
 @Composable
 fun TitleCommon(
     nameTitle: String,
-    count: Int,
+    varParam: String,
     onClick: () -> Unit
 ) {
 
@@ -43,7 +43,7 @@ fun TitleCommon(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = count.toString(),
+                text = varParam,
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontSize = SmallFontSize1,
                     fontWeight = FontWeight.Medium

@@ -2,11 +2,15 @@
     <string name="app_name">Kinopoisk</string>
 
     <!-- Home -->
-    <string name="All">Все</string>
+
 
     <!-- Details -->
     <string name="Film_stars">В фильме снимались</string>
     <string name="Other_staff">Над фильмом работали</string>
+
+    <!-- Staff -->
+    <string name="The_best_films">Лучшее</string>
+    <string name="Filmography">Фильмография</string>
 
     <!-- Onboarding -->
     <string name="Skip">Пропустить</string>
@@ -23,4 +27,6 @@
     <string name="Are_you_sure">Вы уверены?</string>
     <string name="Yes">Да</string>
     <string name="No">Нет</string>
+    <string name="All">Все</string>
+
 </resources>

@@ -10,6 +10,8 @@ sealed class Route(
     data object ProfileScreen : Route(route = "profileScreen")
     data object CollectionDBScreen : Route(route = "collectionDBScreen")
     data object CollectionScreen : Route(route = "collectionScreen")
+    data object AllStaff : Route(route = "allStaff")
+    data object StaffScreen : Route(route = "staffScreen")
     data object DetailsScreen : Route(route = "detailsScreen")
     data object AppStartNavigation : Route(route = "appStartNavigation")
     data object KinopoiskNavigation : Route(route = "kinopoiskNavigation")

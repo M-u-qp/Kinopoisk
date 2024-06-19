@@ -1,4 +1,4 @@
-package com.example.kinopoisk.presentation.details.details_movie.components
+package com.example.kinopoisk.presentation.all_staff.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -13,22 +13,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.Staff
-import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding4
-import com.example.kinopoisk.presentation.Dimens.SmallFontSize1
-import com.example.kinopoisk.presentation.Dimens.SmallFontSize2
-import com.example.kinopoisk.presentation.Dimens.SmallPadding1
-import com.example.kinopoisk.presentation.Dimens.StaffCardInHomeHeight
-import com.example.kinopoisk.presentation.Dimens.StaffCardInHomeWidth
+import com.example.kinopoisk.presentation.Dimens
 
 @Composable
-fun StaffCard(
+fun ListStaffCard(
     staff: Staff,
     onClick: () -> Unit
 ) {
+
     val context = LocalContext.current
 
 
@@ -37,7 +34,7 @@ fun StaffCard(
     ) {
         AsyncImage(
             modifier = Modifier
-                .size(width = StaffCardInHomeWidth, height = StaffCardInHomeHeight)
+                .size(width = Dimens.StaffCardWidth, height = Dimens.StaffCardHeight)
                 .clip(MaterialTheme.shapes.medium),
             model = ImageRequest.Builder(context).data(staff.posterUrl).build(),
             contentDescription = null,
@@ -45,21 +42,22 @@ fun StaffCard(
         )
 
         Column(
-            modifier = Modifier.padding(start = SmallPadding1)
+            modifier = Modifier.padding(start = Dimens.SmallPadding1)
         ) {
             Text(
                 text = staff.nameRu ?: staff.nameEn ?: "",
                 style = MaterialTheme.typography.labelMedium.copy(
+                    fontWeight = FontWeight.Bold,
                     color = colorResource(id = R.color.black_text),
-                    fontSize = SmallFontSize1
+                    fontSize = Dimens.MediumFontSize2
                 )
             )
             Text(
-                modifier = Modifier.padding(top = ExtraSmallPadding4),
+                modifier = Modifier.padding(top = Dimens.ExtraSmallPadding4),
                 text = staff.description ?: "",
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = colorResource(id = R.color.gray_text),
-                    fontSize = SmallFontSize2
+                    fontSize = Dimens.SmallFontSize2
                 )
             )
         }

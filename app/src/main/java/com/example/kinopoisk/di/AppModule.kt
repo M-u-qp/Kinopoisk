@@ -28,6 +28,7 @@ import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
 import com.example.kinopoisk.domain.usecases.movies.SearchMovies
 import com.example.kinopoisk.domain.usecases.movies.UpsertMovie
 import com.example.kinopoisk.domain.usecases.staff.GetListStaff
+import com.example.kinopoisk.domain.usecases.staff.GetStaff
 import com.example.kinopoisk.domain.usecases.staff.StaffUseCases
 import com.example.kinopoisk.util.Constants.BASE_URL
 import dagger.Module
@@ -122,7 +123,8 @@ object AppModule {
         kinopoiskRepository: KinopoiskRepository
     ): StaffUseCases {
         return StaffUseCases(
-            getListStaff = GetListStaff(kinopoiskRepository)
+            getListStaff = GetListStaff(kinopoiskRepository),
+            getStaff = GetStaff(kinopoiskRepository)
         )
     }
 

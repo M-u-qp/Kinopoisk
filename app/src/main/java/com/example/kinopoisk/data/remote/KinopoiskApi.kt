@@ -3,6 +3,7 @@ package com.example.kinopoisk.data.remote
 import com.example.kinopoisk.data.remote.dto.CollectionsResponse
 import com.example.kinopoisk.data.remote.dto.MovieResponse
 import com.example.kinopoisk.data.remote.dto.SearchMoviesResponse
+import com.example.kinopoisk.data.remote.dto.ListStaffResponse
 import com.example.kinopoisk.data.remote.dto.StaffResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -39,5 +40,12 @@ interface KinopoiskApi {
     suspend fun getListStaff(
         @Header("X-API-KEY") apiKey: String,
         @Query("filmId") filmId: Int
+    ): Response<ListStaffResponse>
+
+    //Детальное инфо об актере
+    @GET("/api/v1/staff/{id}")
+    suspend fun getStaff(
+        @Header("X-API-KEY") apiKey: String,
+        @Path("id") id: Int
     ): Response<StaffResponse>
 }

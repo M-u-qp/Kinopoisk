@@ -1,9 +1,6 @@
-package com.example.kinopoisk.data.remote.dto
+package com.example.kinopoisk.domain.model
 
-import com.example.kinopoisk.domain.model.Films
-import com.example.kinopoisk.domain.model.Spouse
-
-data class StaffResponse(
+data class StaffInfo(
     val age: Int?,
     val birthday: String?,
     val birthplace: String?,

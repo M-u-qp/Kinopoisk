@@ -71,7 +71,7 @@ fun ProfileScreen(
 
         TitleCommon(
             nameTitle = TitleCollectionsDB.VIEWED.value,
-            count = sizeViewedCollection,
+            varParam = sizeViewedCollection.toString(),
             onClick = { navigateToCollection(TitleCollectionsDB.VIEWED.value) }
         )
 

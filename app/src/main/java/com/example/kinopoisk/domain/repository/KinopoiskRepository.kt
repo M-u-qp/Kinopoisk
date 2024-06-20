@@ -3,6 +3,7 @@ package com.example.kinopoisk.domain.repository
 import androidx.paging.PagingData
 import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.Film
+import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.Item
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.model.Staff
@@ -25,6 +26,9 @@ interface KinopoiskRepository {
      suspend fun getListStaff(filmId: Int): Resource<List<Staff>>
 
      suspend fun getStaff(id: Int): Resource<StaffInfo>
+
+     //Галерея
+     fun getGalleryMovie(id: Int, type: String): Flow<PagingData<GalleryItem>>
 
     //Работа с БД
     suspend fun upsertMovie(movie: Movie)

@@ -4,6 +4,8 @@ import com.example.kinopoisk.data.remote.dto.CollectionsResponse
 import com.example.kinopoisk.data.remote.dto.MovieResponse
 import com.example.kinopoisk.data.remote.dto.SearchMoviesResponse
 import com.example.kinopoisk.data.remote.dto.ListStaffResponse
+import com.example.kinopoisk.data.remote.dto.MovieGalleryResponse
+import com.example.kinopoisk.data.remote.dto.SimilarMoviesResponse
 import com.example.kinopoisk.data.remote.dto.StaffResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -48,4 +50,20 @@ interface KinopoiskApi {
         @Header("X-API-KEY") apiKey: String,
         @Path("id") id: Int
     ): Response<StaffResponse>
+
+    //Галерея фильма
+    @GET("/api/v2.2/films/{id}/images")
+    suspend fun getGalleryMovie(
+        @Header("X-API-KEY") apiKey: String,
+        @Path("id") id: Int,
+        @Query("type") type: String,
+        @Query("page") page: Int
+    ): MovieGalleryResponse
+
+    //Похожие фильмы
+    @GET("/api/v2.2/films/{id}/similars")
+    suspend fun getSimilarMovies(
+        @Header("X-API-KEY") apiKey: String,
+        @Path("id") id: Int
+    ): Response<SimilarMoviesResponse>
 }

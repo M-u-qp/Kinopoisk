@@ -12,10 +12,12 @@ import com.example.kinopoisk.data.mapper.toMovie
 import com.example.kinopoisk.data.mapper.toMovieEntity
 import com.example.kinopoisk.data.mapper.toStaffInfo
 import com.example.kinopoisk.data.remote.CollectionsPagingSource
+import com.example.kinopoisk.data.remote.GalleryMoviesPagingSource
 import com.example.kinopoisk.data.remote.KinopoiskApi
 import com.example.kinopoisk.data.remote.SearchMoviesPagingSource
 import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.Film
+import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.Item
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.model.Staff
@@ -118,6 +120,21 @@ class KinopoiskRepositoryImpl(
             e.printStackTrace()
             Resource.Error(e)
         }
+    }
+
+    //Галерея
+    override fun getGalleryMovie(id: Int, type: String): Flow<PagingData<GalleryItem>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                GalleryMoviesPagingSource(
+                    kinopoiskApi = kinopoiskApi,
+                    context = context,
+                    id = id,
+                    type = type
+                )
+            }
+        ).flow
     }
 
     //БД

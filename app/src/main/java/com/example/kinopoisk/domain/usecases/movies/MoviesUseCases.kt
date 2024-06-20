@@ -7,5 +7,6 @@ data class MoviesUseCases(
     val deleteMovie: DeleteMovie,
     val deleteMovieById: DeleteMovieById,
     val getAllMoviesInDB: GetAllMoviesInDB,
-    val deleteCollectionMovies: DeleteCollectionMovies
+    val deleteCollectionMovies: DeleteCollectionMovies,
+    val galleryMovie: GalleryMovie
 )

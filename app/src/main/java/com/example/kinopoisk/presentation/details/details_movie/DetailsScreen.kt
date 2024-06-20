@@ -3,7 +3,6 @@ package com.example.kinopoisk.presentation.details.details_movie
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,7 +24,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.LazyPagingItems
 import com.example.kinopoisk.R
+import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.Staff
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
 import com.example.kinopoisk.presentation.Dimens.LargePadding1
@@ -36,6 +37,7 @@ import com.example.kinopoisk.presentation.Dimens.MediumPadding3
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
 import com.example.kinopoisk.presentation.common.TitleCommon
 import com.example.kinopoisk.presentation.details.details_movie.components.DialogAddMovieInCollections
+import com.example.kinopoisk.presentation.details.details_movie.components.GalleryMovie
 import com.example.kinopoisk.presentation.details.details_movie.components.MovieDetailsCard
 import com.example.kinopoisk.presentation.details.details_movie.components.StaffCard
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +50,8 @@ fun DetailsScreen(
     event: (DetailsEvent) -> Unit,
     navigateUp: () -> Unit,
     navigateToStaffInfo: (Int) -> Unit,
-    navigateToAllStaff: (List<Staff>) -> Unit
+    navigateToAllStaff: (List<Staff>) -> Unit,
+    galleryMovieStill: LazyPagingItems<GalleryItem>
 ) {
 
     val context = LocalContext.current
@@ -76,6 +79,13 @@ fun DetailsScreen(
     state.movie?.let { movie ->
         event(DetailsEvent.AutoAddMovieInViewed(movie))
     }
+
+    //Галерея фильма
+//    LaunchedEffect(key1 = true) {
+//        withContext(Dispatchers.IO) {
+//            viewModel.getGalleryMovie(id = movieId, type = "STILL")
+//        }
+//    }
 
     val lazyListState = rememberLazyListState()
 
@@ -153,15 +163,11 @@ fun DetailsScreen(
                     .height(LazyVerticalGridHeight)
             ) {
                 val filmStars = stringResource(id = R.string.Film_stars)
-                Box(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    TitleCommon(
-                        nameTitle = filmStars,
-                        varParam = state.listActors.size.toString(),
-                        onClick = { navigateToAllStaff(state.listActors) }
-                    )
-                }
+                TitleCommon(
+                    nameTitle = filmStars,
+                    varParam = state.listActors.size.toString(),
+                    onClick = { navigateToAllStaff(state.listActors) }
+                )
                 LazyHorizontalGrid(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -189,15 +195,11 @@ fun DetailsScreen(
                     .height(LazyVerticalGridHeight)
             ) {
                 val filmOtherStaff = stringResource(id = R.string.Other_staff)
-                Box(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    TitleCommon(
-                        nameTitle = filmOtherStaff,
-                        varParam = state.listOtherStaff.size.toString(),
-                        onClick = { navigateToAllStaff(state.listOtherStaff) }
-                    )
-                }
+                TitleCommon(
+                    nameTitle = filmOtherStaff,
+                    varParam = state.listOtherStaff.size.toString(),
+                    onClick = { navigateToAllStaff(state.listOtherStaff) }
+                )
                 LazyHorizontalGrid(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -213,6 +215,23 @@ fun DetailsScreen(
                         )
                     }
                 }
+            }
+        }
+        //Галерея
+        item {
+            Column(
+                modifier = Modifier
+                    .padding(top = LargePadding1, start = MediumPadding2)
+                    .fillMaxWidth()
+            ) {
+                val gallery = stringResource(id = R.string.Gallery)
+                val all = stringResource(id = R.string.All)
+                TitleCommon(
+                    nameTitle = gallery,
+                    varParam = all,
+                    onClick = {}
+                )
+                GalleryMovie(images = galleryMovieStill)
             }
         }
     }

@@ -5,6 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
@@ -12,6 +15,7 @@ import com.example.kinopoisk.domain.usecases.staff.StaffUseCases
 import com.example.kinopoisk.domain.utils.Resource
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -197,5 +201,12 @@ class DetailsViewModel @Inject constructor(
                 else -> Unit
             }
         }
+    }
+
+    //Галерея фильма
+    fun getGalleryMovie(id: Int, type: String): Flow<PagingData<GalleryItem>> {
+        val result = moviesUseCases.galleryMovie(id = id, type = type).cachedIn(viewModelScope)
+        _state.value = _state.value.copy(movieGalleryStill = result)
+        return state.value.movieGalleryStill
     }
 }

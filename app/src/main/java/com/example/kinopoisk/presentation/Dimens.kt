@@ -47,6 +47,8 @@ object Dimens {
     val StaffCardInHomeHeight = 68.dp
     val StaffCardWidth = 146.dp
     val StaffCardHeight = 201.dp
+    val GalleryImageWidth = 192.dp
+    val GalleryImageHeight = 108.dp
 
     val MediumRoundedCornerShape1 = 16.dp
 }

@@ -22,6 +22,7 @@ import com.example.kinopoisk.domain.usecases.collections.GetCollectionsInDB
 import com.example.kinopoisk.domain.usecases.movies.DeleteCollectionMovies
 import com.example.kinopoisk.domain.usecases.movies.DeleteMovie
 import com.example.kinopoisk.domain.usecases.movies.DeleteMovieById
+import com.example.kinopoisk.domain.usecases.movies.GalleryMovie
 import com.example.kinopoisk.domain.usecases.movies.GetAllMoviesInDB
 import com.example.kinopoisk.domain.usecases.movies.GetMovie
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
@@ -113,7 +114,8 @@ object AppModule {
             deleteMovie = DeleteMovie(kinopoiskRepository),
             deleteMovieById = DeleteMovieById(kinopoiskRepository),
             getAllMoviesInDB = GetAllMoviesInDB(kinopoiskRepository),
-            deleteCollectionMovies = DeleteCollectionMovies(kinopoiskRepository)
+            deleteCollectionMovies = DeleteCollectionMovies(kinopoiskRepository),
+            galleryMovie = GalleryMovie(kinopoiskRepository)
         )
     }
 

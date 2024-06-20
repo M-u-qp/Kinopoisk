@@ -7,6 +7,8 @@
     <!-- Details -->
     <string name="Film_stars">В фильме снимались</string>
     <string name="Other_staff">Над фильмом работали</string>
+    <string name="Gallery">Галерея</string>
+    <string name="Similar_movies">Похожие фильмы</string>
 
     <!-- Staff -->
     <string name="The_best_films">Лучшее</string>

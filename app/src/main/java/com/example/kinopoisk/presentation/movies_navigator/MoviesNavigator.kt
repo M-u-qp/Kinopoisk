@@ -148,6 +148,7 @@ fun MoviesNavigator() {
                 }
                 navController.previousBackStackEntry?.savedStateHandle?.get<Int>("movieId")
                     ?.let { movieId ->
+                        val galleryMovieStill = viewModel.getGalleryMovie(id = movieId, type = "STILL").collectAsLazyPagingItems()
                         DetailsScreen(
                             movieId = movieId,
                             viewModel = viewModel,
@@ -164,7 +165,8 @@ fun MoviesNavigator() {
                                     navController = navController,
                                     listStaff = listStaff
                                 )
-                            }
+                            },
+                            galleryMovieStill = galleryMovieStill
                         )
                     }
             }

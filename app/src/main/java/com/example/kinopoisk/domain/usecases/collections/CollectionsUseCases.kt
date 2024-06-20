@@ -5,5 +5,6 @@ data class CollectionsUseCases(
     val getCollectionInDB: GetCollectionInDB,
     val getCollectionsInDB: GetCollectionsInDB,
     val addCollection: AddCollection,
-    val deleteCollection: DeleteCollection
+    val deleteCollection: DeleteCollection,
+    val getSimilarMovies: GetSimilarMovies
 )

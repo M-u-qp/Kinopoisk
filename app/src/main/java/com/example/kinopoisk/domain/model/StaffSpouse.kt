@@ -1,6 +1,6 @@
 package com.example.kinopoisk.domain.model
 
-data class Spouse(
+data class StaffSpouse(
     val children: Int?,
     val divorced: Boolean?,
     val divorcedReason: String?,

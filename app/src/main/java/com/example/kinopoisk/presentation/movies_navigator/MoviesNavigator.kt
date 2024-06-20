@@ -166,7 +166,13 @@ fun MoviesNavigator() {
                                     listStaff = listStaff
                                 )
                             },
-                            galleryMovieStill = galleryMovieStill
+                            galleryMovieStill = galleryMovieStill,
+                            navigateToDetails = { similarMovieId ->
+                                navigateToDetails(
+                                    navController = navController,
+                                    movieId = similarMovieId
+                                )
+                            }
                         )
                     }
             }

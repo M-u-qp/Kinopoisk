@@ -4,22 +4,22 @@ import android.content.Context
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.kinopoisk.R
-import com.example.kinopoisk.domain.model.Item
+import com.example.kinopoisk.domain.model.CollectionItem
 
 class CollectionsPagingSource(
     private val kinopoiskApi: KinopoiskApi,
     private val context: Context
-) : PagingSource<Int, Item>() {
+) : PagingSource<Int, CollectionItem>() {
 
     private var totalCollectionsCount = 0
-    override fun getRefreshKey(state: PagingState<Int, Item>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, CollectionItem>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Item> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CollectionItem> {
         val page = params.key ?: 1
         return try {
             val collectionsResponse = kinopoiskApi.getTopPopularAll(

@@ -163,14 +163,14 @@ class DetailsViewModel @Inject constructor(
                     _state.value = _state.value.copy(
                         loadingMovie = false,
                         movie = movie.data,
-                        error = null
+                        errorMovies = null
                     )
                 }
 
                 is Resource.Error -> {
                     _state.value = _state.value.copy(
                         loadingMovie = false,
-                        error = movie.exception.toString()
+                        errorMovies = movie.exception.toString()
                     )
                 }
 
@@ -190,12 +190,13 @@ class DetailsViewModel @Inject constructor(
                             ?.distinctBy { staff -> staff.nameRu ?: staff.nameEn }
                     _state.value = _state.value.copy(
                         listActors = actors ?: emptyList(),
-                        listOtherStaff = otherStaff ?: emptyList()
+                        listOtherStaff = otherStaff ?: emptyList(),
+                        errorStaff = null
                     )
                 }
 
                 is Resource.Error -> {
-                    _state.value = _state.value.copy(error = listStaff.exception.toString())
+                    _state.value = _state.value.copy(errorStaff = listStaff.exception.toString())
                 }
 
                 else -> Unit
@@ -205,8 +206,30 @@ class DetailsViewModel @Inject constructor(
 
     //Галерея фильма
     fun getGalleryMovie(id: Int, type: String): Flow<PagingData<GalleryItem>> {
-        val result = moviesUseCases.galleryMovie(id = id, type = type).cachedIn(viewModelScope)
-        _state.value = _state.value.copy(movieGalleryStill = result)
-        return state.value.movieGalleryStill
+        return moviesUseCases.galleryMovie(id = id, type = type).cachedIn(viewModelScope)
+    }
+
+    //Похожие фильмы
+    fun getSimilarMovies(id: Int) {
+        viewModelScope.launch {
+            when (val listSimilarMovies = collectionsUseCases.getSimilarMovies(id = id)) {
+                is Resource.Success -> {
+                    listSimilarMovies.data?.let { listMovies ->
+                        _state.value = _state.value.copy(
+                            similarMovies = listMovies,
+                            errorSimilar = null
+                        )
+                    }
+                }
+
+                is Resource.Error -> {
+                    _state.value = _state.value.copy(
+                        errorSimilar = listSimilarMovies.exception.toString()
+                    )
+                }
+
+                else -> Unit
+            }
+        }
     }
 }

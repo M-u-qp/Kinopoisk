@@ -22,14 +22,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.kinopoisk.R
-import com.example.kinopoisk.domain.model.Film
+import com.example.kinopoisk.domain.model.SearchFilm
 import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
 
 @Composable
 fun MovieCardSearch(
     modifier: Modifier = Modifier,
-    film: Film,
+    film: SearchFilm,
     onClick: () -> Unit
 ) {
     val context = LocalContext.current

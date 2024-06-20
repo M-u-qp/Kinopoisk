@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Film(
+data class SearchFilm(
     val countries: List<Country>,
     val description: String,
     val filmId: Int,

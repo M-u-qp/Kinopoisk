@@ -21,7 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.kinopoisk.R
-import com.example.kinopoisk.domain.model.Item
+import com.example.kinopoisk.domain.model.CollectionItem
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallFontSize1
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding1
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
@@ -37,7 +37,7 @@ import com.example.kinopoisk.presentation.common.normalizeTitleMovie
 @Composable
 fun MovieCardCollection(
     modifier: Modifier = Modifier,
-    item: Item,
+    item: CollectionItem,
     onClick: (() -> Unit)? = null
 ) {
     val context = LocalContext.current

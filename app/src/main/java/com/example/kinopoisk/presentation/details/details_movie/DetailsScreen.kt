@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,6 +41,7 @@ import com.example.kinopoisk.presentation.common.TitleCommon
 import com.example.kinopoisk.presentation.details.details_movie.components.DialogAddMovieInCollections
 import com.example.kinopoisk.presentation.details.details_movie.components.GalleryMovie
 import com.example.kinopoisk.presentation.details.details_movie.components.MovieDetailsCard
+import com.example.kinopoisk.presentation.details.details_movie.components.SimilarMovieCard
 import com.example.kinopoisk.presentation.details.details_movie.components.StaffCard
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -51,7 +54,8 @@ fun DetailsScreen(
     navigateUp: () -> Unit,
     navigateToStaffInfo: (Int) -> Unit,
     navigateToAllStaff: (List<Staff>) -> Unit,
-    galleryMovieStill: LazyPagingItems<GalleryItem>
+    galleryMovieStill: LazyPagingItems<GalleryItem>,
+    navigateToDetails: (Int) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -80,12 +84,12 @@ fun DetailsScreen(
         event(DetailsEvent.AutoAddMovieInViewed(movie))
     }
 
-    //Галерея фильма
-//    LaunchedEffect(key1 = true) {
-//        withContext(Dispatchers.IO) {
-//            viewModel.getGalleryMovie(id = movieId, type = "STILL")
-//        }
-//    }
+    //Получить похожие фильмы
+    LaunchedEffect(key1 = true) {
+        withContext(Dispatchers.IO) {
+            viewModel.getSimilarMovies(movieId)
+        }
+    }
 
     val lazyListState = rememberLazyListState()
 
@@ -232,6 +236,35 @@ fun DetailsScreen(
                     onClick = {}
                 )
                 GalleryMovie(images = galleryMovieStill)
+            }
+        }
+        //Похожие фильмы
+        item {
+            Column(
+                modifier = Modifier
+                    .padding(top = LargePadding1, start = MediumPadding2)
+                    .fillMaxWidth()
+            ) {
+                val similarMovies = stringResource(id = R.string.Similar_movies)
+                val all = stringResource(id = R.string.All)
+                TitleCommon(
+                    nameTitle = similarMovies,
+                    varParam = all,
+                    onClick = {}
+                )
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
+                ) {
+                    items(state.similarMovies) { similarItem ->
+                        similarItem.filmId?.let {
+                            SimilarMovieCard(
+                                item = similarItem,
+                                onClick = { navigateToDetails(it) }
+                            )
+                        }
+                    }
+                }
             }
         }
     }

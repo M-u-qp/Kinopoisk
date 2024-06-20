@@ -24,7 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.CollectionDB
-import com.example.kinopoisk.domain.model.Item
+import com.example.kinopoisk.domain.model.CollectionItem
 import com.example.kinopoisk.presentation.Dimens.MediumFontSize1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
@@ -38,7 +38,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    movies: LazyPagingItems<Item>,
+    movies: LazyPagingItems<CollectionItem>,
     navigateToSearch: () -> Unit,
     navigateToDetails: (Int) -> Unit
 ) {

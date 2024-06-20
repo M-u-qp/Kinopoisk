@@ -1,7 +1,7 @@
 package com.example.kinopoisk.data.remote.dto
 
-import com.example.kinopoisk.domain.model.Films
-import com.example.kinopoisk.domain.model.Spouse
+import com.example.kinopoisk.domain.model.StaffFilms
+import com.example.kinopoisk.domain.model.StaffSpouse
 
 data class StaffResponse(
     val age: Int?,
@@ -10,7 +10,7 @@ data class StaffResponse(
     val death: String?,
     val deathplace: String?,
     val facts: List<String>,
-    val films: List<Films>,
+    val films: List<StaffFilms>,
     val growth: String?,
     val hasAwards: Int?,
     val nameEn: String?,
@@ -19,6 +19,6 @@ data class StaffResponse(
     val posterUrl: String?,
     val profession: String?,
     val sex: String?,
-    val spouses: List<Spouse>,
+    val spouses: List<StaffSpouse>,
     val webUrl: String?
 )

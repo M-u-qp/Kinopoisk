@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Item(
+data class CollectionItem(
     val countries: List<Country>,
     val genres: List<Genre>,
     val kinopoiskId: Int,

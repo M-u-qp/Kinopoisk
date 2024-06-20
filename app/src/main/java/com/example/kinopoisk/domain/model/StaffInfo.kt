@@ -7,7 +7,7 @@ data class StaffInfo(
     val death: String?,
     val deathplace: String?,
     val facts: List<String>,
-    val films: List<Films>,
+    val films: List<StaffFilms>,
     val growth: String?,
     val hasAwards: Int?,
     val nameEn: String?,
@@ -16,6 +16,6 @@ data class StaffInfo(
     val posterUrl: String?,
     val profession: String?,
     val sex: String?,
-    val spouses: List<Spouse>,
+    val spouses: List<StaffSpouse>,
     val webUrl: String?
 )

@@ -2,10 +2,11 @@ package com.example.kinopoisk.domain.repository
 
 import androidx.paging.PagingData
 import com.example.kinopoisk.domain.model.CollectionDB
-import com.example.kinopoisk.domain.model.Film
+import com.example.kinopoisk.domain.model.SearchFilm
 import com.example.kinopoisk.domain.model.GalleryItem
-import com.example.kinopoisk.domain.model.Item
+import com.example.kinopoisk.domain.model.CollectionItem
 import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
 import com.example.kinopoisk.domain.model.StaffInfo
 import com.example.kinopoisk.domain.utils.Resource
@@ -14,10 +15,12 @@ import kotlinx.coroutines.flow.Flow
 interface KinopoiskRepository {
 
     //Получение коллекций
-    fun getTopPopularAll(): Flow<PagingData<Item>>
+    fun getTopPopularAll(): Flow<PagingData<CollectionItem>>
+
+    suspend fun getSimilarMovies(id: Int): Resource<List<SimilarItem>>
 
     //Поиск
-    fun searchMovies(keyword: String): Flow<PagingData<Film>>
+    fun searchMovies(keyword: String): Flow<PagingData<SearchFilm>>
 
     //Получить детальную информацию о фильме
     suspend fun getMovie(id: Int): Resource<Movie>

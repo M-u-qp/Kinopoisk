@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import com.example.kinopoisk.domain.model.Film
+import com.example.kinopoisk.domain.model.SearchFilm
 import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.common.EmptyScreen
 import com.example.kinopoisk.presentation.common.MovieCardSearchShimmerEffect
@@ -17,8 +17,8 @@ import com.example.kinopoisk.presentation.common.MovieCardSearchShimmerEffect
 @Composable
 fun MoviesListSearch(
     modifier: Modifier = Modifier,
-    movies: LazyPagingItems<Film>,
-    onClick: (Film) -> Unit
+    movies: LazyPagingItems<SearchFilm>,
+    onClick: (SearchFilm) -> Unit
 ) {
     val handlePagingResultSearch = handlePagingResultSearch(movies = movies)
 
@@ -39,7 +39,7 @@ fun MoviesListSearch(
 
 @Composable
 fun handlePagingResultSearch(
-    movies: LazyPagingItems<Film>
+    movies: LazyPagingItems<SearchFilm>
 ): Boolean {
     val loadState = movies.loadState
     val error = when {

@@ -16,10 +16,11 @@ import com.example.kinopoisk.data.remote.GalleryMoviesPagingSource
 import com.example.kinopoisk.data.remote.KinopoiskApi
 import com.example.kinopoisk.data.remote.SearchMoviesPagingSource
 import com.example.kinopoisk.domain.model.CollectionDB
-import com.example.kinopoisk.domain.model.Film
+import com.example.kinopoisk.domain.model.SearchFilm
 import com.example.kinopoisk.domain.model.GalleryItem
-import com.example.kinopoisk.domain.model.Item
+import com.example.kinopoisk.domain.model.CollectionItem
 import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
 import com.example.kinopoisk.domain.model.StaffInfo
 import com.example.kinopoisk.domain.repository.KinopoiskRepository
@@ -43,7 +44,7 @@ class KinopoiskRepositoryImpl(
     }
 
     //Коллекции
-    override fun getTopPopularAll(): Flow<PagingData<Item>> {
+    override fun getTopPopularAll(): Flow<PagingData<CollectionItem>> {
         return Pager(
             config = PagingConfig(pageSize = 10),
             pagingSourceFactory = {
@@ -55,8 +56,25 @@ class KinopoiskRepositoryImpl(
         ).flow
     }
 
+    override suspend fun getSimilarMovies(id: Int): Resource<List<SimilarItem>> {
+        return try {
+            val response = kinopoiskApi.getSimilarMovies(
+                apiKey = context.getString(R.string.API_KEY),
+                id = id
+            )
+            if (response.body() != null) {
+                Resource.Success(response.body()!!.items)
+            }else {
+                Resource.Error(Exception(getResponseError(response.code())))
+            }
+        }catch (e:Exception) {
+            e.printStackTrace()
+            Resource.Error(e)
+        }
+    }
+
     //Поиск
-    override fun searchMovies(keyword: String): Flow<PagingData<Film>> {
+    override fun searchMovies(keyword: String): Flow<PagingData<SearchFilm>> {
         return Pager(
             config = PagingConfig(pageSize = 10),
             pagingSourceFactory = {

@@ -1,6 +1,6 @@
 package com.example.kinopoisk.domain.model
 
-data class Films(
+data class StaffFilms(
     val description: String?,
     val filmId: Int?,
     val general: Boolean?,

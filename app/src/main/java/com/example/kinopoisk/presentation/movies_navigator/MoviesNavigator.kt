@@ -20,7 +20,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.kinopoisk.R
+import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
+import com.example.kinopoisk.presentation.all_movies.AllMoviesScreen
 import com.example.kinopoisk.presentation.all_staff.AllStaffScreen
 import com.example.kinopoisk.presentation.collectiondb.CollectionDBScreen
 import com.example.kinopoisk.presentation.collectiondb.CollectionDBViewModel
@@ -122,6 +124,13 @@ fun MoviesNavigator() {
                             navController = navController,
                             movieId = movieId
                         )
+                    },
+                    navigateToAllMovies = { listMovies ->
+                        navigateToAll(
+                            navController = navController,
+                            listAll = listMovies,
+                            type = "collection"
+                        )
                     }
                 )
             }
@@ -148,7 +157,9 @@ fun MoviesNavigator() {
                 }
                 navController.previousBackStackEntry?.savedStateHandle?.get<Int>("movieId")
                     ?.let { movieId ->
-                        val galleryMovieStill = viewModel.getGalleryMovie(id = movieId, type = "STILL").collectAsLazyPagingItems()
+                        val galleryMovieStill =
+                            viewModel.getGalleryMovie(id = movieId, type = "STILL")
+                                .collectAsLazyPagingItems()
                         DetailsScreen(
                             movieId = movieId,
                             viewModel = viewModel,
@@ -161,9 +172,17 @@ fun MoviesNavigator() {
                                 )
                             },
                             navigateToAllStaff = { listStaff ->
-                                navigateToAllStaff(
+                                navigateToAll(
                                     navController = navController,
-                                    listStaff = listStaff
+                                    listAll = listStaff,
+                                    type = "staff"
+                                )
+                            },
+                            navigateToAllMovies = { listMovies ->
+                                navigateToAll(
+                                    navController = navController,
+                                    listAll = listMovies,
+                                    type = "similar"
                                 )
                             },
                             galleryMovieStill = galleryMovieStill,
@@ -235,7 +254,7 @@ fun MoviesNavigator() {
                     }
             }
 
-            composable(route = Route.AllStaff.route) {
+            composable(route = Route.AllStaffScreen.route) {
                 navController.previousBackStackEntry?.savedStateHandle?.get<List<Staff>>("listStaff")
                     ?.let { listStaff ->
                         AllStaffScreen(
@@ -244,6 +263,21 @@ fun MoviesNavigator() {
                                 navigateToStaffInfo(
                                     navController = navController,
                                     id = id
+                                )
+                            },
+                            navigateUp = { navController.navigateUp() }
+                        )
+                    }
+            }
+            composable(route = Route.AllMovieScreen.route) {
+                navController.previousBackStackEntry?.savedStateHandle?.get<List<SimilarItem>>("listAll")
+                    ?.let { listMovies ->
+                        AllMoviesScreen(
+                            movies = listMovies,
+                            navigateToDetails = { movieId ->
+                                navigateToDetails(
+                                    navController = navController,
+                                    movieId = movieId
                                 )
                             },
                             navigateUp = { navController.navigateUp() }
@@ -281,7 +315,11 @@ private fun navigateToCollectionDB(navController: NavController, nameCollection:
     navController.navigate(route = Route.CollectionDBScreen.route)
 }
 
-private fun navigateToAllStaff(navController: NavController, listStaff: List<Staff>) {
-    navController.currentBackStackEntry?.savedStateHandle?.set("listStaff", listStaff)
-    navController.navigate(route = Route.AllStaff.route)
+private fun navigateToAll(navController: NavController, listAll: List<*>, type: String) {
+    navController.currentBackStackEntry?.savedStateHandle?.set("listAll", listAll)
+    if (type == "staff") {
+        navController.navigate(route = Route.AllStaffScreen.route)
+    } else {
+        navController.navigate(route = Route.AllMovieScreen.route)
+    }
 }

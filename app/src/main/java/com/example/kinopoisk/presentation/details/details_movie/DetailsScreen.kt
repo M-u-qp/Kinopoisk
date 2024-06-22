@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.GalleryItem
+import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
 import com.example.kinopoisk.presentation.Dimens.LargePadding1
@@ -54,6 +55,7 @@ fun DetailsScreen(
     navigateUp: () -> Unit,
     navigateToStaffInfo: (Int) -> Unit,
     navigateToAllStaff: (List<Staff>) -> Unit,
+    navigateToAllMovies: (List<SimilarItem>) -> Unit,
     galleryMovieStill: LazyPagingItems<GalleryItem>,
     navigateToDetails: (Int) -> Unit
 ) {
@@ -228,40 +230,34 @@ fun DetailsScreen(
                     .padding(top = LargePadding1, start = MediumPadding2)
                     .fillMaxWidth()
             ) {
-                val gallery = stringResource(id = R.string.Gallery)
-                val all = stringResource(id = R.string.All)
-                TitleCommon(
-                    nameTitle = gallery,
-                    varParam = all,
-                    onClick = {}
-                )
                 GalleryMovie(images = galleryMovieStill)
             }
         }
         //Похожие фильмы
         item {
-            Column(
-                modifier = Modifier
-                    .padding(top = LargePadding1, start = MediumPadding2)
-                    .fillMaxWidth()
-            ) {
-                val similarMovies = stringResource(id = R.string.Similar_movies)
-                val all = stringResource(id = R.string.All)
-                TitleCommon(
-                    nameTitle = similarMovies,
-                    varParam = all,
-                    onClick = {}
-                )
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
+            if (state.similarMovies.isNotEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .padding(top = LargePadding1, start = MediumPadding2)
+                        .fillMaxWidth()
                 ) {
-                    items(state.similarMovies) { similarItem ->
-                        similarItem.filmId?.let {
-                            SimilarMovieCard(
-                                item = similarItem,
-                                onClick = { navigateToDetails(it) }
-                            )
+                    val similarMovies = stringResource(id = R.string.Similar_movies)
+                    TitleCommon(
+                        nameTitle = similarMovies,
+                        varParam = state.similarMovies.size.toString(),
+                        onClick = { navigateToAllMovies(state.similarMovies) }
+                    )
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
+                    ) {
+                        items(state.similarMovies) { similarItem ->
+                            similarItem.filmId?.let {
+                                SimilarMovieCard(
+                                    item = similarItem,
+                                    onClick = { navigateToDetails(it) }
+                                )
+                            }
                         }
                     }
                 }

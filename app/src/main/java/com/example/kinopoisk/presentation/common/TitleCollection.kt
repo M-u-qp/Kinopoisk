@@ -1,5 +1,6 @@
 package com.example.kinopoisk.presentation.common
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +17,10 @@ import com.example.kinopoisk.R
 import com.example.kinopoisk.presentation.Dimens
 
 @Composable
-fun TitleCollection(nameCollection: String) {
+fun TitleCollection(
+    nameCollection: String,
+    onClick: () -> Unit
+    ) {
 
     Row(
         modifier = Modifier
@@ -34,6 +38,7 @@ fun TitleCollection(nameCollection: String) {
             color = colorResource(id = R.color.black_text)
         )
         Text(
+            modifier = Modifier.clickable { onClick() },
             text = stringResource(id = R.string.All),
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontSize = Dimens.SmallFontSize1

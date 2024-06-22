@@ -28,8 +28,6 @@ import com.example.kinopoisk.domain.model.CollectionItem
 import com.example.kinopoisk.presentation.Dimens.MediumFontSize1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
-import com.example.kinopoisk.presentation.common.TitleCollection
-import com.example.kinopoisk.presentation.common.TitleCollections
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import com.example.kinopoisk.presentation.home.components.MoviesListCollection
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +38,8 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     movies: LazyPagingItems<CollectionItem>,
     navigateToSearch: () -> Unit,
-    navigateToDetails: (Int) -> Unit
+    navigateToDetails: (Int) -> Unit,
+    navigateToAllMovies: (List<CollectionItem>) -> Unit
 ) {
 
     val state = viewModel.state.collectAsState().value
@@ -83,12 +82,11 @@ fun HomeScreen(
             }
         }
 
-        TitleCollection(nameCollection = TitleCollections.TOP_POPULAR_ALL.value)
-
         MoviesListCollection(
             modifier = Modifier.padding(top = MediumPadding1),
             movies = movies,
-            onClick = { navigateToDetails(it) }
+            onClick = { navigateToDetails(it) },
+            navigateToAllMovies = navigateToAllMovies
         )
     }
 }

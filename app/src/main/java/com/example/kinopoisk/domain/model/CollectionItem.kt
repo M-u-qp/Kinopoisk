@@ -11,10 +11,10 @@ data class CollectionItem(
     val nameEn: String?,
     val nameOriginal: String,
     val nameRu: String?,
-    val posterUrl: String,
+    val posterUrl: String?,
     val posterUrlPreview: String,
     val ratingImbd: Double,
-    val ratingKinopoisk: Double,
+    val ratingKinopoisk: Double?,
     val type: String,
-    val year: String
+    val year: String?
 ): Parcelable

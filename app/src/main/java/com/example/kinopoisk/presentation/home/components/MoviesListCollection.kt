@@ -1,6 +1,7 @@
 package com.example.kinopoisk.presentation.home.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,23 +15,33 @@ import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding3
 import com.example.kinopoisk.presentation.common.EmptyScreen
 import com.example.kinopoisk.presentation.common.MovieCardCollectionShimmerEffect
+import com.example.kinopoisk.presentation.common.TitleCollection
+import com.example.kinopoisk.presentation.common.TitleCollections
 
 @Composable
 fun MoviesListCollection(
     modifier: Modifier = Modifier,
     movies: LazyPagingItems<CollectionItem>,
-    onClick: (Int) -> Unit
+    onClick: (Int) -> Unit,
+    navigateToAllMovies: (List<CollectionItem>) -> Unit
 ) {
     val handlePagingResult = handlePagingResult(movies = movies)
     if (handlePagingResult) {
-        LazyRow(
-            modifier = modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
-            contentPadding = PaddingValues(all = ExtraSmallPadding3)
-        ) {
-            items(count = movies.itemCount) { index ->
-                movies[index]?.let {
-                    MovieCardCollection(item = it, onClick = { onClick(it.kinopoiskId) })
+        Column {
+            TitleCollection(
+                nameCollection = TitleCollections.TOP_POPULAR_ALL.value,
+                onClick = { navigateToAllMovies(movies.itemSnapshotList.items) }
+            )
+
+            LazyRow(
+                modifier = modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
+                contentPadding = PaddingValues(all = ExtraSmallPadding3)
+            ) {
+                items(count = movies.itemCount) { index ->
+                    movies[index]?.let {
+                        MovieCardCollection(item = it, onClick = { onClick(it.kinopoiskId) })
+                    }
                 }
             }
         }

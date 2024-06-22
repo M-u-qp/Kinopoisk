@@ -249,7 +249,15 @@ fun MoviesNavigator() {
                                     movieId = movieId
                                 )
                             },
-                            navigateUp = { navController.navigateUp() }
+                            navigateUp = { navController.navigateUp() },
+                            navigateToAllMovies = { listMovies ->
+                                navigateToAll(
+                                    navController = navController,
+                                    listAll = listMovies,
+                                    type = "bestMovies"
+                                )
+
+                            }
                         )
                     }
             }

@@ -20,13 +20,14 @@ import com.example.kinopoisk.presentation.Dimens.SmallFontSize1
 
 @Composable
 fun TitleCommon(
+    modifier: Modifier = Modifier,
     nameTitle: String,
     varParam: String,
     onClick: () -> Unit
 ) {
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically

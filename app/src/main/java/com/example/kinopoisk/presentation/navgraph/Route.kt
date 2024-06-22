@@ -9,7 +9,6 @@ sealed class Route(
     data object SearchScreen : Route(route = "searchScreen")
     data object ProfileScreen : Route(route = "profileScreen")
     data object CollectionDBScreen : Route(route = "collectionDBScreen")
-    data object CollectionScreen : Route(route = "collectionScreen")
     data object AllStaffScreen : Route(route = "allStaffScreen")
     data object AllMovieScreen: Route(route = "allMoviesScreen")
     data object StaffScreen : Route(route = "staffScreen")

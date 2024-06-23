@@ -50,13 +50,11 @@ fun StaffScreen(
         }
     }
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = state.isLoadingMovies) {
         withContext(Dispatchers.IO) {
-            if (state.isLoadingMovies) {
-                state.filterBestMovies.forEach { films ->
-                    films.filmId?.let { movieId ->
-                        viewModel.getBestFilms(movieId)
-                    }
+            state.filterBestMovies.forEach { films ->
+                films.filmId?.let { movieId ->
+                    viewModel.getBestFilms(movieId)
                 }
             }
             viewModel.updateIsLoadingMovies(false)

@@ -21,38 +21,59 @@ class StaffViewModel @Inject constructor(
     val state: State<StaffState> = _state
 
     fun getStaffInfo(id: Int) {
-        viewModelScope.launch {
-            when (val staff = staffUseCases.getStaff(id)) {
-                is Resource.Success -> {
-                    val filterBestMovies = staff.data?.films!!.filter {
-                        (it.rating?.toDouble() ?: 0.0) >= 8.0
-                    }.distinctBy { it.nameRu ?: it.nameEn }
-                    _state.value = _state.value.copy(
-                        staffInfo = staff.data,
-                        filterBestMovies = filterBestMovies,
-                        isLoadingMovies = true,
-                        errorStaff = null
-                    )
-                }
+        if (state.value.staffInfo == null) {
+            viewModelScope.launch {
+                when (val staff = staffUseCases.getStaff(id)) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            staffInfo = staff.data,
+                            errorStaff = null
+                        )
+                        if (staff.data != null) {
+                            val filterBestMovies = staff.data.films.filter {
+                                (it.rating?.toDouble() ?: 0.0) >= 8.0
+                            }.take(3)
+                            _state.value = _state.value.copy(
+                                filterBestMovies = filterBestMovies,
+                                isLoadingMovies = true
+                            )
+                        }
+                    }
 
-                is Resource.Error -> {
-                    _state.value = _state.value.copy(
-                        errorStaff = staff.exception.toString()
-                    )
-                }
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            errorStaff = staff.exception.toString()
+                        )
+                    }
 
-                else -> Unit
+                    else -> Unit
+                }
             }
         }
     }
 
-    fun getBestFilms(movieId: Int) {
+    suspend fun getBestFilms(movieId: Int) {
         if (state.value.filterBestMovies.isNotEmpty()) {
-            viewModelScope.launch {
+            var hasMatch = false
+            if (state.value.listBestMovies.isNotEmpty()) {
+                state.value.listBestMovies.forEach { bestMovie ->
+                    if (bestMovie?.kinopoiskId == movieId) {
+                        hasMatch = true
+                        return@forEach
+                    }
+                }
+            }
+            if (!hasMatch) {
                 when (val movie = moviesUseCases.getMovie(movieId)) {
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
-                            listBestMovies = _state.value.listBestMovies.apply { addAll(listOf(movie.data)) },
+                            listBestMovies = _state.value.listBestMovies.apply {
+                                addAll(
+                                    listOf(
+                                        movie.data
+                                    )
+                                )
+                            },
                             errorMovie = null
                         )
                     }

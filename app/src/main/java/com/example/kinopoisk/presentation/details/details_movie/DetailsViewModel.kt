@@ -156,25 +156,27 @@ class DetailsViewModel @Inject constructor(
 
     //Детальное инфо о фильме
     fun getMovie(movieId: Int) {
-        viewModelScope.launch {
-            _state.value = _state.value.copy(loadingMovie = true)
-            when (val movie = moviesUseCases.getMovie(movieId)) {
-                is Resource.Success -> {
-                    _state.value = _state.value.copy(
-                        loadingMovie = false,
-                        movie = movie.data,
-                        errorMovies = null
-                    )
-                }
+        if (state.value.movie == null) {
+            viewModelScope.launch {
+                _state.value = _state.value.copy(loadingMovie = true)
+                when (val movie = moviesUseCases.getMovie(movieId)) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            loadingMovie = false,
+                            movie = movie.data,
+                            errorMovies = null
+                        )
+                    }
 
-                is Resource.Error -> {
-                    _state.value = _state.value.copy(
-                        loadingMovie = false,
-                        errorMovies = movie.exception.toString()
-                    )
-                }
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            loadingMovie = false,
+                            errorMovies = movie.exception.toString()
+                        )
+                    }
 
-                else -> Unit
+                    else -> Unit
+                }
             }
         }
     }
@@ -184,7 +186,8 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             when (val listStaff = staffUseCases.getListStaff(filmId)) {
                 is Resource.Success -> {
-                    val actors = listStaff.data?.filter { staff -> staff.professionKey == "ACTOR" }
+                    val actors =
+                        listStaff.data?.filter { staff -> staff.professionKey == "ACTOR" }
                     val otherStaff =
                         listStaff.data?.filter { staff -> staff.professionKey != "ACTOR" }
                             ?.distinctBy { staff -> staff.nameRu ?: staff.nameEn }
@@ -196,7 +199,8 @@ class DetailsViewModel @Inject constructor(
                 }
 
                 is Resource.Error -> {
-                    _state.value = _state.value.copy(errorStaff = listStaff.exception.toString())
+                    _state.value =
+                        _state.value.copy(errorStaff = listStaff.exception.toString())
                 }
 
                 else -> Unit

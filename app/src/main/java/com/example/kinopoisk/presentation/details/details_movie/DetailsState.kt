@@ -1,9 +1,13 @@
 package com.example.kinopoisk.presentation.details.details_movie
 
+import androidx.paging.PagingData
 import com.example.kinopoisk.domain.model.CollectionDB
+import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 data class DetailsState(
     val movie: Movie? = null,
@@ -23,4 +27,6 @@ data class DetailsState(
 
     val similarMovies: List<SimilarItem> = emptyList(),
     val errorSimilar: String? = null,
+
+    val galleryItem: Flow<PagingData<GalleryItem>> = flowOf()
 )

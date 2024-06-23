@@ -5,9 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
@@ -15,9 +13,9 @@ import com.example.kinopoisk.domain.usecases.staff.StaffUseCases
 import com.example.kinopoisk.domain.utils.Resource
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -155,35 +153,33 @@ class DetailsViewModel @Inject constructor(
     }
 
     //Детальное инфо о фильме
-    fun getMovie(movieId: Int) {
+    suspend fun getMovie(movieId: Int) {
         if (state.value.movie == null) {
-            viewModelScope.launch {
-                _state.value = _state.value.copy(loadingMovie = true)
-                when (val movie = moviesUseCases.getMovie(movieId)) {
-                    is Resource.Success -> {
-                        _state.value = _state.value.copy(
-                            loadingMovie = false,
-                            movie = movie.data,
-                            errorMovies = null
-                        )
-                    }
-
-                    is Resource.Error -> {
-                        _state.value = _state.value.copy(
-                            loadingMovie = false,
-                            errorMovies = movie.exception.toString()
-                        )
-                    }
-
-                    else -> Unit
+            _state.value = _state.value.copy(loadingMovie = true)
+            when (val movie = moviesUseCases.getMovie(movieId)) {
+                is Resource.Success -> {
+                    _state.value = _state.value.copy(
+                        loadingMovie = false,
+                        movie = movie.data,
+                        errorMovies = null
+                    )
                 }
+
+                is Resource.Error -> {
+                    _state.value = _state.value.copy(
+                        loadingMovie = false,
+                        errorMovies = movie.exception.toString()
+                    )
+                }
+
+                else -> Unit
             }
         }
     }
 
     //Список актеров и т.п.
-    fun getListStaff(filmId: Int) {
-        viewModelScope.launch {
+    suspend fun getListStaff(filmId: Int) {
+        if (state.value.listActors.isEmpty()) {
             when (val listStaff = staffUseCases.getListStaff(filmId)) {
                 is Resource.Success -> {
                     val actors =
@@ -209,13 +205,20 @@ class DetailsViewModel @Inject constructor(
     }
 
     //Галерея фильма
-    fun getGalleryMovie(id: Int, type: String): Flow<PagingData<GalleryItem>> {
-        return moviesUseCases.galleryMovie(id = id, type = type).cachedIn(viewModelScope)
+    fun getGalleryMovie(id: Int, type: String) {
+        viewModelScope.launch {
+            if (state.value.galleryItem.toList().isEmpty()) {
+                val galleryStill =
+                    moviesUseCases.galleryMovie(id = id, type = type).cachedIn(viewModelScope)
+                _state.value = _state.value.copy(galleryItem = galleryStill)
+            }
+        }
+
     }
 
     //Похожие фильмы
-    fun getSimilarMovies(id: Int) {
-        viewModelScope.launch {
+    suspend fun getSimilarMovies(id: Int) {
+        if (state.value.similarMovies.isEmpty()) {
             when (val listSimilarMovies = collectionsUseCases.getSimilarMovies(id = id)) {
                 is Resource.Success -> {
                     listSimilarMovies.data?.let { listMovies ->

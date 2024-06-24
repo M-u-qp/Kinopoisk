@@ -17,7 +17,8 @@ import com.example.kinopoisk.presentation.common.TitleCommon
 
 @Composable
 fun GalleryMovie(
-    images: LazyPagingItems<GalleryItem>
+    images: LazyPagingItems<GalleryItem>,
+    navigateToAllGallery: () -> Unit
 ) {
     val handlePagingResult = handlePagingResult(images = images)
     if (handlePagingResult) {
@@ -28,7 +29,7 @@ fun GalleryMovie(
                 TitleCommon(
                     nameTitle = gallery,
                     varParam = images.itemCount.toString(),
-                    onClick = {}
+                    onClick = navigateToAllGallery
                 )
 
                 LazyRow(

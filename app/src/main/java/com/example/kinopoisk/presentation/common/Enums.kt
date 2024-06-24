@@ -12,3 +12,10 @@ enum class TitleCollectionsDB(val value: String) {
     FAVORITE("Понравилось"),
     VIEWED("Просмотрено")
 }
+
+enum class TypeGalleryRequest(val value: String) {
+    STILL("Кадры"),
+    SHOOTING("Со съемок"),
+    FAN_ART("Фан-арты"),
+    CONCEPT("Концепт-арты")
+}

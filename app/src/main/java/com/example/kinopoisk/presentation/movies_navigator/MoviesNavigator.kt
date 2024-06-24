@@ -20,12 +20,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.kinopoisk.R
+import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
+import com.example.kinopoisk.presentation.all_gallery.AllGalleryScreen
 import com.example.kinopoisk.presentation.all_movies.AllMoviesScreen
 import com.example.kinopoisk.presentation.all_staff.AllStaffScreen
 import com.example.kinopoisk.presentation.collectiondb.CollectionDBScreen
 import com.example.kinopoisk.presentation.collectiondb.CollectionDBViewModel
+import com.example.kinopoisk.presentation.common.TypeGalleryRequest
 import com.example.kinopoisk.presentation.details.details_movie.DetailsEvent
 import com.example.kinopoisk.presentation.details.details_movie.DetailsScreen
 import com.example.kinopoisk.presentation.details.details_movie.DetailsViewModel
@@ -158,7 +161,10 @@ fun MoviesNavigator() {
                 navController.previousBackStackEntry?.savedStateHandle?.get<Int>("movieId")
                     ?.let { movieId ->
 
-                        viewModel.getGalleryMovie(id = movieId, type = "STILL")
+                        viewModel.getGalleryMovie(
+                            id = movieId,
+                            type = TypeGalleryRequest.STILL.name
+                        )
                         val galleryMovieStill =
                             viewModel.state.value.galleryItem.collectAsLazyPagingItems()
 
@@ -192,6 +198,12 @@ fun MoviesNavigator() {
                                 navigateToDetails(
                                     navController = navController,
                                     movieId = similarMovieId
+                                )
+                            },
+                            navigateToAllGallery = { listGalleryItem ->
+                                navigateToAllGallery(
+                                    navController = navController,
+                                    galleryAll = listGalleryItem
                                 )
                             }
                         )
@@ -294,6 +306,17 @@ fun MoviesNavigator() {
                         )
                     }
             }
+            composable(route = Route.AllGalleryScreen.route) {
+                navController.previousBackStackEntry?.savedStateHandle?.get<List<GalleryItem>>(
+                    "galleryAll"
+                )
+                    ?.let { listGalleryItem ->
+                        AllGalleryScreen(
+                            images = listGalleryItem,
+                            navigateUp = { navController.navigateUp() }
+                        )
+                    }
+            }
         }
     }
 }
@@ -332,4 +355,12 @@ private fun navigateToAll(navController: NavController, listAll: List<*>, type: 
     } else {
         navController.navigate(route = Route.AllMovieScreen.route)
     }
+}
+
+private fun navigateToAllGallery(
+    navController: NavController,
+    galleryAll: List<GalleryItem>
+) {
+    navController.currentBackStackEntry?.savedStateHandle?.set("galleryAll", galleryAll)
+    navController.navigate(route = Route.AllGalleryScreen.route)
 }

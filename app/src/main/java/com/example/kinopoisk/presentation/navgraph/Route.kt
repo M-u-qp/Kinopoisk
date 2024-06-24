@@ -11,6 +11,7 @@ sealed class Route(
     data object CollectionDBScreen : Route(route = "collectionDBScreen")
     data object AllStaffScreen : Route(route = "allStaffScreen")
     data object AllMovieScreen: Route(route = "allMoviesScreen")
+    data object AllGalleryScreen: Route(route = "allGalleryScreen")
     data object StaffScreen : Route(route = "staffScreen")
     data object DetailsScreen : Route(route = "detailsScreen")
     data object AppStartNavigation : Route(route = "appStartNavigation")

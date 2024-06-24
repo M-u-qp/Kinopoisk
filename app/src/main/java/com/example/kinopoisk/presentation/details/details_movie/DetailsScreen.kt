@@ -57,7 +57,8 @@ fun DetailsScreen(
     navigateToAllStaff: (List<Staff>) -> Unit,
     navigateToAllMovies: (List<SimilarItem>) -> Unit,
     galleryMovieStill: LazyPagingItems<GalleryItem>,
-    navigateToDetails: (Int) -> Unit
+    navigateToDetails: (Int) -> Unit,
+    navigateToAllGallery: (List<GalleryItem>) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -230,7 +231,10 @@ fun DetailsScreen(
                     .padding(top = LargePadding1, start = MediumPadding2)
                     .fillMaxWidth()
             ) {
-                GalleryMovie(images = galleryMovieStill)
+                GalleryMovie(
+                    images = galleryMovieStill,
+                    navigateToAllGallery = { navigateToAllGallery(galleryMovieStill.itemSnapshotList.items) }
+                )
             }
         }
         //Похожие фильмы

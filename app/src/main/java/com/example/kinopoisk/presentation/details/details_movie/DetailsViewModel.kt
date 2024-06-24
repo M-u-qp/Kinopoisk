@@ -213,7 +213,6 @@ class DetailsViewModel @Inject constructor(
                 _state.value = _state.value.copy(galleryItem = galleryStill)
             }
         }
-
     }
 
     //Похожие фильмы

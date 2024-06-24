@@ -58,7 +58,7 @@ fun DetailsScreen(
     navigateToAllMovies: (List<SimilarItem>) -> Unit,
     galleryMovieStill: LazyPagingItems<GalleryItem>,
     navigateToDetails: (Int) -> Unit,
-    navigateToAllGallery: (List<GalleryItem>) -> Unit
+    navigateToAllGallery: (Int) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -233,7 +233,7 @@ fun DetailsScreen(
             ) {
                 GalleryMovie(
                     images = galleryMovieStill,
-                    navigateToAllGallery = { navigateToAllGallery(galleryMovieStill.itemSnapshotList.items) }
+                    navigateToAllGallery = { navigateToAllGallery(movieId) }
                 )
             }
         }

@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.kinopoisk.R
 import com.example.kinopoisk.presentation.Dimens
+import com.example.kinopoisk.presentation.common.TypeGalleryRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -31,7 +32,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun TabGallery(
     pagerState: PagerState,
-    tabs: List<String>,
+    tabs: List<TypeGalleryRequest>,
     scope: CoroutineScope
 ) {
 
@@ -44,6 +45,12 @@ fun TabGallery(
                 modifier = Modifier
                     .tabIndicatorOffset(tabPositions[pagerState.currentPage])
                     .fillMaxWidth()
+                    .border(
+                        BorderStroke(
+                            color = colorResource(id = R.color.black), width = 1.dp
+                        ),
+                        shape = MaterialTheme.shapes.medium
+                    )
                     .background(
                         color = MaterialTheme.colorScheme.primary,
                         shape = MaterialTheme.shapes.medium
@@ -52,7 +59,7 @@ fun TabGallery(
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = Dimens.ExtraSmallPadding4, vertical = Dimens.ExtraSmallPadding3),
-                    text = tabs[pagerState.currentPage],
+                    text = tabs[pagerState.currentPage].value,
                     style = MaterialTheme.typography.labelMedium.copy(
                         fontWeight = FontWeight.SemiBold,
                         fontSize = Dimens.MediumFontSize3,
@@ -89,7 +96,7 @@ fun TabGallery(
                 ) {
                     Text(
                         modifier = Modifier.padding(horizontal = Dimens.ExtraSmallPadding4, vertical = Dimens.ExtraSmallPadding3),
-                        text = text,
+                        text = text.value,
                         style = MaterialTheme.typography.labelMedium.copy(
                             fontSize = Dimens.MediumFontSize3
                         )

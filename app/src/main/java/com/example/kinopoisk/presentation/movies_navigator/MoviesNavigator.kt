@@ -20,10 +20,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.kinopoisk.R
-import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
 import com.example.kinopoisk.presentation.all_gallery.AllGalleryScreen
+import com.example.kinopoisk.presentation.all_gallery.AllGalleryViewModel
 import com.example.kinopoisk.presentation.all_movies.AllMoviesScreen
 import com.example.kinopoisk.presentation.all_staff.AllStaffScreen
 import com.example.kinopoisk.presentation.collectiondb.CollectionDBScreen
@@ -200,10 +200,10 @@ fun MoviesNavigator() {
                                     movieId = similarMovieId
                                 )
                             },
-                            navigateToAllGallery = { listGalleryItem ->
+                            navigateToAllGallery = { movieIdGallery ->
                                 navigateToAllGallery(
                                     navController = navController,
-                                    galleryAll = listGalleryItem
+                                    movieId = movieIdGallery
                                 )
                             }
                         )
@@ -307,12 +307,15 @@ fun MoviesNavigator() {
                     }
             }
             composable(route = Route.AllGalleryScreen.route) {
-                navController.previousBackStackEntry?.savedStateHandle?.get<List<GalleryItem>>(
+                val viewModel: AllGalleryViewModel = hiltViewModel()
+                val state = viewModel.state.value
+                navController.previousBackStackEntry?.savedStateHandle?.get<Int>(
                     "galleryAll"
                 )
-                    ?.let { listGalleryItem ->
+                    ?.let { movieId ->
                         AllGalleryScreen(
-                            images = listGalleryItem,
+                            state = state,
+                            movieId = movieId,
                             navigateUp = { navController.navigateUp() }
                         )
                     }
@@ -359,8 +362,8 @@ private fun navigateToAll(navController: NavController, listAll: List<*>, type: 
 
 private fun navigateToAllGallery(
     navController: NavController,
-    galleryAll: List<GalleryItem>
+    movieId: Int
 ) {
-    navController.currentBackStackEntry?.savedStateHandle?.set("galleryAll", galleryAll)
+    navController.currentBackStackEntry?.savedStateHandle?.set("galleryAll", movieId)
     navController.navigate(route = Route.AllGalleryScreen.route)
 }

@@ -22,7 +22,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import com.example.kinopoisk.R
-import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.presentation.Dimens.MediumFontSize3
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
@@ -33,7 +32,8 @@ import com.example.kinopoisk.presentation.common.TypeGalleryRequest
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AllGalleryScreen(
-    images: List<GalleryItem>,
+    state: AllGalleryState,
+    movieId:Int,
     navigateUp: () -> Unit,
 ) {
 
@@ -48,10 +48,10 @@ fun AllGalleryScreen(
         val scope = rememberCoroutineScope()
         val tabs = remember {
             listOf(
-                TypeGalleryRequest.STILL.value,
-                TypeGalleryRequest.SHOOTING.value,
-                TypeGalleryRequest.FAN_ART.value,
-                TypeGalleryRequest.CONCEPT.value
+                TypeGalleryRequest.STILL,
+                TypeGalleryRequest.SHOOTING,
+                TypeGalleryRequest.FAN_ART,
+                TypeGalleryRequest.CONCEPT
             )
         }
 
@@ -89,8 +89,10 @@ fun AllGalleryScreen(
             state = pagerState
         ) { index ->
             GalleryPage(
-                pagerState = pagerState,
-                images = images
+                movieId = movieId,
+                tab = tabs[index].name,
+                index = index,
+                state = state
             )
         }
     }

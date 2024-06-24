@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kinopoisk.R
 import com.example.kinopoisk.presentation.Dimens.MediumFontSize3
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
@@ -33,14 +34,15 @@ import com.example.kinopoisk.presentation.common.TypeGalleryRequest
 @Composable
 fun AllGalleryScreen(
     state: AllGalleryState,
-    movieId:Int,
+    movieId: Int,
     navigateUp: () -> Unit,
 ) {
+
+    val viewModel: AllGalleryViewModel = hiltViewModel()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = MediumPadding2)
             .statusBarsPadding()
     ) {
 
@@ -56,7 +58,9 @@ fun AllGalleryScreen(
         }
 
         Box(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = MediumPadding2),
             contentAlignment = Alignment.CenterStart
         ) {
 
@@ -80,7 +84,12 @@ fun AllGalleryScreen(
             )
 
         }
-        TabGallery(pagerState = pagerState, tabs = tabs, scope = scope)
+        TabGallery(
+            modifier = Modifier.padding(start = MediumPadding2),
+            pagerState = pagerState,
+            tabs = tabs,
+            scope = scope
+        )
 
         HorizontalPager(
             modifier = Modifier
@@ -92,7 +101,8 @@ fun AllGalleryScreen(
                 movieId = movieId,
                 tab = tabs[index].name,
                 index = index,
-                state = state
+                state = state,
+                viewModel = viewModel
             )
         }
     }

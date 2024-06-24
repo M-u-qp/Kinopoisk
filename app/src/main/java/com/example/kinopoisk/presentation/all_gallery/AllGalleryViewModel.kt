@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AllGalleryViewModel @Inject constructor(
     private val moviesUseCases: MoviesUseCases
-): ViewModel() {
+) : ViewModel() {
 
 
     private val _state = mutableStateOf(AllGalleryState())
@@ -23,38 +23,50 @@ class AllGalleryViewModel @Inject constructor(
 
     fun getGalleryMovie(id: Int, type: String) {
         viewModelScope.launch {
-            when(type) {
+            when (type) {
                 TypeGalleryRequest.STILL.name -> {
                     if (state.value.imageGalleryStill.toList().isEmpty()) {
                         val images =
-                            moviesUseCases.galleryMovie(id = id, type = type).cachedIn(viewModelScope)
+                            moviesUseCases.galleryMovie(id = id, type = type)
+                                .cachedIn(viewModelScope)
                         _state.value = _state.value.copy(imageGalleryStill = images)
                     }
                 }
+
                 TypeGalleryRequest.SHOOTING.name -> {
                     if (state.value.imageGalleryShooting.toList().isEmpty()) {
                         val images =
-                            moviesUseCases.galleryMovie(id = id, type = type).cachedIn(viewModelScope)
+                            moviesUseCases.galleryMovie(id = id, type = type)
+                                .cachedIn(viewModelScope)
                         _state.value = _state.value.copy(imageGalleryShooting = images)
                     }
                 }
+
                 TypeGalleryRequest.FAN_ART.name -> {
                     if (state.value.imageGalleryFanArt.toList().isEmpty()) {
                         val images =
-                            moviesUseCases.galleryMovie(id = id, type = type).cachedIn(viewModelScope)
+                            moviesUseCases.galleryMovie(id = id, type = type)
+                                .cachedIn(viewModelScope)
                         _state.value = _state.value.copy(imageGalleryFanArt = images)
                     }
                 }
+
                 TypeGalleryRequest.CONCEPT.name -> {
                     if (state.value.imageGalleryConcept.toList().isEmpty()) {
                         val images =
-                            moviesUseCases.galleryMovie(id = id, type = type).cachedIn(viewModelScope)
+                            moviesUseCases.galleryMovie(id = id, type = type)
+                                .cachedIn(viewModelScope)
                         _state.value = _state.value.copy(imageGalleryConcept = images)
                     }
                 }
+
                 else -> Unit
             }
 
         }
+    }
+
+    fun updateVisibleGalleryDialog(show: Boolean) {
+        _state.value = _state.value.copy(showGalleryDialog = show)
     }
 }

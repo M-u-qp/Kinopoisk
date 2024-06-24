@@ -2,16 +2,18 @@ package com.example.kinopoisk.presentation.all_gallery.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.presentation.Dimens
+import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
 import com.example.kinopoisk.presentation.all_gallery.AllGalleryState
 import com.example.kinopoisk.presentation.all_gallery.AllGalleryViewModel
 import com.example.kinopoisk.presentation.details.details_movie.components.GalleryMovieItem
@@ -22,10 +24,10 @@ fun GalleryPage(
     movieId: Int,
     tab: String,
     index: Int,
-    state: AllGalleryState
+    state: AllGalleryState,
+    viewModel: AllGalleryViewModel
 ) {
 
-    val viewModel: AllGalleryViewModel = hiltViewModel()
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -85,14 +87,25 @@ private fun HandleGalleryPage(
     viewModel.getGalleryMovie(id = movieId, type = tab)
     val handlePagingResult = handlePagingResult(images = images)
     if (handlePagingResult) {
+
+        if (viewModel.state.value.showGalleryDialog) {
+            GalleryDialog(listImages = images.itemSnapshotList.items, viewModel = viewModel)
+        }
+
         if (images.itemSnapshotList.isNotEmpty()) {
-            LazyColumn(
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(Dimens.ExtraSmallPadding2)
+                contentPadding = PaddingValues(horizontal = Dimens.MediumPadding2),
+                verticalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
+                horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
             ) {
                 items(count = images.itemCount) { index ->
                     images[index]?.let {
-                        GalleryMovieItem(galleryItem = it)
+                        GalleryMovieItem(
+                            galleryItem = it,
+                            onClick = { viewModel.updateVisibleGalleryDialog(true) }
+                        )
                     }
                 }
             }

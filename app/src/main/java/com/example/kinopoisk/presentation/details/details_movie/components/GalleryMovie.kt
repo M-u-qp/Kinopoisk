@@ -38,7 +38,7 @@ fun GalleryMovie(
                 ) {
                     items(count = images.itemCount) { index ->
                         images[index]?.let {
-                            GalleryMovieItem(galleryItem = it)
+                            GalleryMovieItem(galleryItem = it, onClick = {})
                         }
                     }
                 }

@@ -17,13 +17,15 @@ import com.example.kinopoisk.presentation.Dimens.GalleryImageWidth
 
 @Composable
 fun GalleryMovieItem(
-    galleryItem: GalleryItem
+    modifier: Modifier = Modifier,
+    galleryItem: GalleryItem,
+    onClick: () -> Unit
 ) {
 
     val context = LocalContext.current
 
     Box(
-        modifier = Modifier.clickable { }
+        modifier = modifier.clickable { onClick() }
     ) {
         AsyncImage(
             modifier = Modifier

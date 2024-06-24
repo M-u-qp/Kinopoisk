@@ -31,12 +31,14 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TabGallery(
+    modifier: Modifier = Modifier,
     pagerState: PagerState,
     tabs: List<TypeGalleryRequest>,
     scope: CoroutineScope
 ) {
 
     ScrollableTabRow(
+        modifier = modifier,
         selectedTabIndex = pagerState.currentPage,
         divider = { Spacer(modifier = Modifier.width(Dimens.ExtraSmallPadding2)) },
         edgePadding = Dimens.ExtraSmallPadding2,

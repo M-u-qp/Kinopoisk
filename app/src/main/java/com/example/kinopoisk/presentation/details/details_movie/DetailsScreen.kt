@@ -4,8 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -97,7 +98,7 @@ fun DetailsScreen(
     val lazyListState = rememberLazyListState()
 
     LazyColumn(
-        modifier = Modifier,
+        modifier = Modifier.fillMaxSize(),
         state = lazyListState
     ) {
         item {
@@ -163,11 +164,11 @@ fun DetailsScreen(
         }
         //Список актеров
         item {
+
             Column(
                 modifier = Modifier
                     .padding(top = LargePadding1, start = MediumPadding2)
                     .fillMaxWidth()
-                    .height(LazyVerticalGridHeight)
             ) {
                 val filmStars = stringResource(id = R.string.Film_stars)
                 TitleCommon(
@@ -177,8 +178,9 @@ fun DetailsScreen(
                 )
                 LazyHorizontalGrid(
                     modifier = Modifier
+                        .padding(top = SmallPadding1)
                         .fillMaxWidth()
-                        .padding(top = SmallPadding1),
+                        .heightIn(max = LazyVerticalGridHeight),
                     rows = GridCells.Fixed(4),
                     horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
                     verticalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
@@ -199,7 +201,6 @@ fun DetailsScreen(
                 modifier = Modifier
                     .padding(top = LargePadding1, start = MediumPadding2)
                     .fillMaxWidth()
-                    .height(LazyVerticalGridHeight)
             ) {
                 val filmOtherStaff = stringResource(id = R.string.Other_staff)
                 TitleCommon(
@@ -209,8 +210,9 @@ fun DetailsScreen(
                 )
                 LazyHorizontalGrid(
                     modifier = Modifier
+                        .padding(top = SmallPadding1)
                         .fillMaxWidth()
-                        .padding(top = SmallPadding1),
+                        .heightIn(max = LazyVerticalGridHeight),
                     rows = GridCells.Fixed(4),
                     horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
                     verticalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
@@ -269,4 +271,5 @@ fun DetailsScreen(
         }
     }
 }
+
 

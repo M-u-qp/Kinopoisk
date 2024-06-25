@@ -36,7 +36,7 @@ object Dimens {
 
     val DialogHeight = 200.dp
 
-    val LazyVerticalGridHeight = 400.dp
+    val LazyVerticalGridHeight = 300.dp
 
     val MovieCardSizeWidth = 111.dp
     val MovieCardSizeHeight = 156.dp

@@ -51,4 +51,5 @@ object Dimens {
     val GalleryImageHeight = 108.dp
 
     val MediumRoundedCornerShape1 = 16.dp
+    val LargeCornerSize = 56.dp
 }

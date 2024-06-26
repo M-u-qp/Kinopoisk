@@ -1,16 +1,20 @@
 package com.example.kinopoisk.presentation.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -18,13 +22,16 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.example.kinopoisk.R
 import com.example.kinopoisk.presentation.Dimens.IconSize
 
@@ -36,7 +43,8 @@ fun SearchBar(
     readOnly: Boolean,
     onClick: (() -> Unit)? = null,
     onValueChange: (String) -> Unit,
-    onSearch: () -> Unit
+    onSearch: () -> Unit,
+    navigateToScreenFilter: () -> Unit
 ) {
 
     val interactionSource = remember {
@@ -50,6 +58,27 @@ fun SearchBar(
     }
 
     Box(modifier = modifier) {
+
+        Row(
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .zIndex(1f),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(modifier = Modifier
+                .width(1.dp)
+                .background(Color.Black))
+            IconButton(
+                onClick = { navigateToScreenFilter() }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_settings_search),
+                    contentDescription = null,
+                    modifier = Modifier.size(IconSize),
+                    tint = colorResource(id = R.color.body)
+                )
+            }
+
+        }
 
         TextField(
             modifier = Modifier
@@ -68,7 +97,7 @@ fun SearchBar(
             },
             placeholder = {
                 Text(
-                    text = "Search",
+                    text = stringResource(id = R.string.Enter_name_movie),
                     style = MaterialTheme.typography.bodySmall,
                     color = colorResource(id = R.color.placeholder)
                 )

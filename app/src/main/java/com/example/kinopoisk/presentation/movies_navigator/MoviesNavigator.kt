@@ -43,6 +43,8 @@ import com.example.kinopoisk.presentation.profile.ProfileScreen
 import com.example.kinopoisk.presentation.profile.ProfileViewModel
 import com.example.kinopoisk.presentation.search.SearchScreen
 import com.example.kinopoisk.presentation.search.SearchViewModel
+import com.example.kinopoisk.presentation.search_filter.SearchFilterScreen
+import com.example.kinopoisk.presentation.search_filter.SearchFilterViewModel
 
 @Composable
 fun MoviesNavigator() {
@@ -148,7 +150,15 @@ fun MoviesNavigator() {
                             navController = navController,
                             movieId = movieId
                         )
-                    }
+                    },
+                    navigateToSearchFilter = { navController.navigate(route = Route.SearchFilterScreen.route) }
+                )
+            }
+            composable(route = Route.SearchFilterScreen.route) {
+                val viewModel: SearchFilterViewModel = hiltViewModel()
+                SearchFilterScreen(
+                    viewModel = viewModel,
+                    navigateUp = { navController.navigateUp() }
                 )
             }
             composable(route = Route.DetailsScreen.route) {

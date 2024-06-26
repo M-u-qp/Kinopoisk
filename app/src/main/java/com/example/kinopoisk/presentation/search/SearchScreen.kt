@@ -18,7 +18,8 @@ import com.example.kinopoisk.presentation.common.SearchBar
 fun SearchScreen(
     state: SearchState,
     event: (SearchEvent) -> Unit,
-    navigateToDetails: (Int) -> Unit
+    navigateToDetails: (Int) -> Unit,
+    navigateToSearchFilter: () -> Unit
 ) {
 
     Column(
@@ -32,7 +33,9 @@ fun SearchScreen(
             text = state.keyword,
             readOnly = false,
             onValueChange = { event(SearchEvent.UpdateSearchQuery(it)) },
-            onSearch = { event(SearchEvent.SearchMovies) })
+            onSearch = { event(SearchEvent.SearchMovies) },
+            navigateToScreenFilter = navigateToSearchFilter
+        )
 
         Spacer(modifier = Modifier.height(MediumPadding1))
 

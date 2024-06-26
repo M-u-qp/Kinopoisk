@@ -2,7 +2,20 @@
     <string name="app_name">Kinopoisk</string>
 
     <!-- Home -->
+    <string name="Movies">Фильмы</string>
+    <string name="Serials">Сериалы</string>
+    <string name="Country">Страна</string>
+    <string name="Genre">Жанр</string>
+    <string name="Year">Год</string>
+    <string name="Rating">Рейтинг</string>
 
+    <!-- Search -->
+    <string name="Enter_name_movie">Введите название фильма</string>
+    <string name="Search_settings">Настройки поиска</string>
+    <string name="Sort">Сортировать</string>
+    <string name="Show">Показывать</string>
+    <string name="Date">Дата</string>
+    <string name="Popular">Популярность</string>
 
     <!-- Details -->
     <string name="Film_stars">В фильме снимались</string>
@@ -14,9 +27,6 @@
     <string name="The_best_films">Лучшее</string>
     <string name="Filmography">Фильмография</string>
     <string name="To_list">К списку</string>
-
-    <!-- Onboarding -->
-    <string name="Skip">Пропустить</string>
 
     <!-- Profile -->
     <string name="Viewed">Просмотрено</string>
@@ -31,5 +41,6 @@
     <string name="Yes">Да</string>
     <string name="No">Нет</string>
     <string name="All">Все</string>
+    <string name="Skip">Пропустить</string>
 
 </resources>

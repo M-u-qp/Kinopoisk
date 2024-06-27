@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kinopoisk.R
 import com.example.kinopoisk.presentation.Dimens
+import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
 import com.example.kinopoisk.presentation.Dimens.LargeCornerSize
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
@@ -38,15 +40,16 @@ fun SearchFilterScreen(
 ) {
 
     val selectedButtonType = remember { mutableIntStateOf(0) }
+    val selectedButtonSort = remember { mutableIntStateOf(0) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = MediumPadding2)
             .statusBarsPadding()
     ) {
 
         NavigateUpButton(
+            modifier = Modifier.padding(start = MediumPadding2),
             navigateUp = navigateUp,
             text = stringResource(id = R.string.Search_settings)
         )
@@ -54,6 +57,7 @@ fun SearchFilterScreen(
         Spacer(modifier = Modifier.height(SmallPadding1))
 
         Text(
+            modifier = Modifier.padding(start = MediumPadding2),
             text = stringResource(id = R.string.Show),
             style = MaterialTheme.typography.bodySmall.copy(
                 color = colorResource(id = R.color.gray_text),
@@ -64,6 +68,7 @@ fun SearchFilterScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(horizontal = MediumPadding2)
                 .padding(top = SmallPadding1),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
@@ -107,7 +112,9 @@ fun SearchFilterScreen(
 
         //Страна
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = MediumPadding2),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -130,11 +137,15 @@ fun SearchFilterScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(SmallPadding1))
+        Spacer(modifier = Modifier.height(ExtraSmallPadding2))
+        HorizontalDivider()
+        Spacer(modifier = Modifier.height(ExtraSmallPadding2))
 
         //Жанр
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = MediumPadding2),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -157,11 +168,15 @@ fun SearchFilterScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(SmallPadding1))
+        Spacer(modifier = Modifier.height(ExtraSmallPadding2))
+        HorizontalDivider()
+        Spacer(modifier = Modifier.height(ExtraSmallPadding2))
 
         //Год
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = MediumPadding2),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -184,12 +199,16 @@ fun SearchFilterScreen(
             }
         }
 
+        Spacer(modifier = Modifier.height(ExtraSmallPadding2))
+        HorizontalDivider()
         Spacer(modifier = Modifier.height(SmallPadding1))
 
         //Рейтинг
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = MediumPadding2),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -201,17 +220,75 @@ fun SearchFilterScreen(
                 )
             )
             Text(
-                text = "с ${viewModel.state.value.ratingPosition.start} до ${viewModel.state.value.ratingPosition.endInclusive}",
+                text = "с ${viewModel.state.value.ratingPosition.start.toInt()} до ${viewModel.state.value.ratingPosition.endInclusive.toInt()}",
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = colorResource(id = R.color.gray_text),
                     fontSize = Dimens.SmallFontSize1,
                 )
             )
         }
-        RatingSlider(viewModel = viewModel)
+        RatingSlider(
+            modifier = Modifier.padding(horizontal = MediumPadding2),
+            viewModel = viewModel
+        )
 
+        Spacer(modifier = Modifier.height(ExtraSmallPadding2))
+        HorizontalDivider()
+        Spacer(modifier = Modifier.height(SmallPadding1))
 
+        Text(
+            modifier = Modifier.padding(start = MediumPadding2),
+            text = stringResource(id = R.string.Sort),
+            style = MaterialTheme.typography.bodySmall.copy(
+                color = colorResource(id = R.color.gray_text),
+                fontSize = Dimens.SmallFontSize2,
+            )
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = MediumPadding2)
+                .padding(top = SmallPadding1),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            ToggleButton(
+                text = stringResource(id = R.string.Date),
+                isSelected = selectedButtonSort.intValue == 0,
+                onToggle = { selectedButtonSort.intValue = 0 },
+                shape = MaterialTheme.shapes.medium.copy(
+                    topStart = CornerSize(LargeCornerSize),
+                    bottomStart = CornerSize(LargeCornerSize),
+                    topEnd = CornerSize(0.dp),
+                    bottomEnd = CornerSize(0.dp)
+                )
+            )
+            ToggleButton(
+                text = stringResource(id = R.string.Popular),
+                isSelected = selectedButtonSort.intValue == 1,
+                onToggle = { selectedButtonSort.intValue = 1 },
+                shape = MaterialTheme.shapes.medium.copy(
+                    topStart = CornerSize(0.dp),
+                    bottomStart = CornerSize(0.dp),
+                    topEnd = CornerSize(0.dp),
+                    bottomEnd = CornerSize(0.dp)
+                )
+            )
+            ToggleButton(
+                text = stringResource(id = R.string.Rating),
+                isSelected = selectedButtonSort.intValue == 2,
+                onToggle = { selectedButtonSort.intValue = 2 },
+                shape = MaterialTheme.shapes.medium.copy(
+                    topStart = CornerSize(0.dp),
+                    bottomStart = CornerSize(0.dp),
+                    topEnd = CornerSize(LargeCornerSize),
+                    bottomEnd = CornerSize(LargeCornerSize)
+                )
+            )
+        }
 
         Spacer(modifier = Modifier.height(SmallPadding1))
+        HorizontalDivider()
     }
 }

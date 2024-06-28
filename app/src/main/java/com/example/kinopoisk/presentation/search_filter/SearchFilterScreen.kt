@@ -31,16 +31,30 @@ import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
 import com.example.kinopoisk.presentation.common.NavigateUpButton
 import com.example.kinopoisk.presentation.common.ToggleButton
+import com.example.kinopoisk.presentation.search_filter.components.DialogCountriesOrGenres
+import com.example.kinopoisk.presentation.search_filter.components.DialogDatePicker
 import com.example.kinopoisk.presentation.search_filter.components.RatingSlider
 
 @Composable
 fun SearchFilterScreen(
     viewModel: SearchFilterViewModel = hiltViewModel(),
+    state: SearchFilterState,
     navigateUp: () -> Unit
 ) {
 
     val selectedButtonType = remember { mutableIntStateOf(0) }
     val selectedButtonSort = remember { mutableIntStateOf(0) }
+
+    if (state.showDialogCountriesOrGenres) {
+        DialogCountriesOrGenres(
+            state = state,
+            viewModel = viewModel
+        )
+    }
+
+    if (state.showDialogDatePicker) {
+        DialogDatePicker(viewModel = viewModel)
+    }
 
     Column(
         modifier = Modifier
@@ -126,14 +140,19 @@ fun SearchFilterScreen(
                 )
             )
 
-            TextButton(onClick = { /*TODO*/ }) {
-                Text(
-                    text = "Россия",
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = colorResource(id = R.color.gray_text),
-                        fontSize = Dimens.SmallFontSize1,
+            TextButton(onClick = {
+                viewModel.updateVisibleDialogCountriesOrGenres(true)
+                viewModel.updateSelectedCountryOrGenre("Страна")
+            }) {
+                state.selectedCountry?.let { country ->
+                    Text(
+                        text = country.country,
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = colorResource(id = R.color.gray_text),
+                            fontSize = Dimens.SmallFontSize1,
+                        )
                     )
-                )
+                }
             }
         }
 
@@ -157,14 +176,20 @@ fun SearchFilterScreen(
                 )
             )
 
-            TextButton(onClick = { /*TODO*/ }) {
-                Text(
-                    text = "Комедия",
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = colorResource(id = R.color.gray_text),
-                        fontSize = Dimens.SmallFontSize1,
+            TextButton(onClick = {
+                viewModel.updateVisibleDialogCountriesOrGenres(true)
+                viewModel.updateSelectedCountryOrGenre("Жанр")
+            }) {
+                state.selectedGenre?.let { genre ->
+                    Text(
+                        text = genre.genre,
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = colorResource(id = R.color.gray_text),
+                            fontSize = Dimens.SmallFontSize1,
+                        )
                     )
-                )
+                }
+
             }
         }
 
@@ -188,7 +213,9 @@ fun SearchFilterScreen(
                 )
             )
 
-            TextButton(onClick = { /*TODO*/ }) {
+            TextButton(onClick = {
+                viewModel.updateVisibleDialogDatePicker(true)
+            }) {
                 Text(
                     text = "с 1990 до 2024",
                     style = MaterialTheme.typography.bodySmall.copy(

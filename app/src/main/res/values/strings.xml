@@ -16,6 +16,9 @@
     <string name="Show">Показывать</string>
     <string name="Date">Дата</string>
     <string name="Popular">Популярность</string>
+    <string name="Enter_name_country">Введите название страны</string>
+    <string name="Enter_genre">Введите жанр</string>
+    <string name="Period">Период</string>
 
     <!-- Details -->
     <string name="Film_stars">В фильме снимались</string>

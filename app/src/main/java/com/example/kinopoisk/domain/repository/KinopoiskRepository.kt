@@ -5,6 +5,7 @@ import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.SearchFilm
 import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.CollectionItem
+import com.example.kinopoisk.domain.model.CountriesAndGenres
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
@@ -21,6 +22,9 @@ interface KinopoiskRepository {
 
     //Поиск
     fun searchMovies(keyword: String): Flow<PagingData<SearchFilm>>
+
+    //Список стран и жанров для фильтра
+    suspend fun getCountriesAndGenres():Resource<CountriesAndGenres>
 
     //Получить детальную информацию о фильме
     suspend fun getMovie(id: Int): Resource<Movie>

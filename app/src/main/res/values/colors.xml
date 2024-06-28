@@ -17,4 +17,5 @@
     <color name="body">#4E4B66</color>
     <color name="body_icon">#B5B5C9</color>
     <color name="input_background">#fff</color>
+    <color name="very_light_gray">#F3F3F3</color>
 </resources>

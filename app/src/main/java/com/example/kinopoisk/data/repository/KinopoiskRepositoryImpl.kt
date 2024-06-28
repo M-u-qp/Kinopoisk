@@ -8,6 +8,7 @@ import com.example.kinopoisk.R
 import com.example.kinopoisk.data.local.MoviesDao
 import com.example.kinopoisk.data.mapper.toCollectionDB
 import com.example.kinopoisk.data.mapper.toCollectionEntity
+import com.example.kinopoisk.data.mapper.toCountriesAndGenres
 import com.example.kinopoisk.data.mapper.toMovie
 import com.example.kinopoisk.data.mapper.toMovieEntity
 import com.example.kinopoisk.data.mapper.toStaffInfo
@@ -19,6 +20,7 @@ import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.SearchFilm
 import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.CollectionItem
+import com.example.kinopoisk.domain.model.CountriesAndGenres
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
@@ -85,6 +87,23 @@ class KinopoiskRepositoryImpl(
                 )
             }
         ).flow
+    }
+
+    //Список стран и жанров для фильтра
+    override suspend fun getCountriesAndGenres(): Resource<CountriesAndGenres> {
+        return  try {
+            val response = kinopoiskApi.getCountriesAndGenres(
+                apiKey = context.getString(R.string.API_KEY)
+            )
+            if (response.body() != null) {
+                Resource.Success(response.body()!!.toCountriesAndGenres())
+            }else {
+                Resource.Error(Exception(getResponseError(response.code())))
+            }
+        }catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(e)
+        }
     }
 
     //Детальное инфо о фильме

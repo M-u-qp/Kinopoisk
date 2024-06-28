@@ -1,6 +1,7 @@
 package com.example.kinopoisk.data.remote
 
 import com.example.kinopoisk.data.remote.dto.CollectionsResponse
+import com.example.kinopoisk.data.remote.dto.CountriesAndGenresResponse
 import com.example.kinopoisk.data.remote.dto.MovieResponse
 import com.example.kinopoisk.data.remote.dto.SearchMoviesResponse
 import com.example.kinopoisk.data.remote.dto.ListStaffResponse
@@ -29,6 +30,12 @@ interface KinopoiskApi {
         @Query("keyword") keyword: String,
         @Query("page") page: Int
     ): SearchMoviesResponse
+
+    //Список стран и жанров для фильтра
+    @GET("/api/v2.2/films/filters")
+    suspend fun getCountriesAndGenres(
+        @Header("X-API-KEY") apiKey: String
+    ): Response<CountriesAndGenresResponse>
 
     //Детальное инфо о фильме
     @GET("/api/v2.2/films/{id}")

@@ -123,7 +123,7 @@ fun SearchBar(
     }
 }
 
-fun Modifier.searchBarBorder() = composed {
+private fun Modifier.searchBarBorder() = composed {
     if (!isSystemInDarkTheme()) {
         border(
             width = 1.dp,

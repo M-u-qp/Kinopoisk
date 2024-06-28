@@ -156,9 +156,11 @@ fun MoviesNavigator() {
             }
             composable(route = Route.SearchFilterScreen.route) {
                 val viewModel: SearchFilterViewModel = hiltViewModel()
+                val state = viewModel.state.value
                 SearchFilterScreen(
                     viewModel = viewModel,
-                    navigateUp = { navController.navigateUp() }
+                    navigateUp = { navController.navigateUp() },
+                    state = state
                 )
             }
             composable(route = Route.DetailsScreen.route) {

@@ -2,9 +2,11 @@ package com.example.kinopoisk.data.mapper
 
 import com.example.kinopoisk.data.local.entity.CollectionEntity
 import com.example.kinopoisk.data.local.entity.MovieEntity
+import com.example.kinopoisk.data.remote.dto.CountriesAndGenresResponse
 import com.example.kinopoisk.data.remote.dto.MovieResponse
 import com.example.kinopoisk.data.remote.dto.StaffResponse
 import com.example.kinopoisk.domain.model.CollectionDB
+import com.example.kinopoisk.domain.model.CountriesAndGenres
 import com.example.kinopoisk.domain.model.Country
 import com.example.kinopoisk.domain.model.Genre
 import com.example.kinopoisk.domain.model.Movie
@@ -109,5 +111,12 @@ fun StaffResponse.toStaffInfo(): StaffInfo {
         sex = sex,
         spouses = spouses,
         webUrl = webUrl
+    )
+}
+
+fun CountriesAndGenresResponse.toCountriesAndGenres(): CountriesAndGenres {
+    return CountriesAndGenres(
+        countries = countries,
+        genres = genres
     )
 }

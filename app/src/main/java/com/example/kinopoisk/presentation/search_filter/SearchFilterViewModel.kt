@@ -47,6 +47,10 @@ class SearchFilterViewModel @Inject constructor(
         _state.value = _state.value.copy(showDialogDatePicker = show)
     }
 
+    fun updateYearsPosition(yearsPosition: IntRange) {
+        _state.value = _state.value.copy(yearsPosition = yearsPosition)
+    }
+
     private fun getCountriesAndGenres() {
         if (state.value.listCountriesAndGenres == null) {
             viewModelScope.launch {

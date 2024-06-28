@@ -19,3 +19,15 @@ enum class TypeGalleryRequest(val value: String) {
     FAN_ART("Фан-арты"),
     CONCEPT("Концепт-арты")
 }
+
+enum class TypeSearchFilter(val value: String) {
+    ALL("Все"),
+    FILM("Фильмы"),
+    TV_SERIES("Сериалы")
+}
+
+enum class SortSearchFilter(val value: String) {
+    RATING("Рейтинг"),
+    NUM_VOTE("Популярной"),
+    YEAR("Дата")
+}

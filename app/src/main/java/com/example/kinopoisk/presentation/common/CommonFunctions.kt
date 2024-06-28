@@ -1,5 +1,7 @@
 package com.example.kinopoisk.presentation.common
 
+import java.util.Calendar
+
 //Перенос слов на вторую строку, если не убирается название фильма
  fun normalizeTitleMovie(name: String): String {
     val words = name.split(" ")
@@ -26,4 +28,9 @@ package com.example.kinopoisk.presentation.common
         lines.add(currentLine)
     }
     return lines.joinToString("\n")
+}
+
+fun listLast100Years(): List<Int> {
+    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+    return (currentYear downTo currentYear - 100).toList()
 }

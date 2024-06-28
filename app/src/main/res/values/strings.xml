@@ -19,6 +19,9 @@
     <string name="Enter_name_country">Введите название страны</string>
     <string name="Enter_genre">Введите жанр</string>
     <string name="Period">Период</string>
+    <string name="Search_in_period_from">Искать в период с</string>
+    <string name="Search_in_period_before">Искать в период до</string>
+    <string name="any">любой</string>
 
     <!-- Details -->
     <string name="Film_stars">В фильме снимались</string>
@@ -45,5 +48,7 @@
     <string name="No">Нет</string>
     <string name="All">Все</string>
     <string name="Skip">Пропустить</string>
+    <string name="Choose">Выбрать</string>
+    <string name="Cancellation">Отмена</string>
 
 </resources>

@@ -15,7 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +30,9 @@ import com.example.kinopoisk.presentation.Dimens.LargeCornerSize
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
 import com.example.kinopoisk.presentation.common.NavigateUpButton
+import com.example.kinopoisk.presentation.common.SortSearchFilter
 import com.example.kinopoisk.presentation.common.ToggleButton
+import com.example.kinopoisk.presentation.common.TypeSearchFilter
 import com.example.kinopoisk.presentation.search_filter.components.DialogCountriesOrGenres
 import com.example.kinopoisk.presentation.search_filter.components.DialogDatePicker
 import com.example.kinopoisk.presentation.search_filter.components.RatingSlider
@@ -42,8 +44,8 @@ fun SearchFilterScreen(
     navigateUp: () -> Unit
 ) {
 
-    val selectedButtonType = remember { mutableIntStateOf(0) }
-    val selectedButtonSort = remember { mutableIntStateOf(0) }
+    val selectedButtonType = remember { mutableStateOf(state.typeSearchFilter) }
+    val selectedButtonSort = remember { mutableStateOf(state.sortSearchFilter) }
 
     if (state.showDialogCountriesOrGenres) {
         DialogCountriesOrGenres(
@@ -89,8 +91,8 @@ fun SearchFilterScreen(
         ) {
             ToggleButton(
                 text = stringResource(id = R.string.All),
-                isSelected = selectedButtonType.intValue == 0,
-                onToggle = { selectedButtonType.intValue = 0 },
+                isSelected = selectedButtonType.value == TypeSearchFilter.ALL,
+                onToggle = { selectedButtonType.value = TypeSearchFilter.ALL },
                 shape = MaterialTheme.shapes.medium.copy(
                     topStart = CornerSize(LargeCornerSize),
                     bottomStart = CornerSize(LargeCornerSize),
@@ -100,8 +102,8 @@ fun SearchFilterScreen(
             )
             ToggleButton(
                 text = stringResource(id = R.string.Movies),
-                isSelected = selectedButtonType.intValue == 1,
-                onToggle = { selectedButtonType.intValue = 1 },
+                isSelected = selectedButtonType.value == TypeSearchFilter.FILM,
+                onToggle = { selectedButtonType.value = TypeSearchFilter.FILM },
                 shape = MaterialTheme.shapes.medium.copy(
                     topStart = CornerSize(0.dp),
                     bottomStart = CornerSize(0.dp),
@@ -111,8 +113,8 @@ fun SearchFilterScreen(
             )
             ToggleButton(
                 text = stringResource(id = R.string.Serials),
-                isSelected = selectedButtonType.intValue == 2,
-                onToggle = { selectedButtonType.intValue = 2 },
+                isSelected = selectedButtonType.value == TypeSearchFilter.TV_SERIES,
+                onToggle = { selectedButtonType.value = TypeSearchFilter.TV_SERIES },
                 shape = MaterialTheme.shapes.medium.copy(
                     topStart = CornerSize(0.dp),
                     bottomStart = CornerSize(0.dp),
@@ -144,15 +146,13 @@ fun SearchFilterScreen(
                 viewModel.updateVisibleDialogCountriesOrGenres(true)
                 viewModel.updateSelectedCountryOrGenre("Страна")
             }) {
-                state.selectedCountry?.let { country ->
-                    Text(
-                        text = country.country,
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            color = colorResource(id = R.color.gray_text),
-                            fontSize = Dimens.SmallFontSize1,
-                        )
+                Text(
+                    text = state.selectedCountry.country,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        color = colorResource(id = R.color.gray_text),
+                        fontSize = Dimens.SmallFontSize1,
                     )
-                }
+                )
             }
         }
 
@@ -180,15 +180,13 @@ fun SearchFilterScreen(
                 viewModel.updateVisibleDialogCountriesOrGenres(true)
                 viewModel.updateSelectedCountryOrGenre("Жанр")
             }) {
-                state.selectedGenre?.let { genre ->
-                    Text(
-                        text = genre.genre,
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            color = colorResource(id = R.color.gray_text),
-                            fontSize = Dimens.SmallFontSize1,
-                        )
+                Text(
+                    text = state.selectedGenre.genre,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        color = colorResource(id = R.color.gray_text),
+                        fontSize = Dimens.SmallFontSize1,
                     )
-                }
+                )
 
             }
         }
@@ -217,7 +215,7 @@ fun SearchFilterScreen(
                 viewModel.updateVisibleDialogDatePicker(true)
             }) {
                 Text(
-                    text = "с 1990 до 2024",
+                    text = "с ${state.yearsPosition.first} до ${state.yearsPosition.last}",
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = colorResource(id = R.color.gray_text),
                         fontSize = Dimens.SmallFontSize1,
@@ -246,8 +244,13 @@ fun SearchFilterScreen(
                     fontSize = Dimens.MediumFontSize2,
                 )
             )
+           val textRating = if (state.ratingPosition.start.toInt() == 1 && state.ratingPosition.endInclusive.toInt() == 10){
+                stringResource(id = R.string.any)
+            } else {
+                "с ${state.ratingPosition.start.toInt()} до ${state.ratingPosition.endInclusive.toInt()}"
+            }
             Text(
-                text = "с ${viewModel.state.value.ratingPosition.start.toInt()} до ${viewModel.state.value.ratingPosition.endInclusive.toInt()}",
+                text = textRating,
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = colorResource(id = R.color.gray_text),
                     fontSize = Dimens.SmallFontSize1,
@@ -282,8 +285,8 @@ fun SearchFilterScreen(
         ) {
             ToggleButton(
                 text = stringResource(id = R.string.Date),
-                isSelected = selectedButtonSort.intValue == 0,
-                onToggle = { selectedButtonSort.intValue = 0 },
+                isSelected = selectedButtonSort.value == SortSearchFilter.YEAR,
+                onToggle = { selectedButtonSort.value = SortSearchFilter.YEAR },
                 shape = MaterialTheme.shapes.medium.copy(
                     topStart = CornerSize(LargeCornerSize),
                     bottomStart = CornerSize(LargeCornerSize),
@@ -293,8 +296,8 @@ fun SearchFilterScreen(
             )
             ToggleButton(
                 text = stringResource(id = R.string.Popular),
-                isSelected = selectedButtonSort.intValue == 1,
-                onToggle = { selectedButtonSort.intValue = 1 },
+                isSelected = selectedButtonSort.value == SortSearchFilter.NUM_VOTE,
+                onToggle = { selectedButtonSort.value = SortSearchFilter.NUM_VOTE },
                 shape = MaterialTheme.shapes.medium.copy(
                     topStart = CornerSize(0.dp),
                     bottomStart = CornerSize(0.dp),
@@ -304,8 +307,8 @@ fun SearchFilterScreen(
             )
             ToggleButton(
                 text = stringResource(id = R.string.Rating),
-                isSelected = selectedButtonSort.intValue == 2,
-                onToggle = { selectedButtonSort.intValue = 2 },
+                isSelected = selectedButtonSort.value == SortSearchFilter.RATING,
+                onToggle = { selectedButtonSort.value = SortSearchFilter.RATING },
                 shape = MaterialTheme.shapes.medium.copy(
                     topStart = CornerSize(0.dp),
                     bottomStart = CornerSize(0.dp),

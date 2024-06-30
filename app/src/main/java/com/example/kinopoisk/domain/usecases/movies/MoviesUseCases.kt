@@ -9,5 +9,6 @@ data class MoviesUseCases(
     val getAllMoviesInDB: GetAllMoviesInDB,
     val deleteCollectionMovies: DeleteCollectionMovies,
     val galleryMovie: GalleryMovie,
-    val getCountriesAndGenres: GetCountriesAndGenres
+    val getCountriesAndGenres: GetCountriesAndGenres,
+    val searchFilterMovies: SearchFilterMovies
 )

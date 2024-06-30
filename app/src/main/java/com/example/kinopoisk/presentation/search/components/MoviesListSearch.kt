@@ -28,9 +28,11 @@ fun MoviesListSearch(
             verticalArrangement = Arrangement.spacedBy(Dimens.ExtraSmallPadding2),
             contentPadding = PaddingValues(all = Dimens.ExtraSmallPadding3)
         ) {
-            items(count = movies.itemCount) { index ->
-                movies[index]?.let {
-                    MovieCardSearch(film = it, onClick = { onClick(it) })
+            if (movies.itemSnapshotList.isNotEmpty()) {
+                items(count = movies.itemCount) { index ->
+                    movies[index]?.let {
+                        MovieCardSearch(film = it, onClick = { onClick(it) })
+                    }
                 }
             }
         }
@@ -39,7 +41,7 @@ fun MoviesListSearch(
 
 @Composable
 fun handlePagingResultSearch(
-    movies: LazyPagingItems<SearchFilm>
+    movies: LazyPagingItems<*>
 ): Boolean {
     val loadState = movies.loadState
     val error = when {

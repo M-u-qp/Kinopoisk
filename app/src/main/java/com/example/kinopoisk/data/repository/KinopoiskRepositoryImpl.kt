@@ -15,12 +15,14 @@ import com.example.kinopoisk.data.mapper.toStaffInfo
 import com.example.kinopoisk.data.remote.CollectionsPagingSource
 import com.example.kinopoisk.data.remote.GalleryMoviesPagingSource
 import com.example.kinopoisk.data.remote.KinopoiskApi
+import com.example.kinopoisk.data.remote.SearchFilterMoviesPagingSource
 import com.example.kinopoisk.data.remote.SearchMoviesPagingSource
 import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.SearchFilm
 import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.CollectionItem
 import com.example.kinopoisk.domain.model.CountriesAndGenres
+import com.example.kinopoisk.domain.model.FilterItem
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
@@ -66,10 +68,10 @@ class KinopoiskRepositoryImpl(
             )
             if (response.body() != null) {
                 Resource.Success(response.body()!!.items)
-            }else {
+            } else {
                 Resource.Error(Exception(getResponseError(response.code())))
             }
-        }catch (e:Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             Resource.Error(e)
         }
@@ -89,18 +91,47 @@ class KinopoiskRepositoryImpl(
         ).flow
     }
 
+    override fun searchFilterMovies(
+        countries: List<Int>,
+        genres: List<Int>,
+        order: String,
+        type: String,
+        ratingFrom: Int,
+        ratingTo: Int,
+        yearFrom: Int,
+        yearTo: Int
+    ): Flow<PagingData<FilterItem>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                SearchFilterMoviesPagingSource(
+                    kinopoiskApi = kinopoiskApi,
+                    context = context,
+                    countries = countries,
+                    genres = genres,
+                    order = order,
+                    type = type,
+                    ratingFrom = ratingFrom,
+                    ratingTo = ratingTo,
+                    yearFrom = yearFrom,
+                    yearTo = yearTo
+                )
+            }
+        ).flow
+    }
+
     //Список стран и жанров для фильтра
     override suspend fun getCountriesAndGenres(): Resource<CountriesAndGenres> {
-        return  try {
+        return try {
             val response = kinopoiskApi.getCountriesAndGenres(
                 apiKey = context.getString(R.string.API_KEY)
             )
             if (response.body() != null) {
                 Resource.Success(response.body()!!.toCountriesAndGenres())
-            }else {
+            } else {
                 Resource.Error(Exception(getResponseError(response.code())))
             }
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             Resource.Error(e)
         }

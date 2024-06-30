@@ -22,4 +22,6 @@ data class SearchFilterState(
 
     val typeSearchFilter: TypeSearchFilter = TypeSearchFilter.ALL,
     val sortSearchFilter: SortSearchFilter = SortSearchFilter.YEAR,
+
+    val viewedMovies: Boolean = false,
 )

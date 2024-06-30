@@ -28,6 +28,7 @@ import com.example.kinopoisk.domain.usecases.movies.GetAllMoviesInDB
 import com.example.kinopoisk.domain.usecases.movies.GetCountriesAndGenres
 import com.example.kinopoisk.domain.usecases.movies.GetMovie
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
+import com.example.kinopoisk.domain.usecases.movies.SearchFilterMovies
 import com.example.kinopoisk.domain.usecases.movies.SearchMovies
 import com.example.kinopoisk.domain.usecases.movies.UpsertMovie
 import com.example.kinopoisk.domain.usecases.staff.GetListStaff
@@ -42,6 +43,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -66,11 +68,25 @@ object AppModule {
     @Provides
     @Singleton
     fun provideKinopoiskApi(): KinopoiskApi {
+
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor { chain ->
+            val original = chain.request()
+            val requestBuilder = original.newBuilder()
+                .header("Authorization", "MY_API_KEY")
+            val request = requestBuilder.build()
+            chain.proceed(request)
+        }
+        httpClient.connectTimeout(30, TimeUnit.SECONDS)
+        httpClient.readTimeout(30, TimeUnit.SECONDS)
+        httpClient.addNetworkInterceptor(logging)
+        val okHttpClient=httpClient.build()
+
         return Retrofit.Builder()
             .client(
-                OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().also {
-                    it.level = HttpLoggingInterceptor.Level.BODY
-                }).build()
+               okHttpClient
             )
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -119,7 +135,8 @@ object AppModule {
             getAllMoviesInDB = GetAllMoviesInDB(kinopoiskRepository),
             deleteCollectionMovies = DeleteCollectionMovies(kinopoiskRepository),
             galleryMovie = GalleryMovie(kinopoiskRepository),
-            getCountriesAndGenres = GetCountriesAndGenres(kinopoiskRepository)
+            getCountriesAndGenres = GetCountriesAndGenres(kinopoiskRepository),
+            searchFilterMovies = SearchFilterMovies(kinopoiskRepository)
         )
     }
 

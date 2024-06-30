@@ -6,6 +6,7 @@ import com.example.kinopoisk.data.remote.dto.MovieResponse
 import com.example.kinopoisk.data.remote.dto.SearchMoviesResponse
 import com.example.kinopoisk.data.remote.dto.ListStaffResponse
 import com.example.kinopoisk.data.remote.dto.MovieGalleryResponse
+import com.example.kinopoisk.data.remote.dto.SearchFilterMoviesResponse
 import com.example.kinopoisk.data.remote.dto.SimilarMoviesResponse
 import com.example.kinopoisk.data.remote.dto.StaffResponse
 import retrofit2.Response
@@ -36,6 +37,21 @@ interface KinopoiskApi {
     suspend fun getCountriesAndGenres(
         @Header("X-API-KEY") apiKey: String
     ): Response<CountriesAndGenresResponse>
+
+    //Получить список фильмов по различным фильтрам
+    @GET("/api/v2.2/films")
+    suspend fun searchFilterMovies(
+        @Header("X-API-KEY") apiKey: String,
+        @Query("countries") countries: List<Int>,
+        @Query("genres") genres: List<Int>,
+        @Query("order") order: String,
+        @Query("type") type: String,
+        @Query("ratingFrom") ratingFrom: Int,
+        @Query("ratingTo") ratingTo: Int,
+        @Query("yearFrom") yearFrom: Int,
+        @Query("yearTo") yearTo: Int,
+        @Query("page") page: Int
+    ): SearchFilterMoviesResponse
 
     //Детальное инфо о фильме
     @GET("/api/v2.2/films/{id}")

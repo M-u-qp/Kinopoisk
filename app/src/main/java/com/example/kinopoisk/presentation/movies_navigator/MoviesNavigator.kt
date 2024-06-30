@@ -43,6 +43,7 @@ import com.example.kinopoisk.presentation.profile.ProfileScreen
 import com.example.kinopoisk.presentation.profile.ProfileViewModel
 import com.example.kinopoisk.presentation.search.SearchScreen
 import com.example.kinopoisk.presentation.search.SearchViewModel
+import com.example.kinopoisk.presentation.search_filter.FilterData
 import com.example.kinopoisk.presentation.search_filter.SearchFilterScreen
 import com.example.kinopoisk.presentation.search_filter.SearchFilterViewModel
 
@@ -142,17 +143,36 @@ fun MoviesNavigator() {
             composable(route = Route.SearchScreen.route) {
                 val viewModel: SearchViewModel = hiltViewModel()
                 val state = viewModel.state.value
-                SearchScreen(
-                    state = state,
-                    event = viewModel::onEvent,
-                    navigateToDetails = { movieId ->
-                        navigateToDetails(
-                            navController = navController,
-                            movieId = movieId
-                        )
-                    },
-                    navigateToSearchFilter = { navController.navigate(route = Route.SearchFilterScreen.route) }
-                )
+                if (navController.previousBackStackEntry?.destination?.route == Route.SearchFilterScreen.route) {
+                    navController.previousBackStackEntry?.savedStateHandle?.get<FilterData>("filterData")
+                        ?.let { filterData ->
+                            SearchScreen(
+                                state = state,
+                                event = viewModel::onEvent,
+                                navigateToDetails = { movieId ->
+                                    navigateToDetails(
+                                        navController = navController,
+                                        movieId = movieId
+                                    )
+                                },
+                                navigateToSearchFilter = { navController.navigate(route = Route.SearchFilterScreen.route) },
+                                filterData = listOf(filterData)
+                            )
+                        }
+                }else {
+                    SearchScreen(
+                        state = state,
+                        event = viewModel::onEvent,
+                        navigateToDetails = { movieId ->
+                            navigateToDetails(
+                                navController = navController,
+                                movieId = movieId
+                            )
+                        },
+                        navigateToSearchFilter = { navController.navigate(route = Route.SearchFilterScreen.route) },
+                        filterData = emptyList()
+                    )
+                }
             }
             composable(route = Route.SearchFilterScreen.route) {
                 val viewModel: SearchFilterViewModel = hiltViewModel()
@@ -160,7 +180,13 @@ fun MoviesNavigator() {
                 SearchFilterScreen(
                     viewModel = viewModel,
                     navigateUp = { navController.navigateUp() },
-                    state = state
+                    state = state,
+                    navigateToSearch = { filterData ->
+                        navigateToSearch(
+                            navController = navController,
+                            filterData = filterData
+                        )
+                    }
                 )
             }
             composable(route = Route.DetailsScreen.route) {
@@ -370,6 +396,11 @@ private fun navigateToAll(navController: NavController, listAll: List<*>, type: 
     } else {
         navController.navigate(route = Route.AllMovieScreen.route)
     }
+}
+
+private fun navigateToSearch(navController: NavController, filterData: List<FilterData>) {
+    navController.currentBackStackEntry?.savedStateHandle?.set("filterData", filterData)
+    navController.navigate(route = Route.SearchScreen.route)
 }
 
 private fun navigateToAllGallery(

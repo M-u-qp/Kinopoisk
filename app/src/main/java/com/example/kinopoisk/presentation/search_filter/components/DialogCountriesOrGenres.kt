@@ -134,7 +134,7 @@ fun DialogCountriesOrGenres(
                             }
                             items(filteredCountries) { country ->
                                 TextButton(
-                                    modifier = Modifier.padding(horizontal = MediumPadding2),
+                                    modifier = Modifier.fillMaxWidth().padding(horizontal = MediumPadding2),
                                     onClick = {
                                         viewModel.updateSelectedCountry(country)
                                         viewModel.updateVisibleDialogCountriesOrGenres(false)
@@ -219,7 +219,7 @@ fun DialogCountriesOrGenres(
                             }
                             items(filteredGenres) { genre ->
                                 TextButton(
-                                    modifier = Modifier.padding(horizontal = MediumPadding2),
+                                    modifier = Modifier.fillMaxWidth().padding(horizontal = MediumPadding2),
                                     onClick = {
                                         viewModel.updateSelectedGenre(genre)
                                         viewModel.updateVisibleDialogCountriesOrGenres(false)

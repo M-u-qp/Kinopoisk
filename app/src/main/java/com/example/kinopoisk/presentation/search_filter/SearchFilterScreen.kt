@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,6 +30,7 @@ import com.example.kinopoisk.R
 import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
 import com.example.kinopoisk.presentation.Dimens.LargeCornerSize
+import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
 import com.example.kinopoisk.presentation.common.NavigateUpButton
@@ -41,11 +45,13 @@ import com.example.kinopoisk.presentation.search_filter.components.RatingSlider
 fun SearchFilterScreen(
     viewModel: SearchFilterViewModel = hiltViewModel(),
     state: SearchFilterState,
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
+    navigateToSearch: (List<FilterData>) -> Unit
 ) {
 
     val selectedButtonType = remember { mutableStateOf(state.typeSearchFilter) }
     val selectedButtonSort = remember { mutableStateOf(state.sortSearchFilter) }
+    val scrollState = rememberScrollState()
 
     if (state.showDialogCountriesOrGenres) {
         DialogCountriesOrGenres(
@@ -62,6 +68,7 @@ fun SearchFilterScreen(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
+            .verticalScroll(state = scrollState)
     ) {
 
         NavigateUpButton(
@@ -244,11 +251,12 @@ fun SearchFilterScreen(
                     fontSize = Dimens.MediumFontSize2,
                 )
             )
-           val textRating = if (state.ratingPosition.start.toInt() == 1 && state.ratingPosition.endInclusive.toInt() == 10){
-                stringResource(id = R.string.any)
-            } else {
-                "с ${state.ratingPosition.start.toInt()} до ${state.ratingPosition.endInclusive.toInt()}"
-            }
+            val textRating =
+                if (state.ratingPosition.start.toInt() == 1 && state.ratingPosition.endInclusive.toInt() == 10) {
+                    stringResource(id = R.string.any)
+                } else {
+                    "с ${state.ratingPosition.start.toInt()} до ${state.ratingPosition.endInclusive.toInt()}"
+                }
             Text(
                 text = textRating,
                 style = MaterialTheme.typography.bodySmall.copy(
@@ -320,5 +328,32 @@ fun SearchFilterScreen(
 
         Spacer(modifier = Modifier.height(SmallPadding1))
         HorizontalDivider()
+        Spacer(modifier = Modifier.height(MediumPadding1))
+
+        Button(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            onClick = {
+                navigateToSearch(listOf( FilterData()))
+            }
+        ) {
+            Text(
+                text = stringResource(id = R.string.Search),
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = colorResource(id = R.color.white),
+                    fontSize = Dimens.MediumFontSize2,
+                )
+            )
+        }
     }
 }
+
+data class FilterData(
+    val ratingFrom: Int = 1,
+    val ratingTo: Int = 10,
+    val selectedCountry: List<Int> = listOf(1),
+    val selectedGenre: List<Int> = listOf(1),
+    var yearsFrom: Int = 1900,
+    val yearsTo: Int = 2024,
+    val typeSearchFilter: String = "FILM",
+    val sortSearchFilter: String = "RATING",
+    )

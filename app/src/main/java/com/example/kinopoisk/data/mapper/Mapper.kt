@@ -8,8 +8,10 @@ import com.example.kinopoisk.data.remote.dto.StaffResponse
 import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.CountriesAndGenres
 import com.example.kinopoisk.domain.model.Country
+import com.example.kinopoisk.domain.model.FilterItem
 import com.example.kinopoisk.domain.model.Genre
 import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.model.SearchFilm
 import com.example.kinopoisk.domain.model.StaffInfo
 
 fun MovieResponse.toMovie(): Movie {
@@ -118,5 +120,23 @@ fun CountriesAndGenresResponse.toCountriesAndGenres(): CountriesAndGenres {
     return CountriesAndGenres(
         countries = countries,
         genres = genres
+    )
+}
+
+fun FilterItem.toSearchFilm(): SearchFilm {
+    return SearchFilm(
+        countries = countries,
+        genres = genres,
+        description = "",
+        filmId = kinopoiskId,
+        filmLength = "",
+        nameEn = nameEn,
+        nameRu = nameRu,
+        posterUrl = posterUrl,
+        posterUrlPreview = posterUrlPreview,
+        rating = ratingKinopoisk.toString(),
+        ratingVoteCount = 0,
+        type = type,
+        year = year.toString()
     )
 }

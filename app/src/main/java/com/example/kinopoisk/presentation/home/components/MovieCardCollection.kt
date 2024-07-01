@@ -46,10 +46,10 @@ fun MovieCardCollection(
         modifier = modifier
             .clickable { onClick?.invoke() }
     ) {
-        Box(modifier = modifier) {
+        Box(modifier = Modifier) {
             //Постер фильма
             AsyncImage(
-                modifier = modifier
+                modifier = Modifier
                     .size(width = MovieCardSizeWidth, height = MovieCardSizeHeight)
                     .clip(MaterialTheme.shapes.medium),
                 model = ImageRequest.Builder(context).data(item.posterUrl).build(),
@@ -58,7 +58,7 @@ fun MovieCardCollection(
             )
             if (item.ratingKinopoisk != 0.0 && item.ratingKinopoisk.toString() != "null") {
                 Box(
-                    modifier = modifier
+                    modifier = Modifier
                         .padding(top = ExtraSmallPadding1, end = ExtraSmallPadding1)
                         .size(width = RatingMovieWidth, height = RatingMovieHeight)
                         .background(
@@ -83,7 +83,7 @@ fun MovieCardCollection(
         //Название фильма
         val nameMovie = normalizeTitleMovie(item.nameRu ?: item.nameEn ?: "")
         Text(
-            modifier = modifier.padding(top = ExtraSmallPadding2),
+            modifier = Modifier.padding(top = ExtraSmallPadding2),
             text = nameMovie,
             style = MaterialTheme.typography.labelMedium.copy(
                 fontSize = SmallFontSize1
@@ -94,7 +94,7 @@ fun MovieCardCollection(
         )
         //Жанр фильма
         Text(
-            modifier = modifier.padding(top = ExtraSmallPadding3),
+            modifier = Modifier.padding(top = ExtraSmallPadding3),
             text = item.genres.joinToString(separator = "", limit = 1) { it.genre },
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontSize = SmallFontSize2

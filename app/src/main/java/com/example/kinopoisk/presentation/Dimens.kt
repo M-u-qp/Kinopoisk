@@ -23,6 +23,8 @@ object Dimens {
 
     val RatingMovieWidth = 19.dp
     val RatingMovieHeight = 13.dp
+    val RatingMovieCardDialogWidth = 17.dp
+    val RatingMovieCardDialogHeight = 10.dp
 
     val SizeCollectionWidth = 30.dp
     val SizeCollectionHeight = 17.dp
@@ -49,6 +51,9 @@ object Dimens {
     val StaffCardHeight = 201.dp
     val GalleryImageWidth = 192.dp
     val GalleryImageHeight = 108.dp
+
+    val DialogCardSizeHeight = 492.dp
+    val ErrorDialogSizeHeight = 212.dp
 
     val MediumRoundedCornerShape1 = 16.dp
     val LargeCornerSize = 56.dp

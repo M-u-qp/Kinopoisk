@@ -18,8 +18,11 @@ data class DetailsState(
     val loadingCollections: Boolean = false,
     val listCollections: List<CollectionDB> = emptyList(),
     var showDialogForCollections: Boolean = false,
-    var selectedCollection: String = "",
+    var selectedCollection: List<String> = emptyList(),
     var movieViewed: Boolean = false,
+    var showDialogForCreateCollection: Boolean = false,
+    val listCollectionsAndSize: Map<String, List<Movie?>> = mutableMapOf(),
+    var showErrorDialog: Boolean = false,
 
     val listActors: List<Staff> = emptyList(),
     val listOtherStaff: List<Staff> = emptyList(),

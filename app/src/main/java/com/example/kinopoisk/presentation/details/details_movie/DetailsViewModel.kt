@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
@@ -32,14 +33,8 @@ class DetailsViewModel @Inject constructor(
     var sideEffect by mutableStateOf<String?>(null)
         private set
 
-    init {
-        viewModelScope.launch {
-            getAllCollection()
-        }
-    }
-
     //Получение всех коллекций в БД
-    private suspend fun getAllCollection() {
+     suspend fun getAllCollection() {
         collectionsUseCases.getCollectionsInDB().collect {
             _state.value = _state.value.copy(
                 listCollections = it
@@ -47,10 +42,34 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
+    //Создание новой коллекции
+    suspend fun addCollectionInDB(collectionDB: CollectionDB) {
+        var addCollection = false
+        if (state.value.listCollections.isNotEmpty()) {
+            state.value.listCollections.forEach { listCollections ->
+                if (listCollections.nameCollection == collectionDB.nameCollection) {
+                    addCollection = true
+                    updateShowErrorDialog(true)
+                }
+            }
+            if (!addCollection) {
+                collectionsUseCases.addCollection(collectionDB)
+            }
+        }
+    }
+
     //Получение всех фильмов в БД
     suspend fun getAllMoviesInDB() {
         moviesUseCases.getAllMoviesInDB().collect {
             _state.value = _state.value.copy(listMovie = it)
+        }
+    }
+
+    suspend fun getCollectionSize(nameCollection: String) {
+        collectionsUseCases.getCollectionInDB(nameCollection).collect {
+            _state.value = _state.value.copy(
+                listCollectionsAndSize = _state.value.listCollectionsAndSize.toMutableMap()
+                    .apply { put(nameCollection, it) })
         }
     }
 
@@ -67,15 +86,18 @@ class DetailsViewModel @Inject constructor(
                 addDeleteMovieInDB(event.movie, TitleCollectionsDB.FAVORITE.value)
             }
 
-            //Клик по иконке Троеточие ( выбор своей коллекции из списка в диалоге )
+            //Клик по иконке Троеточие ( выбор своей коллекции из списка в диалоге или создать новую )
             is DetailsEvent.AddMovieInCollection -> {
                 val selectedCollection = state.value.selectedCollection
                 if (selectedCollection.isNotEmpty()) {
-                    addDeleteMovieInDB(event.movie, selectedCollection)
+                    selectedCollection.forEach { selectedCollectionValue ->
+                        addDeleteMovieInDB(event.movie, selectedCollectionValue)
+                    }
                     _state.value = _state.value.copy(
-                        selectedCollection = "",
+                        selectedCollection = emptyList(),
                         showDialogForCollections = false
                     )
+
                 } else {
                     _state.value = _state.value.copy(showDialogForCollections = true)
                 }
@@ -138,8 +160,30 @@ class DetailsViewModel @Inject constructor(
         _state.value = _state.value.copy(showDialogForCollections = isVisible)
     }
 
-    fun updateSelectedCollection(selectedCollection: String) {
-        _state.value = _state.value.copy(selectedCollection = selectedCollection)
+    fun updateSelectedCollectionAdd(selectedCollection: String) {
+        _state.value =
+            _state.value.copy(selectedCollection = _state.value.selectedCollection.toMutableList()
+                .apply { add(selectedCollection) })
+    }
+
+    fun updateSelectedCollectionDelete(selectedCollection: String) {
+        _state.value =
+            _state.value.copy(selectedCollection = _state.value.selectedCollection.toMutableList()
+                .apply { remove(selectedCollection) })
+    }
+
+    fun updateSelectedCollectionDeleteAll() {
+        _state.value =
+            _state.value.copy(selectedCollection = _state.value.selectedCollection.toMutableList()
+                .apply { removeAll(state.value.selectedCollection) })
+    }
+
+    fun updateShowDialogForCreateCollection(show: Boolean) {
+        _state.value = _state.value.copy(showDialogForCreateCollection = show)
+    }
+
+    fun updateShowErrorDialog(show: Boolean) {
+        _state.value = _state.value.copy(showErrorDialog = show)
     }
 
     private suspend fun deleteMovie(id: Int) {

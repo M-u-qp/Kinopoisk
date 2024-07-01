@@ -42,6 +42,8 @@
     <string name="Create">Создать</string>
     <string name="Enter_name_your_collection">Введи название своей коллекции</string>
     <string name="Clear_history">Очистить\n историю</string>
+    <string name="Add_in_collection">Добавить в коллекцию</string>
+    <string name="error_add_collection"> коллекция уже существует, придумайте другое название.</string>
 
     <!-- Common -->
     <string name="Are_you_sure">Вы уверены?</string>
@@ -51,5 +53,6 @@
     <string name="Skip">Пропустить</string>
     <string name="Choose">Выбрать</string>
     <string name="Cancellation">Отмена</string>
+    <string name="Error_dialog">Ошибка!</string>
 
 </resources>

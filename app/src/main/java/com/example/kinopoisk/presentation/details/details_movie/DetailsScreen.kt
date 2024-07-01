@@ -65,6 +65,13 @@ fun DetailsScreen(
     val context = LocalContext.current
     val state = viewModel.state.collectAsState().value
 
+    //Получить список всех коллекций
+    LaunchedEffect(key1 = true) {
+        withContext(Dispatchers.IO) {
+            viewModel.getAllCollection()
+        }
+    }
+
     //Получить фильм с сети по кинопоиск айди
     LaunchedEffect(key1 = true) {
         withContext(Dispatchers.IO) {
@@ -136,7 +143,10 @@ fun DetailsScreen(
 
                     //Диалог со списком коллекций для выбора пользователем
                     if (state.showDialogForCollections) {
-                        DialogAddMovieInCollections(state = state, event = event)
+                        DialogAddMovieInCollections(
+                            state = state,
+                            event = event
+                        )
                     }
                     //Короткое описание фильма
                     Text(

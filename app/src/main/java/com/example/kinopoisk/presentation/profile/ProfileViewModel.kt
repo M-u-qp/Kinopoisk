@@ -26,6 +26,7 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    //Удалить коллекцию вместе с фильмами
     suspend fun deleteCollection(
         collectionName: String,
         collectionDB: CollectionDB
@@ -34,16 +35,19 @@ class ProfileViewModel @Inject constructor(
         moviesUseCases.deleteCollectionMovies(collectionName)
     }
 
+    //Удалить фильмы из коллекции по названию коллекции
     suspend fun deleteMoviesInCollection(collectionName: String) {
         moviesUseCases.deleteCollectionMovies(collectionName)
     }
 
+    //Получить список всех коллекций
     private suspend fun getAllCollections() {
         collectionsUseCases.getCollectionsInDB().collect { listCollections ->
             _state.value = _state.value.copy(allCollections = listCollections)
         }
     }
 
+    //Получить коллекцию по названию для определения ее размера
     suspend fun getCollection(nameCollection: String) {
         collectionsUseCases.getCollectionInDB(nameCollection).collect {
             _state.value = _state.value.copy(
@@ -52,8 +56,21 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    //Создать свою коллекцию
     suspend fun addCollectionInDB(collectionDB: CollectionDB) {
-        collectionsUseCases.addCollection(collectionDB)
+        var addCollection = false
+        if (state.value.allCollections.isNotEmpty()) {
+            state.value.allCollections.forEach { listCollections ->
+                if (listCollections.nameCollection == collectionDB.nameCollection) {
+                    addCollection = true
+                    updateShowErrorDialog(show = true, collectionName =  collectionDB.nameCollection)
+                    return@forEach
+                }
+            }
+            if (!addCollection) {
+                collectionsUseCases.addCollection(collectionDB)
+            }
+        }
     }
 
     fun updateShowDialogForCreateCollection(show: Boolean) {
@@ -62,5 +79,12 @@ class ProfileViewModel @Inject constructor(
 
     fun updateShowDialogAreYouSure(show: Boolean) {
         _state.value = _state.value.copy(showDialogAreYouSure = show)
+    }
+
+    fun updateShowErrorDialog(show: Boolean, collectionName: String) {
+        _state.value = _state.value.copy(
+            showErrorDialog = show,
+            errorCollectionName = collectionName
+        )
     }
 }

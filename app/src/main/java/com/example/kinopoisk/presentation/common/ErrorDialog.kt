@@ -31,6 +31,7 @@ import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.ErrorDialogSizeHeight
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.details.details_movie.DetailsViewModel
+import com.example.kinopoisk.presentation.profile.ProfileViewModel
 
 @Composable
 fun ErrorDialog(
@@ -39,6 +40,78 @@ fun ErrorDialog(
 ) {
     when (viewModel) {
         is DetailsViewModel -> {
+            var showDialog by remember { mutableStateOf(false) }
+
+            Dialog(
+                onDismissRequest = {
+                    showDialog = false
+                    viewModel.updateShowErrorDialog(false, "")
+                },
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(ErrorDialogSizeHeight)
+                        .background(color = Color.White, shape = MaterialTheme.shapes.medium),
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = MediumPadding2, start = MediumPadding2),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.Error_dialog),
+                            style = MaterialTheme.typography.labelMedium.copy(
+                                fontWeight = FontWeight.Medium,
+                                fontSize = Dimens.MediumFontSize3
+                            ),
+                        )
+
+                        IconButton(
+                            modifier = Modifier
+                                .padding(end = Dimens.SmallPadding1),
+                            onClick = {
+                                viewModel.updateShowErrorDialog(false, "")
+                            }
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(Dimens.IconSize),
+                                painter = painterResource(id = R.drawable.ic_close),
+                                contentDescription = null
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(MediumPadding2))
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = MediumPadding2)
+                    ) {
+                        Text(
+                            text = "$text - ",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                color = MaterialTheme.colorScheme.error,
+                                fontSize = Dimens.MediumFontSize2,
+                                fontWeight = FontWeight.Bold
+                            ),
+                        )
+
+                        Text(
+                            text = stringResource(id = R.string.error_add_collection),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                color = colorResource(id = R.color.gray_text),
+                                fontSize = Dimens.MediumFontSize2
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+        is ProfileViewModel -> {
             var showDialog by remember { mutableStateOf(false) }
 
             Dialog(

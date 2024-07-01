@@ -1,5 +1,6 @@
 package com.example.kinopoisk.presentation.profile
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,6 +42,7 @@ import com.example.kinopoisk.presentation.Dimens.MovieCardSizeHeight
 import com.example.kinopoisk.presentation.Dimens.SmallFontSize2
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
 import com.example.kinopoisk.presentation.common.DialogAreYouSure
+import com.example.kinopoisk.presentation.common.ErrorDialog
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import com.example.kinopoisk.presentation.common.TitleCommon
 import com.example.kinopoisk.presentation.profile.components.CollectionCard
@@ -58,6 +60,14 @@ fun ProfileScreen(
     val scope = rememberCoroutineScope()
     val sizeViewedCollection =
         state.listCollectionsAndSize[TitleCollectionsDB.VIEWED.value]?.size ?: 0
+
+    if (state.showDialogForCreateCollection) {
+        DialogCreateCollection()
+    }
+
+    if (state.showErrorDialog) {
+        ErrorDialog(viewModel = viewModel, text = state.errorCollectionName)
+    }
 
     LaunchedEffect(key1 = true) {
         viewModel.getCollection(TitleCollectionsDB.VIEWED.value)
@@ -144,18 +154,17 @@ fun ProfileScreen(
         Row(
             modifier = Modifier
                 .padding(vertical = SmallPadding1)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .clickable { viewModel.updateShowDialogForCreateCollection(true) },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = { viewModel.updateShowDialogForCreateCollection(true) }) {
-                Icon(
-                    modifier = Modifier.scale(1.5f),
-                    painter = painterResource(
-                        id = R.drawable.ic_add
-                    ),
-                    contentDescription = null
-                )
-            }
+            Icon(
+                modifier = Modifier.scale(1.5f),
+                painter = painterResource(
+                    id = R.drawable.ic_add
+                ),
+                contentDescription = null
+            )
             Text(
                 modifier = Modifier.padding(start = SmallPadding1),
                 text = stringResource(id = R.string.Create_collection),
@@ -165,10 +174,6 @@ fun ProfileScreen(
                 ),
                 color = colorResource(id = R.color.black_text)
             )
-        }
-
-        if (state.showDialogForCreateCollection) {
-            DialogCreateCollection()
         }
 
         val listCollections = state.allCollections.filter { collection ->

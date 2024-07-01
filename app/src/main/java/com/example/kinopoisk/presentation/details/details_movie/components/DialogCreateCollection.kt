@@ -11,7 +11,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -26,7 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.presentation.Dimens
-import com.example.kinopoisk.presentation.common.ErrorDialog
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import com.example.kinopoisk.presentation.details.details_movie.DetailsViewModel
 import kotlinx.coroutines.launch
@@ -38,11 +36,6 @@ fun DialogCreateCollection() {
     val viewModel: DetailsViewModel = hiltViewModel()
     val collectionName = remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
-    val state = viewModel.state.collectAsState()
-
-    if (state.value.showErrorDialog) {
-        ErrorDialog(viewModel = viewModel, text = collectionName.value)
-    }
 
     Dialog(onDismissRequest = {
         showDialog.value = false

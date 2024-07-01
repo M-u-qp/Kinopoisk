@@ -23,6 +23,7 @@ data class DetailsState(
     var showDialogForCreateCollection: Boolean = false,
     val listCollectionsAndSize: Map<String, List<Movie?>> = mutableMapOf(),
     var showErrorDialog: Boolean = false,
+    var errorCollectionName: String = "",
 
     val listActors: List<Staff> = emptyList(),
     val listOtherStaff: List<Staff> = emptyList(),

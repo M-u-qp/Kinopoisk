@@ -1,5 +1,6 @@
 package com.example.kinopoisk.presentation.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -42,16 +44,19 @@ fun ErrorDialog(
             Dialog(
                 onDismissRequest = {
                     showDialog = false
-                    viewModel.updateShowErrorDialog(false)
+                    viewModel.updateShowErrorDialog(false, "")
                 },
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(top = MediumPadding2, start = MediumPadding2)
                         .fillMaxWidth()
-                        .height(ErrorDialogSizeHeight),
+                        .height(ErrorDialogSizeHeight)
+                        .background(color = Color.White, shape = MaterialTheme.shapes.medium),
                 ) {
                     Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = MediumPadding2, start = MediumPadding2),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -67,7 +72,7 @@ fun ErrorDialog(
                             modifier = Modifier
                                 .padding(end = Dimens.SmallPadding1),
                             onClick = {
-                                viewModel.updateShowErrorDialog(false)
+                                viewModel.updateShowErrorDialog(false, "")
                             }
                         ) {
                             Icon(
@@ -80,13 +85,28 @@ fun ErrorDialog(
 
                     Spacer(modifier = Modifier.height(MediumPadding2))
 
-                    Text(
-                        text = text + stringResource(id = R.string.error_add_collection),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            color = colorResource(id = R.color.gray_text),
-                            fontSize = Dimens.MediumFontSize2
-                        ),
-                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = MediumPadding2)
+                    ) {
+                        Text(
+                            text = "$text - ",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                color = MaterialTheme.colorScheme.error,
+                                fontSize = Dimens.MediumFontSize2,
+                                fontWeight = FontWeight.Bold
+                            ),
+                        )
+
+                        Text(
+                            text = stringResource(id = R.string.error_add_collection),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                color = colorResource(id = R.color.gray_text),
+                                fontSize = Dimens.MediumFontSize2
+                            ),
+                        )
+                    }
                 }
             }
         }

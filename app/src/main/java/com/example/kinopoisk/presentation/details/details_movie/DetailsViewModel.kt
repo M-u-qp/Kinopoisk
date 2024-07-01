@@ -49,7 +49,8 @@ class DetailsViewModel @Inject constructor(
             state.value.listCollections.forEach { listCollections ->
                 if (listCollections.nameCollection == collectionDB.nameCollection) {
                     addCollection = true
-                    updateShowErrorDialog(true)
+                    updateShowErrorDialog(show = true, collectionName =  collectionDB.nameCollection)
+                    return@forEach
                 }
             }
             if (!addCollection) {
@@ -182,9 +183,13 @@ class DetailsViewModel @Inject constructor(
         _state.value = _state.value.copy(showDialogForCreateCollection = show)
     }
 
-    fun updateShowErrorDialog(show: Boolean) {
-        _state.value = _state.value.copy(showErrorDialog = show)
+    fun updateShowErrorDialog(show: Boolean, collectionName: String) {
+        _state.value = _state.value.copy(
+            showErrorDialog = show,
+            errorCollectionName = collectionName
+        )
     }
+
 
     private suspend fun deleteMovie(id: Int) {
         moviesUseCases.deleteMovieById(id = id)

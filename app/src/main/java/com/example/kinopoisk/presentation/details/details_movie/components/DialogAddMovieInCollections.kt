@@ -43,6 +43,7 @@ import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.MediumRoundedCornerShape1
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
+import com.example.kinopoisk.presentation.common.ErrorDialog
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import com.example.kinopoisk.presentation.details.details_movie.DetailsEvent
 import com.example.kinopoisk.presentation.details.details_movie.DetailsState
@@ -59,6 +60,10 @@ fun DialogAddMovieInCollections(
 
     if (state.showDialogForCreateCollection) {
         DialogCreateCollection()
+    }
+
+    if (state.showErrorDialog) {
+        ErrorDialog(viewModel = viewModel, text = state.errorCollectionName)
     }
 
     Dialog(onDismissRequest = {

@@ -8,6 +8,7 @@ import com.example.kinopoisk.domain.model.CollectionItem
 import com.example.kinopoisk.domain.model.CountriesAndGenres
 import com.example.kinopoisk.domain.model.FilterItem
 import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.model.SeasonsItem
 import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
 import com.example.kinopoisk.domain.model.StaffInfo
@@ -35,18 +36,21 @@ interface KinopoiskRepository {
     ): Flow<PagingData<FilterItem>>
 
     //Список стран и жанров для фильтра
-    suspend fun getCountriesAndGenres():Resource<CountriesAndGenres>
+    suspend fun getCountriesAndGenres(): Resource<CountriesAndGenres>
+
+    //Получить сезоны сериала
+    suspend fun getSerialSeasons(id: Int): Resource<List<SeasonsItem>>
 
     //Получить детальную информацию о фильме
     suspend fun getMovie(id: Int): Resource<Movie>
 
     //Актеры и т.п.
-     suspend fun getListStaff(filmId: Int): Resource<List<Staff>>
+    suspend fun getListStaff(filmId: Int): Resource<List<Staff>>
 
-     suspend fun getStaff(id: Int): Resource<StaffInfo>
+    suspend fun getStaff(id: Int): Resource<StaffInfo>
 
-     //Галерея
-     fun getGalleryMovie(id: Int, type: String): Flow<PagingData<GalleryItem>>
+    //Галерея
+    fun getGalleryMovie(id: Int, type: String): Flow<PagingData<GalleryItem>>
 
     //Работа с БД
     suspend fun upsertMovie(movie: Movie)
@@ -57,7 +61,7 @@ interface KinopoiskRepository {
 
     fun selectCollections(): Flow<List<CollectionDB>>
 
-     fun selectCollection(collectionName: String): Flow<List<Movie?>>
+    fun selectCollection(collectionName: String): Flow<List<Movie?>>
 
     suspend fun addCollection(collectionDB: CollectionDB)
 

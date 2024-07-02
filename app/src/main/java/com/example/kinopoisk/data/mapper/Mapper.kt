@@ -32,7 +32,8 @@ fun MovieResponse.toMovie(): Movie {
         ratingKinopoisk = ratingKinopoisk,
         shortDescription = shortDescription,
         webUrl = webUrl,
-        year = year
+        year = year,
+        type = type
     )
 }
 
@@ -54,7 +55,8 @@ fun MovieEntity.toMovie(): Movie {
         ratingKinopoisk = ratingKinopoisk,
         shortDescription = shortDescription,
         webUrl = webUrl,
-        year = year
+        year = year,
+        type = type
     )
 }
 
@@ -76,7 +78,8 @@ fun Movie.toMovieEntity(): MovieEntity {
         ratingKinopoisk = ratingKinopoisk ?: 0.0,
         shortDescription = shortDescription.toString(),
         webUrl = webUrl.toString(),
-        year = year ?: 0
+        year = year ?: 0,
+        type = type.toString()
     )
 }
 

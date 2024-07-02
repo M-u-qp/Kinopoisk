@@ -13,6 +13,7 @@ import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
 import com.example.kinopoisk.domain.usecases.staff.StaffUseCases
 import com.example.kinopoisk.domain.utils.Resource
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
+import com.example.kinopoisk.presentation.common.TypeSearchFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,7 +35,7 @@ class DetailsViewModel @Inject constructor(
         private set
 
     //Получение всех коллекций в БД
-     suspend fun getAllCollection() {
+    suspend fun getAllCollection() {
         collectionsUseCases.getCollectionsInDB().collect {
             _state.value = _state.value.copy(
                 listCollections = it
@@ -49,7 +50,7 @@ class DetailsViewModel @Inject constructor(
             state.value.listCollections.forEach { listCollections ->
                 if (listCollections.nameCollection == collectionDB.nameCollection) {
                     addCollection = true
-                    updateShowErrorDialog(show = true, collectionName =  collectionDB.nameCollection)
+                    updateShowErrorDialog(show = true, collectionName = collectionDB.nameCollection)
                     return@forEach
                 }
             }
@@ -222,6 +223,34 @@ class DetailsViewModel @Inject constructor(
                 }
 
                 else -> Unit
+            }
+        }
+    }
+
+    //Сезоны сериала
+    suspend fun getSerialSeasons(id: Int) {
+        if (state.value.serialSeasons.isEmpty() && state.value.movie != null) {
+        state.value.movie?.let { movie ->
+            if (movie.type == TypeSearchFilter.TV_SERIES.name) {
+                    when (val seasons = moviesUseCases.getSerialSeasons(id = id)) {
+                        is Resource.Success -> {
+                            seasons.data?.let {
+                                _state.value = _state.value.copy(
+                                    serialSeasons = seasons.data,
+                                    showSerialSeasons = true,
+                                    errorSeasons = null
+                                )
+                            }
+                        }
+
+                        is Resource.Error -> {
+                            _state.value =
+                                _state.value.copy(errorSeasons = seasons.exception.toString())
+                        }
+
+                        else -> Unit
+                    }
+                }
             }
         }
     }

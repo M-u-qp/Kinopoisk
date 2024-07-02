@@ -24,6 +24,7 @@ import com.example.kinopoisk.domain.model.CollectionItem
 import com.example.kinopoisk.domain.model.CountriesAndGenres
 import com.example.kinopoisk.domain.model.FilterItem
 import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.model.SeasonsItem
 import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
 import com.example.kinopoisk.domain.model.StaffInfo
@@ -132,6 +133,24 @@ class KinopoiskRepositoryImpl(
                 Resource.Error(Exception(getResponseError(response.code())))
             }
         } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(e)
+        }
+    }
+
+    //Получить сезоны сериала
+    override suspend fun getSerialSeasons(id: Int): Resource<List<SeasonsItem>> {
+        return try {
+            val response = kinopoiskApi.getSerialSeasons(
+                apiKey = context.getString(R.string.API_KEY),
+                id = id
+            )
+            if (response.body() != null) {
+                Resource.Success(response.body()!!.items)
+            } else {
+                Resource.Error(Exception(getResponseError(response.code())))
+            }
+        }catch (e: Exception) {
             e.printStackTrace()
             Resource.Error(e)
         }

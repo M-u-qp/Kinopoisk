@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.model.SeasonsItem
 import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
 import kotlinx.coroutines.flow.Flow
@@ -24,6 +25,9 @@ data class DetailsState(
     val listCollectionsAndSize: Map<String, List<Movie?>> = mutableMapOf(),
     var showErrorDialog: Boolean = false,
     var errorCollectionName: String = "",
+    val serialSeasons: List<SeasonsItem> = emptyList(),
+    var showSerialSeasons: Boolean = false,
+    val errorSeasons: String? = null,
 
     val listActors: List<Staff> = emptyList(),
     val listOtherStaff: List<Staff> = emptyList(),

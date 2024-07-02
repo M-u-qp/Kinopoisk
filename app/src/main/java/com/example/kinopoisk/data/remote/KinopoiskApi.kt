@@ -7,6 +7,7 @@ import com.example.kinopoisk.data.remote.dto.SearchMoviesResponse
 import com.example.kinopoisk.data.remote.dto.ListStaffResponse
 import com.example.kinopoisk.data.remote.dto.MovieGalleryResponse
 import com.example.kinopoisk.data.remote.dto.SearchFilterMoviesResponse
+import com.example.kinopoisk.data.remote.dto.SerialSeasonsResponse
 import com.example.kinopoisk.data.remote.dto.SimilarMoviesResponse
 import com.example.kinopoisk.data.remote.dto.StaffResponse
 import retrofit2.Response
@@ -37,6 +38,13 @@ interface KinopoiskApi {
     suspend fun getCountriesAndGenres(
         @Header("X-API-KEY") apiKey: String
     ): Response<CountriesAndGenresResponse>
+
+    //Получить сезоны сериала
+    @GET("/api/v2.2/films/{id}/seasons")
+    suspend fun getSerialSeasons(
+        @Header("X-API-KEY") apiKey: String,
+        @Path("id") id: Int
+    ): Response<SerialSeasonsResponse>
 
     //Получить список фильмов по различным фильтрам
     @GET("/api/v2.2/films")

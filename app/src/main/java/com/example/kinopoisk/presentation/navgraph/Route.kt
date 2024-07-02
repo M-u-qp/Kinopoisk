@@ -13,6 +13,7 @@ sealed class Route(
     data object AllStaffScreen : Route(route = "allStaffScreen")
     data object AllMovieScreen: Route(route = "allMoviesScreen")
     data object AllGalleryScreen: Route(route = "allGalleryScreen")
+    data object AllSeasonsScreen: Route(route = "allSeasonsScreen")
     data object StaffScreen : Route(route = "staffScreen")
     data object DetailsScreen : Route(route = "detailsScreen")
     data object AppStartNavigation : Route(route = "appStartNavigation")

@@ -30,8 +30,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.GalleryItem
+import com.example.kinopoisk.domain.model.SeasonsItem
 import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
+import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
 import com.example.kinopoisk.presentation.Dimens.LargePadding1
 import com.example.kinopoisk.presentation.Dimens.LazyVerticalGridHeight
@@ -39,6 +41,7 @@ import com.example.kinopoisk.presentation.Dimens.MediumFontSize2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
 import com.example.kinopoisk.presentation.Dimens.MediumPadding3
 import com.example.kinopoisk.presentation.Dimens.SmallPadding1
+import com.example.kinopoisk.presentation.common.TitleCollection
 import com.example.kinopoisk.presentation.common.TitleCommon
 import com.example.kinopoisk.presentation.details.details_movie.components.DialogAddMovieInCollections
 import com.example.kinopoisk.presentation.details.details_movie.components.GalleryMovie
@@ -59,7 +62,8 @@ fun DetailsScreen(
     navigateToAllMovies: (List<SimilarItem>) -> Unit,
     galleryMovieStill: LazyPagingItems<GalleryItem>,
     navigateToDetails: (Int) -> Unit,
-    navigateToAllGallery: (Int) -> Unit
+    navigateToAllGallery: (Int) -> Unit,
+    navigateToAllSeasons: (List<SeasonsItem>) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -72,7 +76,16 @@ fun DetailsScreen(
         }
     }
 
-    //Получить фильм с сети по кинопоиск айди
+    //Получить сезоны сериала
+    LaunchedEffect(state.movie) {
+        withContext(Dispatchers.IO) {
+            if (state.movie != null) {
+                viewModel.getSerialSeasons(movieId)
+            }
+        }
+    }
+
+    //Получить фильм из сети по кинопоиск айди
     LaunchedEffect(key1 = true) {
         withContext(Dispatchers.IO) {
             viewModel.getMovie(movieId)
@@ -172,6 +185,33 @@ fun DetailsScreen(
                 }
             }
         }
+        //Сезоны сериала
+        if (state.showSerialSeasons) {
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = LargePadding1, start = MediumPadding2)
+                ) {
+                    val titleName = stringResource(id = R.string.Seasons_and_episodes)
+                    TitleCollection(
+                        nameCollection = titleName,
+                        onClick = { navigateToAllSeasons(state.serialSeasons) }
+                    )
+
+                    state.serialSeasons.forEach { seasons ->
+                        Text(
+                            text = "${state.serialSeasons.size} сезон, ${seasons.episodes.size} серий",
+                            style = MaterialTheme.typography.displaySmall.copy(
+                                fontSize = Dimens.SmallFontSize2,
+                                color = colorResource(id = R.color.gray_text)
+                            )
+                        )
+                    }
+                }
+            }
+        }
+
         //Список актеров
         item {
 

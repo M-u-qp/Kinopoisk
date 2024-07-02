@@ -20,11 +20,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.kinopoisk.R
+import com.example.kinopoisk.domain.model.SeasonsItem
 import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
 import com.example.kinopoisk.presentation.all_gallery.AllGalleryScreen
 import com.example.kinopoisk.presentation.all_gallery.AllGalleryViewModel
 import com.example.kinopoisk.presentation.all_movies.AllMoviesScreen
+import com.example.kinopoisk.presentation.all_seasons.AllSeasonsScreen
 import com.example.kinopoisk.presentation.all_staff.AllStaffScreen
 import com.example.kinopoisk.presentation.collectiondb.CollectionDBScreen
 import com.example.kinopoisk.presentation.collectiondb.CollectionDBViewModel
@@ -243,6 +245,13 @@ fun MoviesNavigator() {
                                     navController = navController,
                                     movieId = movieIdGallery
                                 )
+                            },
+                            navigateToAllSeasons = { seasonsItems->
+                                navigateToAll(
+                                    navController = navController,
+                                    listAll = seasonsItems,
+                                    type = "seasons"
+                                )
                             }
                         )
                     }
@@ -358,6 +367,16 @@ fun MoviesNavigator() {
                         )
                     }
             }
+            composable(route = Route.AllSeasonsScreen.route) {
+                navController.previousBackStackEntry?.savedStateHandle?.get<List<SeasonsItem>>("seasonsItem")
+                    ?.let { seasonsItems ->
+                        AllSeasonsScreen(
+                            serialName = "",
+                            seasonsItem = seasonsItems,
+                            navigateUp = { navController.navigateUp() }
+                        )
+                    }
+            }
         }
     }
 }
@@ -391,10 +410,16 @@ private fun navigateToCollectionDB(navController: NavController, nameCollection:
 
 private fun navigateToAll(navController: NavController, listAll: List<*>, type: String) {
     navController.currentBackStackEntry?.savedStateHandle?.set("listAll", listAll)
-    if (type == "staff") {
-        navController.navigate(route = Route.AllStaffScreen.route)
-    } else {
-        navController.navigate(route = Route.AllMovieScreen.route)
+    when (type) {
+        "staff" -> {
+            navController.navigate(route = Route.AllStaffScreen.route)
+        }
+        "seasons" -> {
+            navController.navigate(route = Route.AllSeasonsScreen.route)
+        }
+        else -> {
+            navController.navigate(route = Route.AllMovieScreen.route)
+        }
     }
 }
 

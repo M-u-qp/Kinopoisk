@@ -24,5 +24,6 @@ data class MovieEntity(
     val ratingKinopoisk: Double,
     val shortDescription: String,
     val webUrl: String,
-    val year: Int
+    val year: Int,
+    val type: String
 )

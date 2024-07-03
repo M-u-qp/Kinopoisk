@@ -198,16 +198,17 @@ fun DetailsScreen(
                         nameCollection = titleName,
                         onClick = { navigateToAllSeasons(state.serialSeasons) }
                     )
-
+                    var episodesCount = 0
                     state.serialSeasons.forEach { seasons ->
-                        Text(
-                            text = "${state.serialSeasons.size} сезон, ${seasons.episodes.size} серий",
-                            style = MaterialTheme.typography.displaySmall.copy(
-                                fontSize = Dimens.SmallFontSize2,
-                                color = colorResource(id = R.color.gray_text)
-                            )
-                        )
+                        episodesCount += seasons.episodes.size
                     }
+                    Text(
+                        text = "${state.serialSeasons.size} сезон, $episodesCount серий",
+                        style = MaterialTheme.typography.displaySmall.copy(
+                            fontSize = Dimens.SmallFontSize2,
+                            color = colorResource(id = R.color.gray_text)
+                        )
+                    )
                 }
             }
         }

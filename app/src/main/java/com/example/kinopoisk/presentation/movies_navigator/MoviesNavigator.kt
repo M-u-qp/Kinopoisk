@@ -324,7 +324,7 @@ fun MoviesNavigator() {
             }
 
             composable(route = Route.AllStaffScreen.route) {
-                navController.previousBackStackEntry?.savedStateHandle?.get<List<Staff>>("listStaff")
+                navController.previousBackStackEntry?.savedStateHandle?.get<List<Staff>>("listAll")
                     ?.let { listStaff ->
                         AllStaffScreen(
                             listStaff = listStaff,
@@ -368,10 +368,9 @@ fun MoviesNavigator() {
                     }
             }
             composable(route = Route.AllSeasonsScreen.route) {
-                navController.previousBackStackEntry?.savedStateHandle?.get<List<SeasonsItem>>("seasonsItem")
+                navController.previousBackStackEntry?.savedStateHandle?.get<List<SeasonsItem>>("listAll")
                     ?.let { seasonsItems ->
                         AllSeasonsScreen(
-                            serialName = "",
                             seasonsItem = seasonsItems,
                             navigateUp = { navController.navigateUp() }
                         )
@@ -435,3 +434,4 @@ private fun navigateToAllGallery(
     navController.currentBackStackEntry?.savedStateHandle?.set("galleryAll", movieId)
     navController.navigate(route = Route.AllGalleryScreen.route)
 }
+

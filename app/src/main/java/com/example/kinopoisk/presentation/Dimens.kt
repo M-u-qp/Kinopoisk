@@ -34,6 +34,7 @@ object Dimens {
     val MediumFontSize3 = 20.sp
     val SmallFontSize1 = 14.sp
     val SmallFontSize2 = 12.sp
+    val SmallFontSize3 = 10.sp
     val ExtraSmallFontSize1 = 6.sp
 
     val DialogHeight = 200.dp
@@ -51,6 +52,8 @@ object Dimens {
     val StaffCardHeight = 201.dp
     val GalleryImageWidth = 192.dp
     val GalleryImageHeight = 108.dp
+
+    val TabSeasonWidth = 56.dp
 
     val DialogCardSizeHeight = 492.dp
     val ErrorDialogSizeHeight = 212.dp

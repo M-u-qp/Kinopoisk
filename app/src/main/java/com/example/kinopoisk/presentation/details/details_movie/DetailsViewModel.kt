@@ -230,13 +230,16 @@ class DetailsViewModel @Inject constructor(
     //Сезоны сериала
     suspend fun getSerialSeasons(id: Int) {
         if (state.value.serialSeasons.isEmpty() && state.value.movie != null) {
-        state.value.movie?.let { movie ->
-            if (movie.type == TypeSearchFilter.TV_SERIES.name) {
+            state.value.movie?.let { movie ->
+                if (movie.type == TypeSearchFilter.TV_SERIES.name) {
                     when (val seasons = moviesUseCases.getSerialSeasons(id = id)) {
                         is Resource.Success -> {
+                            val serialName = movie.nameRu ?: movie.nameEn ?: ""
                             seasons.data?.let {
                                 _state.value = _state.value.copy(
-                                    serialSeasons = seasons.data,
+                                    serialSeasons = it.map { serial ->
+                                        serial.copy(serialName = serialName)
+                                    },
                                     showSerialSeasons = true,
                                     errorSeasons = null
                                 )

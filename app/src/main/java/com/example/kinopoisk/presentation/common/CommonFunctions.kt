@@ -21,15 +21,15 @@ import java.util.Calendar
             } else {
                 word
             }
-
         }
     }
     if (currentLine.isNotEmpty()) {
         lines.add(currentLine)
     }
-    return lines.joinToString("\n")
+    return lines.joinToString("\n ")
 }
 
+//Возвращает диапазон в виде списка Int от текущего года и 100 лет назад
 fun listLast100Years(): List<Int> {
     val currentYear = Calendar.getInstance().get(Calendar.YEAR)
     return (currentYear downTo currentYear - 100).toList()

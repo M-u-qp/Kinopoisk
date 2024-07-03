@@ -31,6 +31,7 @@ import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
+import com.example.kinopoisk.presentation.details.details_movie.DetailsState
 
 @Composable
 fun MovieDetailsCard(
@@ -40,7 +41,8 @@ fun MovieDetailsCard(
     onShareClick: () -> Unit,
     onBrowsingClick: () -> Unit,
     onDotsClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    state: DetailsState
 ) {
     val context = LocalContext.current
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp / 1.2f
@@ -158,7 +160,8 @@ fun MovieDetailsCard(
                 onBookmarkClick = onBookmarkClick,
                 onShareClick = onShareClick,
                 onBrowsingClick = onBrowsingClick,
-                onDotsClick = onDotsClick
+                onDotsClick = onDotsClick,
+                state = state
             )
         }
     }

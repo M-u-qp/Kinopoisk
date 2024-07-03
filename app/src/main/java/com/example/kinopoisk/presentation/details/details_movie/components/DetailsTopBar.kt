@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import com.example.kinopoisk.R
+import com.example.kinopoisk.presentation.common.TitleCollectionsDB
+import com.example.kinopoisk.presentation.details.details_movie.DetailsState
 
 @Composable
 fun DetailsTopBar(
@@ -17,7 +19,8 @@ fun DetailsTopBar(
     onBookmarkClick: () -> Unit,
     onShareClick: () -> Unit,
     onBrowsingClick: () -> Unit,
-    onDotsClick: () -> Unit
+    onDotsClick: () -> Unit,
+    state: DetailsState
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -25,18 +28,38 @@ fun DetailsTopBar(
     ) {
 
         IconButton(onClick = onLikeClick) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_like_border),
-                contentDescription = null,
-                tint = colorResource(id = R.color.body_icon)
-            )
+            state.listMovie.forEach { movie ->
+                if (state.movie?.kinopoiskId == movie?.kinopoiskId && movie?.collectionName == TitleCollectionsDB.FAVORITE.value) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_like),
+                        contentDescription = null,
+                        tint = colorResource(id = R.color.body_icon)
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_like_border),
+                        contentDescription = null,
+                        tint = colorResource(id = R.color.body_icon)
+                    )
+                }
+            }
         }
         IconButton(onClick = onBookmarkClick) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_bookmark_border),
-                contentDescription = null,
-                tint = colorResource(id = R.color.body_icon)
-            )
+            state.listMovie.forEach { movie ->
+                if (state.movie?.kinopoiskId == movie?.kinopoiskId && movie?.collectionName == TitleCollectionsDB.READY_TO_VIEW.value) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_bookmark),
+                        contentDescription = null,
+                        tint = colorResource(id = R.color.body_icon)
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_bookmark_border),
+                        contentDescription = null,
+                        tint = colorResource(id = R.color.body_icon)
+                    )
+                }
+            }
         }
         IconButton(onClick = onShareClick) {
             Icon(

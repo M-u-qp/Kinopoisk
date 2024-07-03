@@ -145,7 +145,8 @@ fun DetailsScreen(
                         }
                     },
                     onDotsClick = { event(DetailsEvent.AddMovieInCollection(movie)) },
-                    onBackClick = navigateUp
+                    onBackClick = navigateUp,
+                    state = state
                 )
 
                 Column(

@@ -13,6 +13,7 @@ import com.example.kinopoisk.data.mapper.toMovie
 import com.example.kinopoisk.data.mapper.toMovieEntity
 import com.example.kinopoisk.data.mapper.toStaffInfo
 import com.example.kinopoisk.data.remote.CollectionsPagingSource
+import com.example.kinopoisk.data.remote.DynamicMoviesPagingSource
 import com.example.kinopoisk.data.remote.GalleryMoviesPagingSource
 import com.example.kinopoisk.data.remote.KinopoiskApi
 import com.example.kinopoisk.data.remote.SearchFilterMoviesPagingSource
@@ -79,6 +80,23 @@ class KinopoiskRepositoryImpl(
             e.printStackTrace()
             Resource.Error(e)
         }
+    }
+
+    override fun getDynamicMovies(
+        countries: List<Int>,
+        genres: List<Int>
+    ): Flow<PagingData<FilterItem>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                DynamicMoviesPagingSource(
+                    kinopoiskApi = kinopoiskApi,
+                    context = context,
+                    countries = countries,
+                    genres = genres
+                )
+            }
+        ).flow
     }
 
     override suspend fun getSimilarMovies(id: Int): Resource<List<SimilarItem>> {

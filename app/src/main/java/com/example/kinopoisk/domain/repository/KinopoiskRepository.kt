@@ -25,6 +25,11 @@ interface KinopoiskRepository {
 
     suspend fun getSimilarMovies(id: Int): Resource<List<SimilarItem>>
 
+    fun getDynamicMovies(
+        countries: List<Int>,
+        genres: List<Int>
+    ): Flow<PagingData<FilterItem>>
+
     //Поиск
     fun searchMovies(keyword: String): Flow<PagingData<SearchFilm>>
     fun searchFilterMovies(

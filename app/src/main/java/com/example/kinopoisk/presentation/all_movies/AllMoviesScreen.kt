@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.CollectionItem
+import com.example.kinopoisk.domain.model.FilterItem
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.model.PremieresItem
 import com.example.kinopoisk.domain.model.SimilarItem
@@ -80,6 +81,13 @@ fun AllMoviesScreen(
                             movie = item,
                             onClick = { navigateToDetails(item.kinopoiskId) }
                         )
+                    }
+
+                    is FilterItem -> {
+                        CommonMovieCard(
+                            movie = item,
+                            onClick = { navigateToDetails(item.kinopoiskId) }
+                            )
                     }
 
                     else -> {

@@ -55,3 +55,41 @@ class SearchFilterMoviesPagingSource(
         }
     }
 }
+
+class DynamicMoviesPagingSource(
+    private val kinopoiskApi: KinopoiskApi,
+    private val countries: List<Int>,
+    private val genres: List<Int>,
+    private val context: Context
+) : PagingSource<Int, FilterItem>() {
+
+    private var totalMoviesCount = 0
+    override fun getRefreshKey(state: PagingState<Int, FilterItem>): Int? {
+        return state.anchorPosition?.let { anchorPosition ->
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+        }
+    }
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, FilterItem> {
+        val page = params.key ?: 1
+        return try {
+            val moviesResponse = kinopoiskApi.getDynamicMovies(
+                apiKey = context.getString(R.string.API_KEY),
+                countries = countries,
+                genres = genres,
+                page = page
+            )
+            totalMoviesCount += moviesResponse.items.size
+            val movies = moviesResponse.items
+            LoadResult.Page(
+                data = movies,
+                nextKey = if (totalMoviesCount == moviesResponse.total) null else page + 1,
+                prevKey = null
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            LoadResult.Error(throwable = e)
+        }
+    }
+}

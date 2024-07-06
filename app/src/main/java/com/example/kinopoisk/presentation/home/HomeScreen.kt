@@ -75,6 +75,18 @@ fun HomeScreen(
         }
     }
 
+    LaunchedEffect(state.countriesAndGenres) {
+        withContext(Dispatchers.IO) {
+            viewModel.getDynamicCollection1()
+        }
+    }
+
+    LaunchedEffect(state.countriesAndGenres) {
+        withContext(Dispatchers.IO) {
+            viewModel.getDynamicCollection2()
+        }
+    }
+
     val scrollState = rememberScrollState()
 
     Column(
@@ -115,7 +127,8 @@ fun HomeScreen(
                 movies = popularMovies,
                 onClick = { navigateToDetails(it) },
                 navigateToAllMovies = navigateToAllMovies,
-                collectionName = TitleCollections.TOP_POPULAR_MOVIES.value
+                collectionName = TitleCollections.TOP_POPULAR_MOVIES.value,
+                collectionType = ""
             )
         }
         //Сериалы
@@ -126,7 +139,8 @@ fun HomeScreen(
                 movies = popularSerials,
                 onClick = { navigateToDetails(it) },
                 navigateToAllMovies = navigateToAllMovies,
-                collectionName = TitleCollections.POPULAR_SERIES.value
+                collectionName = TitleCollections.POPULAR_SERIES.value,
+                collectionType = ""
             )
         }
         //Премьеры
@@ -138,7 +152,9 @@ fun HomeScreen(
             }
         )
         LazyRow(
-            modifier = Modifier.fillMaxWidth().padding(top = MediumPadding1),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = MediumPadding1),
             horizontalArrangement = Arrangement.spacedBy(Dimens.ExtraSmallPadding2),
             contentPadding = PaddingValues(all = Dimens.ExtraSmallPadding3)
         ) {
@@ -153,6 +169,26 @@ fun HomeScreen(
             }
         }
         //Подборка по стране и жанру
+        val dynamicCollection1 = state.dynamicMovies1?.collectAsLazyPagingItems()
+        dynamicCollection1?.let {
+            MoviesListCollection(
+                movies = dynamicCollection1,
+                onClick = { navigateToDetails(it) },
+                collectionName = state.randomCountryAndGenre1,
+                collectionType = "FilterItem",
+                navigateToAllMovies = navigateToAllMovies
+            )
+        }
 
+        val dynamicCollection2 = state.dynamicMovies2?.collectAsLazyPagingItems()
+        dynamicCollection2?.let {
+            MoviesListCollection(
+                movies = dynamicCollection2,
+                onClick = { navigateToDetails(it) },
+                collectionName = state.randomCountryAndGenre2,
+                collectionType = "FilterItem",
+                navigateToAllMovies = navigateToAllMovies
+            )
+        }
     }
 }

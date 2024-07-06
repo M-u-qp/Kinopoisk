@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.kinopoisk.domain.model.CountryFilter
 import com.example.kinopoisk.domain.model.GenreFilter
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
+import com.example.kinopoisk.domain.utils.Resource
 import com.example.kinopoisk.presentation.common.SortSearchFilter
 import com.example.kinopoisk.presentation.common.TypeSearchFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -92,10 +93,21 @@ class SearchFilterViewModel @Inject constructor(
     private fun getCountriesAndGenres() {
         if (state.value.listCountriesAndGenres == null) {
             viewModelScope.launch {
-                val listCountriesAndGenres = moviesUseCases.getCountriesAndGenres()
-                if (listCountriesAndGenres.data != null) {
-                    _state.value =
-                        _state.value.copy(listCountriesAndGenres = listCountriesAndGenres.data)
+                when (val countriesAndGenres = moviesUseCases.getCountriesAndGenres()) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            listCountriesAndGenres = countriesAndGenres.data,
+                            errorListCountriesAndGenres = null
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            errorListCountriesAndGenres = countriesAndGenres.exception.toString()
+                        )
+                    }
+
+                    else -> Unit
                 }
             }
         }

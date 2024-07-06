@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.example.kinopoisk.domain.model.CollectionItem
+import com.example.kinopoisk.domain.model.FilterItem
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding3
 import com.example.kinopoisk.presentation.common.EmptyScreen
@@ -20,44 +21,73 @@ import com.example.kinopoisk.presentation.common.TitleCollection
 @Composable
 fun MoviesListCollection(
     modifier: Modifier = Modifier,
-    movies: LazyPagingItems<CollectionItem>,
+    movies: LazyPagingItems<*>,
     onClick: (Int) -> Unit,
     collectionName: String,
-    navigateToAllMovies: (List<CollectionItem>) -> Unit
+    collectionType: String,
+    navigateToAllMovies: (List<*>) -> Unit
 ) {
     val handlePagingResult = handlePagingResult(movies = movies)
     if (handlePagingResult) {
-        Column {
-            TitleCollection(
-                nameCollection = collectionName,
-                onClick = { navigateToAllMovies(movies.itemSnapshotList.items) }
-            )
-
-            LazyRow(
-                modifier = modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
-                contentPadding = PaddingValues(all = ExtraSmallPadding3)
-            ) {
-                items(count = movies.itemCount) { index ->
-                    movies[index]?.let {
-                        MovieCardCollection(
-                            nameMovie = it.nameRu ?: it.nameEn ?: it.nameOriginal ?: "",
-                            genreMovie = it.genres,
-                            posterUrl = it.posterUrl,
-                            rating = it.ratingKinopoisk,
-                            onClick = { onClick(it.kinopoiskId) }
-                        )
+        when(collectionType) {
+            "FilterItem" -> {
+                val movieItems = movies.itemSnapshotList.filterIsInstance<FilterItem>()
+                Column {
+                    TitleCollection(
+                        nameCollection = collectionName,
+                        onClick = { navigateToAllMovies(movies.itemSnapshotList.items) }
+                    )
+                    LazyRow(
+                        modifier = modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
+                        contentPadding = PaddingValues(all = ExtraSmallPadding3)
+                    ) {
+                        items(count = movieItems.size) { index ->
+                            MovieCardCollection(
+                                nameMovie = movieItems[index].nameRu ?: movieItems[index].nameEn
+                                ?: movieItems[index].nameOriginal ?: "",
+                                genreMovie = movieItems[index].genres,
+                                posterUrl = movieItems[index].posterUrl,
+                                rating = movieItems[index].ratingKinopoisk,
+                                onClick = { onClick(movieItems[index].kinopoiskId) }
+                            )
+                        }
+                    }
+                }
+            }
+            else -> {
+                val movieItems = movies.itemSnapshotList.filterIsInstance<CollectionItem>()
+                Column {
+                    TitleCollection(
+                        nameCollection = collectionName,
+                        onClick = { navigateToAllMovies(movies.itemSnapshotList.items) }
+                    )
+                    LazyRow(
+                        modifier = modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
+                        contentPadding = PaddingValues(all = ExtraSmallPadding3)
+                    ) {
+                        items(count = movieItems.size) { index ->
+                            MovieCardCollection(
+                                nameMovie = movieItems[index].nameRu ?: movieItems[index].nameEn
+                                ?: movieItems[index].nameOriginal ?: "",
+                                genreMovie = movieItems[index].genres,
+                                posterUrl = movieItems[index].posterUrl,
+                                rating = movieItems[index].ratingKinopoisk,
+                                onClick = { onClick(movieItems[index].kinopoiskId) }
+                            )
+                        }
                     }
                 }
             }
         }
-    }
 
+    }
 }
 
 @Composable
 fun handlePagingResult(
-    movies: LazyPagingItems<CollectionItem>
+    movies: LazyPagingItems<*>
 ): Boolean {
     val loadState = movies.loadState
     val error = when {

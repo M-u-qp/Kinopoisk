@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
+import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
 import com.example.kinopoisk.domain.utils.Resource
 import com.example.kinopoisk.presentation.common.TitleCollections
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val collectionsUseCases: CollectionsUseCases,
+    private val moviesUseCases: MoviesUseCases
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())
@@ -24,6 +26,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             getAllCollectionInDB()
         }
+        getCountriesAndGenres()
     }
 
     //Получить список подборок из БД
@@ -41,7 +44,7 @@ class HomeViewModel @Inject constructor(
     //Получить премьеры
     suspend fun getPremieres(year: Int, month: String) {
         if (state.value.premieres.isEmpty()) {
-            when(val premieres = collectionsUseCases.getPremieres(year = year, month = month)) {
+            when (val premieres = collectionsUseCases.getPremieres(year = year, month = month)) {
                 is Resource.Success -> {
                     premieres.data?.let {
                         _state.value = _state.value.copy(
@@ -50,11 +53,13 @@ class HomeViewModel @Inject constructor(
                         )
                     }
                 }
+
                 is Resource.Error -> {
                     _state.value = _state.value.copy(
                         errorPremieres = premieres.exception.toString()
                     )
                 }
+
                 else -> Unit
             }
 
@@ -78,6 +83,71 @@ class HomeViewModel @Inject constructor(
                     _state.value = _state.value.copy(popularSerials = lazyResult)
                 }
             }
+        }
+    }
+
+    //Получить список стран и жанров
+    private fun getCountriesAndGenres() {
+        if (state.value.countriesAndGenres == null) {
+            viewModelScope.launch {
+                when (val countriesAndGenres = moviesUseCases.getCountriesAndGenres()) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            countriesAndGenres = countriesAndGenres.data,
+                            errorCountriesAndGenres = null
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            errorCountriesAndGenres = countriesAndGenres.exception.toString()
+                        )
+                    }
+
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    //Получить подборку по стране и жанру
+    fun getDynamicCollection1() {
+        if (state.value.dynamicMovies1 == null) {
+            val randomCountry = state.value.countriesAndGenres?.countries?.random()
+            val randomGenre = state.value.countriesAndGenres?.genres?.random()
+            val lazyResult =
+                randomCountry?.let { country ->
+                    randomGenre?.let { genre ->
+                        collectionsUseCases.getDynamicMovies(
+                            listOf(country.id),
+                            listOf(genre.id)
+                        )
+                    }
+                }
+            _state.value = _state.value.copy(
+                dynamicMovies1 = lazyResult,
+                randomCountryAndGenre1 = "${randomCountry?.country} - ${randomGenre?.genre}"
+            )
+        }
+    }
+
+    fun getDynamicCollection2() {
+        if (state.value.dynamicMovies1 == null) {
+            val randomCountry = state.value.countriesAndGenres?.countries?.random()
+            val randomGenre = state.value.countriesAndGenres?.genres?.random()
+            val lazyResult =
+                randomCountry?.let { country ->
+                    randomGenre?.let { genre ->
+                        collectionsUseCases.getDynamicMovies(
+                            listOf(country.id),
+                            listOf(genre.id)
+                        )
+                    }
+                }
+            _state.value = _state.value.copy(
+                dynamicMovies2 = lazyResult,
+                randomCountryAndGenre2 = "${randomCountry?.country} - ${randomGenre?.genre}"
+            )
         }
     }
 }

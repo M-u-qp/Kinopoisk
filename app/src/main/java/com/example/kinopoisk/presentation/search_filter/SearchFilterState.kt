@@ -13,6 +13,7 @@ data class SearchFilterState(
     var ratingPosition: ClosedFloatingPointRange<Float> = 1f..10f,
 
     val listCountriesAndGenres: CountriesAndGenres? = null,
+    val errorListCountriesAndGenres: String? = null,
 
     var showDialogCountriesOrGenres: Boolean = false,
     var selectedCountryOrGenre: String = "",

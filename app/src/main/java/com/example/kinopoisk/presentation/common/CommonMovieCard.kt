@@ -23,7 +23,9 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.CollectionItem
+import com.example.kinopoisk.domain.model.FilterItem
 import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.model.PremieresItem
 import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.presentation.Dimens
 
@@ -155,6 +157,153 @@ fun CommonMovieCard(
             }
         }
         is CollectionItem -> {
+            Row(
+                modifier = modifier
+                    .clickable { onClick() },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Box(modifier = modifier) {
+                    //Постер фильма
+                    AsyncImage(
+                        modifier = modifier
+                            .size(
+                                width = Dimens.MovieCardSearchWidth,
+                                height = Dimens.MovieCardSearchHeight
+                            )
+                            .clip(MaterialTheme.shapes.medium),
+                        model = ImageRequest.Builder(context).data(movie.posterUrl).build(),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop
+                    )
+                    Box(
+                        modifier = modifier
+                            .size(Dimens.RatingMovieWidth, Dimens.RatingMovieHeight)
+                            .padding(Dimens.ExtraSmallPadding1)
+                            .background(
+                                MaterialTheme.colorScheme.onPrimary,
+                                shape = ShapeDefaults.ExtraSmall
+                            )
+                            .align(Alignment.TopStart),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        //Рейтинг Кинопоиск
+                        Text(
+                            text = (movie.ratingKinopoisk ?: "").toString(),
+                            color = colorResource(id = R.color.black_text),
+                            fontSize = Dimens.ExtraSmallFontSize1,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+
+                Column(
+                    modifier = modifier.padding(start = Dimens.SmallPadding1)
+                ) {
+
+                    //Название фильма
+                    Text(
+                        text = movie.nameRu ?: movie.nameEn ?: "",
+                        style = MaterialTheme.typography.labelMedium.copy(
+                            fontSize = Dimens.SmallFontSize1
+                        ),
+                        color = colorResource(id = R.color.black_text),
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Row(
+                        modifier = modifier.padding(top = Dimens.ExtraSmallPadding4),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        //Год выхода фильма
+                        Text(
+                            text = (movie.year ?: "").toString() + ", ",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = Dimens.SmallFontSize2
+                            ),
+                            color = colorResource(id = R.color.gray_text),
+                        )
+                        //Жанр фильма
+                        Text(
+                            text = movie.genres.joinToString(
+                                separator = "",
+                                limit = 1
+                            ) { it.genre },
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = Dimens.SmallFontSize2
+                            ),
+                            color = colorResource(id = R.color.gray_text),
+                        )
+                    }
+                }
+            }
+        }
+
+        is PremieresItem -> {
+            Row(
+                modifier = modifier
+                    .clickable { onClick() },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Box(modifier = modifier) {
+                    //Постер фильма
+                    AsyncImage(
+                        modifier = modifier
+                            .size(
+                                width = Dimens.MovieCardSearchWidth,
+                                height = Dimens.MovieCardSearchHeight
+                            )
+                            .clip(MaterialTheme.shapes.medium),
+                        model = ImageRequest.Builder(context).data(movie.posterUrl).build(),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop
+                    )
+                }
+
+                Column(
+                    modifier = modifier.padding(start = Dimens.SmallPadding1)
+                ) {
+
+                    //Название фильма
+                    Text(
+                        text = movie.nameRu ?: movie.nameEn ?: "",
+                        style = MaterialTheme.typography.labelMedium.copy(
+                            fontSize = Dimens.SmallFontSize1
+                        ),
+                        color = colorResource(id = R.color.black_text),
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Row(
+                        modifier = modifier.padding(top = Dimens.ExtraSmallPadding4),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        //Год выхода фильма
+                        Text(
+                            text = (movie.year ?: "").toString() + ", ",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = Dimens.SmallFontSize2
+                            ),
+                            color = colorResource(id = R.color.gray_text),
+                        )
+                        //Жанр фильма
+                        Text(
+                            text = movie.genres.joinToString(
+                                separator = "",
+                                limit = 1
+                            ) { it.genre },
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = Dimens.SmallFontSize2
+                            ),
+                            color = colorResource(id = R.color.gray_text),
+                        )
+                    }
+                }
+            }
+        }
+
+        is FilterItem -> {
             Row(
                 modifier = modifier
                     .clickable { onClick() },

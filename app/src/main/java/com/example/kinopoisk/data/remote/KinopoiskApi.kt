@@ -27,12 +27,29 @@ interface KinopoiskApi {
         @Query("page") page: Int
     ): CollectionsResponse
 
+    //Премьеры
     @GET("/api/v2.2/films/premieres")
     suspend fun getPremieres(
         @Header("X-API-KEY") apiKey: String,
         @Query("year") year: Int,
         @Query("month") month: String
     ): Response<PremieresResponse>
+
+    //Похожие фильмы
+    @GET("/api/v2.2/films/{id}/similars")
+    suspend fun getSimilarMovies(
+        @Header("X-API-KEY") apiKey: String,
+        @Path("id") id: Int
+    ): Response<SimilarMoviesResponse>
+
+    //Получить список фильмов по стране и жанру
+    @GET("/api/v2.2/films")
+    suspend fun getDynamicMovies(
+        @Header("X-API-KEY") apiKey: String,
+        @Query("countries") countries: List<Int>,
+        @Query("genres") genres: List<Int>,
+        @Query("page") page: Int
+    ): SearchFilterMoviesResponse
 
     //Поиск
     @GET("/api/v2.1/films/search-by-keyword")
@@ -99,11 +116,4 @@ interface KinopoiskApi {
         @Query("type") type: String,
         @Query("page") page: Int
     ): MovieGalleryResponse
-
-    //Похожие фильмы
-    @GET("/api/v2.2/films/{id}/similars")
-    suspend fun getSimilarMovies(
-        @Header("X-API-KEY") apiKey: String,
-        @Path("id") id: Int
-    ): Response<SimilarMoviesResponse>
 }

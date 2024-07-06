@@ -66,7 +66,7 @@ fun MovieCardSearch(
             ) {
                 //Рейтинг Кинопоиск
                 Text(
-                    text = film.rating,
+                    text = film.rating ?: "",
                     color = colorResource(id = R.color.black_text),
                     fontSize = Dimens.ExtraSmallFontSize1,
                     fontWeight = FontWeight.Medium

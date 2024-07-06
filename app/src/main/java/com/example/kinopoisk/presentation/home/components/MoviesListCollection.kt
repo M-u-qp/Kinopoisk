@@ -40,7 +40,13 @@ fun MoviesListCollection(
             ) {
                 items(count = movies.itemCount) { index ->
                     movies[index]?.let {
-                        MovieCardCollection(item = it, onClick = { onClick(it.kinopoiskId) })
+                        MovieCardCollection(
+                            nameMovie = it.nameRu ?: it.nameEn ?: it.nameOriginal ?: "",
+                            genreMovie = it.genres,
+                            posterUrl = it.posterUrl,
+                            rating = it.ratingKinopoisk,
+                            onClick = { onClick(it.kinopoiskId) }
+                        )
                     }
                 }
             }

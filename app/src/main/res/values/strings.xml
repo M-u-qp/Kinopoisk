@@ -8,6 +8,7 @@
     <string name="Genre">Жанр</string>
     <string name="Year">Год</string>
     <string name="Rating">Рейтинг</string>
+    <string name="Premieres">Премьеры</string>
 
     <!-- Search -->
     <string name="Enter_name_movie">Введите название фильма</string>

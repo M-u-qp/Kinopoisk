@@ -48,6 +48,9 @@ import com.example.kinopoisk.presentation.search.SearchViewModel
 import com.example.kinopoisk.presentation.search_filter.FilterData
 import com.example.kinopoisk.presentation.search_filter.SearchFilterScreen
 import com.example.kinopoisk.presentation.search_filter.SearchFilterViewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 @Composable
 fun MoviesNavigator() {
@@ -117,6 +120,10 @@ fun MoviesNavigator() {
         ) {
             composable(route = Route.HomeScreen.route) {
                 val viewModel: HomeViewModel = hiltViewModel()
+                val calendar = Calendar.getInstance()
+                val currentYear = calendar.get(Calendar.YEAR)
+                val monthFormat = SimpleDateFormat("MMMM", Locale.ENGLISH)
+                val currentMonth = monthFormat.format(calendar.time)
                 HomeScreen(
                     viewModel = viewModel,
                     navigateToSearch = {
@@ -137,7 +144,9 @@ fun MoviesNavigator() {
                             listAll = listMovies,
                             type = "collection"
                         )
-                    }
+                    },
+                    currentYear = currentYear,
+                    currentMonth = currentMonth
                 )
             }
             composable(route = Route.SearchScreen.route) {

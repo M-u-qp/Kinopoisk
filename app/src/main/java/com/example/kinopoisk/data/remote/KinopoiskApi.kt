@@ -6,6 +6,7 @@ import com.example.kinopoisk.data.remote.dto.MovieResponse
 import com.example.kinopoisk.data.remote.dto.SearchMoviesResponse
 import com.example.kinopoisk.data.remote.dto.ListStaffResponse
 import com.example.kinopoisk.data.remote.dto.MovieGalleryResponse
+import com.example.kinopoisk.data.remote.dto.PremieresResponse
 import com.example.kinopoisk.data.remote.dto.SearchFilterMoviesResponse
 import com.example.kinopoisk.data.remote.dto.SerialSeasonsResponse
 import com.example.kinopoisk.data.remote.dto.SimilarMoviesResponse
@@ -25,6 +26,13 @@ interface KinopoiskApi {
         @Query("type") type: String,
         @Query("page") page: Int
     ): CollectionsResponse
+
+    @GET("/api/v2.2/films/premieres")
+    suspend fun getPremieres(
+        @Header("X-API-KEY") apiKey: String,
+        @Query("year") year: Int,
+        @Query("month") month: String
+    ): Response<PremieresResponse>
 
     //Поиск
     @GET("/api/v2.1/films/search-by-keyword")

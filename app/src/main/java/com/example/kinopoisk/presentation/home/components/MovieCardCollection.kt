@@ -30,7 +30,7 @@ import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.kinopoisk.R
-import com.example.kinopoisk.domain.model.CollectionItem
+import com.example.kinopoisk.domain.model.Genre
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallFontSize1
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding1
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
@@ -46,7 +46,10 @@ import com.example.kinopoisk.presentation.common.normalizeTitleMovie
 @Composable
 fun MovieCardCollection(
     modifier: Modifier = Modifier,
-    item: CollectionItem,
+    nameMovie: String,
+    genreMovie:List<Genre>,
+    posterUrl: String?,
+    rating: Double?,
     onClick: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
@@ -61,7 +64,7 @@ fun MovieCardCollection(
                             color = Color.White,
                             shape = MaterialTheme.shapes.medium
                         ),
-                    text = item.nameRu ?: item.nameEn ?: "",
+                    text = nameMovie,
                     style = MaterialTheme.typography.labelMedium.copy(
                         fontSize = SmallFontSize1,
                         color = colorResource(id = R.color.black_text)
@@ -79,11 +82,11 @@ fun MovieCardCollection(
                     modifier = Modifier
                         .size(width = MovieCardSizeWidth, height = MovieCardSizeHeight)
                         .clip(MaterialTheme.shapes.medium),
-                    model = ImageRequest.Builder(context).data(item.posterUrl).build(),
+                    model = ImageRequest.Builder(context).data(posterUrl).build(),
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
-                if (item.ratingKinopoisk != 0.0 && item.ratingKinopoisk.toString() != "null") {
+                if (rating != 0.0 && rating != null) {
                     Box(
                         modifier = Modifier
                             .padding(top = ExtraSmallPadding1, end = ExtraSmallPadding1)
@@ -97,7 +100,7 @@ fun MovieCardCollection(
                     ) {
                         //Рейтинг Кинопоиск
                         Text(
-                            text = (item.ratingKinopoisk).toString(),
+                            text = (rating).toString(),
                             color = colorResource(id = R.color.white),
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontSize = ExtraSmallFontSize1,
@@ -108,8 +111,7 @@ fun MovieCardCollection(
                 }
             }
             //Название фильма
-            val fullNameMovie = item.nameRu ?: item.nameEn ?: item.nameOriginal ?: ""
-            val nameMovie = normalizeTitleMovie(fullNameMovie)
+            val normalizeNameMovie = normalizeTitleMovie(nameMovie)
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -124,7 +126,7 @@ fun MovieCardCollection(
                             }
                         )
                     },
-                text = nameMovie,
+                text = normalizeNameMovie,
                 style = MaterialTheme.typography.labelMedium.copy(
                     fontSize = SmallFontSize1,
                     color = colorResource(id = R.color.black_text)
@@ -136,7 +138,7 @@ fun MovieCardCollection(
             //Жанр фильма
             Text(
                 modifier = Modifier.padding(top = ExtraSmallPadding3),
-                text = " " + item.genres.joinToString(separator = "", limit = 1) { it.genre },
+                text = " " + genreMovie.joinToString(separator = "", limit = 1) { it.genre },
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontSize = SmallFontSize2
                 ),

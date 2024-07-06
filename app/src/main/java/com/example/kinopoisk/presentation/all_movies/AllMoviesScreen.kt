@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.CollectionItem
 import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.model.PremieresItem
 import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.common.CommonMovieCard
@@ -73,6 +74,14 @@ fun AllMoviesScreen(
                             onClick = { navigateToDetails(item.kinopoiskId) }
                         )
                     }
+
+                    is PremieresItem -> {
+                        CommonMovieCard(
+                            movie = item,
+                            onClick = { navigateToDetails(item.kinopoiskId) }
+                        )
+                    }
+
                     else -> {
                         EmptyScreen()
                     }

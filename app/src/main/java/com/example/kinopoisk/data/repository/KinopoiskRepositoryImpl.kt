@@ -24,6 +24,7 @@ import com.example.kinopoisk.domain.model.CollectionItem
 import com.example.kinopoisk.domain.model.CountriesAndGenres
 import com.example.kinopoisk.domain.model.FilterItem
 import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.model.PremieresItem
 import com.example.kinopoisk.domain.model.SeasonsItem
 import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
@@ -60,6 +61,24 @@ class KinopoiskRepositoryImpl(
                 )
             }
         ).flow
+    }
+
+    override suspend fun getPremieres(year: Int, month: String): Resource<List<PremieresItem>> {
+        return try {
+            val response = kinopoiskApi.getPremieres(
+                apiKey = context.getString(R.string.API_KEY),
+                year = year,
+                month = month
+            )
+            if (response.body() != null) {
+                Resource.Success(response.body()!!.items)
+            } else {
+                Resource.Error(Exception(getResponseError(response.code())))
+            }
+        }catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(e)
+        }
     }
 
     override suspend fun getSimilarMovies(id: Int): Resource<List<SimilarItem>> {

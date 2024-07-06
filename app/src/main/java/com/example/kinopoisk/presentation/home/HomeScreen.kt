@@ -2,11 +2,13 @@ package com.example.kinopoisk.presentation.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
@@ -26,12 +28,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.CollectionDB
-import com.example.kinopoisk.domain.model.CollectionItem
+import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.MediumFontSize1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
+import com.example.kinopoisk.presentation.common.TitleCollection
 import com.example.kinopoisk.presentation.common.TitleCollections
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
+import com.example.kinopoisk.presentation.home.components.MovieCardCollection
 import com.example.kinopoisk.presentation.home.components.MoviesListCollection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -41,7 +45,9 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     navigateToSearch: () -> Unit,
     navigateToDetails: (Int) -> Unit,
-    navigateToAllMovies: (List<CollectionItem>) -> Unit
+    navigateToAllMovies: (List<*>) -> Unit,
+    currentYear: Int,
+    currentMonth: String
 ) {
 
     val state = viewModel.state.collectAsState().value
@@ -60,6 +66,12 @@ fun HomeScreen(
             TitleCollections.entries.forEach { title ->
                 viewModel.getCollection(title.name)
             }
+        }
+    }
+
+    LaunchedEffect(key1 = true) {
+        withContext(Dispatchers.IO) {
+            viewModel.getPremieres(year = currentYear, month = currentMonth)
         }
     }
 
@@ -95,6 +107,7 @@ fun HomeScreen(
             }
         }
 
+        //Популярные фильмы
         val popularMovies = state.popularMovies?.collectAsLazyPagingItems()
         popularMovies?.let {
             MoviesListCollection(
@@ -105,6 +118,7 @@ fun HomeScreen(
                 collectionName = TitleCollections.TOP_POPULAR_MOVIES.value
             )
         }
+        //Сериалы
         val popularSerials = state.popularSerials?.collectAsLazyPagingItems()
         popularSerials?.let {
             MoviesListCollection(
@@ -115,5 +129,30 @@ fun HomeScreen(
                 collectionName = TitleCollections.POPULAR_SERIES.value
             )
         }
+        //Премьеры
+        val nameCollectionPremieres = stringResource(id = R.string.Premieres)
+        TitleCollection(
+            nameCollection = nameCollectionPremieres,
+            onClick = {
+                navigateToAllMovies(state.premieres)
+            }
+        )
+        LazyRow(
+            modifier = Modifier.fillMaxWidth().padding(top = MediumPadding1),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.ExtraSmallPadding2),
+            contentPadding = PaddingValues(all = Dimens.ExtraSmallPadding3)
+        ) {
+            items(count = state.premieres.size) { index ->
+                val premieres = state.premieres
+                MovieCardCollection(
+                    nameMovie = premieres[index].nameRu ?: premieres[index].nameEn ?: "",
+                    genreMovie = premieres[index].genres,
+                    posterUrl = premieres[index].posterUrl,
+                    rating = null,
+                    onClick = { navigateToDetails(premieres[index].kinopoiskId) })
+            }
+        }
+        //Подборка по стране и жанру
+
     }
 }

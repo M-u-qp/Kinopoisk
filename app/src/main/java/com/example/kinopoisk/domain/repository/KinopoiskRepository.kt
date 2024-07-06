@@ -8,6 +8,7 @@ import com.example.kinopoisk.domain.model.CollectionItem
 import com.example.kinopoisk.domain.model.CountriesAndGenres
 import com.example.kinopoisk.domain.model.FilterItem
 import com.example.kinopoisk.domain.model.Movie
+import com.example.kinopoisk.domain.model.PremieresItem
 import com.example.kinopoisk.domain.model.SeasonsItem
 import com.example.kinopoisk.domain.model.SimilarItem
 import com.example.kinopoisk.domain.model.Staff
@@ -19,6 +20,8 @@ interface KinopoiskRepository {
 
     //Получение коллекций
     fun getTopPopularAll(type: String): Flow<PagingData<CollectionItem>>
+
+    suspend fun getPremieres(year: Int, month: String): Resource<List<PremieresItem>>
 
     suspend fun getSimilarMovies(id: Int): Resource<List<SimilarItem>>
 

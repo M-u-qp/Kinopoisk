@@ -80,7 +80,7 @@ fun MovieCardSearch(
 
             //Название фильма
             Text(
-                text = film.nameRu ?: film.nameEn ?: "",
+                text = film.nameRu ?: film.nameEn ?: film.nameOriginal ?: "",
                 style = MaterialTheme.typography.labelMedium.copy(
                     fontSize = Dimens.SmallFontSize1
                 ),

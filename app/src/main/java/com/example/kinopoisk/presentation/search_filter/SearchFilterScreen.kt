@@ -20,6 +20,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -40,6 +41,7 @@ import com.example.kinopoisk.presentation.common.TypeSearchFilter
 import com.example.kinopoisk.presentation.search_filter.components.DialogCountriesOrGenres
 import com.example.kinopoisk.presentation.search_filter.components.DialogDatePicker
 import com.example.kinopoisk.presentation.search_filter.components.RatingSlider
+import kotlinx.coroutines.launch
 
 @Composable
 fun SearchFilterScreen(
@@ -52,6 +54,7 @@ fun SearchFilterScreen(
     val selectedButtonType = remember { mutableStateOf(state.typeSearchFilter) }
     val selectedButtonSort = remember { mutableStateOf(state.sortSearchFilter) }
     val scrollState = rememberScrollState()
+    val scope = rememberCoroutineScope()
 
     if (state.showDialogCountriesOrGenres) {
         DialogCountriesOrGenres(
@@ -99,7 +102,12 @@ fun SearchFilterScreen(
             ToggleButton(
                 text = stringResource(id = R.string.All),
                 isSelected = selectedButtonType.value == TypeSearchFilter.ALL,
-                onToggle = { selectedButtonType.value = TypeSearchFilter.ALL },
+                onToggle = {
+                    selectedButtonType.value = TypeSearchFilter.ALL
+                    scope.launch {
+                        viewModel.updateType(typeSearchFilter = selectedButtonType.value)
+                    }
+                },
                 shape = MaterialTheme.shapes.medium.copy(
                     topStart = CornerSize(LargeCornerSize),
                     bottomStart = CornerSize(LargeCornerSize),
@@ -110,7 +118,12 @@ fun SearchFilterScreen(
             ToggleButton(
                 text = stringResource(id = R.string.Movies),
                 isSelected = selectedButtonType.value == TypeSearchFilter.FILM,
-                onToggle = { selectedButtonType.value = TypeSearchFilter.FILM },
+                onToggle = {
+                    selectedButtonType.value = TypeSearchFilter.FILM
+                    scope.launch {
+                        viewModel.updateType(typeSearchFilter = selectedButtonType.value)
+                    }
+                },
                 shape = MaterialTheme.shapes.medium.copy(
                     topStart = CornerSize(0.dp),
                     bottomStart = CornerSize(0.dp),
@@ -121,7 +134,12 @@ fun SearchFilterScreen(
             ToggleButton(
                 text = stringResource(id = R.string.Serials),
                 isSelected = selectedButtonType.value == TypeSearchFilter.TV_SERIES,
-                onToggle = { selectedButtonType.value = TypeSearchFilter.TV_SERIES },
+                onToggle = {
+                    selectedButtonType.value = TypeSearchFilter.TV_SERIES
+                    scope.launch {
+                        viewModel.updateType(typeSearchFilter = selectedButtonType.value)
+                    }
+                },
                 shape = MaterialTheme.shapes.medium.copy(
                     topStart = CornerSize(0.dp),
                     bottomStart = CornerSize(0.dp),
@@ -294,7 +312,12 @@ fun SearchFilterScreen(
             ToggleButton(
                 text = stringResource(id = R.string.Date),
                 isSelected = selectedButtonSort.value == SortSearchFilter.YEAR,
-                onToggle = { selectedButtonSort.value = SortSearchFilter.YEAR },
+                onToggle = {
+                    selectedButtonSort.value = SortSearchFilter.YEAR
+                    scope.launch {
+                        viewModel.updateSort(sortSearchFilter = selectedButtonSort.value)
+                    }
+                },
                 shape = MaterialTheme.shapes.medium.copy(
                     topStart = CornerSize(LargeCornerSize),
                     bottomStart = CornerSize(LargeCornerSize),
@@ -305,7 +328,12 @@ fun SearchFilterScreen(
             ToggleButton(
                 text = stringResource(id = R.string.Popular),
                 isSelected = selectedButtonSort.value == SortSearchFilter.NUM_VOTE,
-                onToggle = { selectedButtonSort.value = SortSearchFilter.NUM_VOTE },
+                onToggle = {
+                    selectedButtonSort.value = SortSearchFilter.NUM_VOTE
+                    scope.launch {
+                        viewModel.updateSort(sortSearchFilter = selectedButtonSort.value)
+                    }
+                },
                 shape = MaterialTheme.shapes.medium.copy(
                     topStart = CornerSize(0.dp),
                     bottomStart = CornerSize(0.dp),
@@ -316,7 +344,12 @@ fun SearchFilterScreen(
             ToggleButton(
                 text = stringResource(id = R.string.Rating),
                 isSelected = selectedButtonSort.value == SortSearchFilter.RATING,
-                onToggle = { selectedButtonSort.value = SortSearchFilter.RATING },
+                onToggle = {
+                    selectedButtonSort.value = SortSearchFilter.RATING
+                    scope.launch {
+                        viewModel.updateSort(sortSearchFilter = selectedButtonSort.value)
+                    }
+                },
                 shape = MaterialTheme.shapes.medium.copy(
                     topStart = CornerSize(0.dp),
                     bottomStart = CornerSize(0.dp),
@@ -333,7 +366,9 @@ fun SearchFilterScreen(
         Button(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = {
-                navigateToSearch(listOf( FilterData()))
+                state.filterData?.let {
+                    navigateToSearch(listOf(state.filterData))
+                }
             }
         ) {
             Text(
@@ -346,14 +381,3 @@ fun SearchFilterScreen(
         }
     }
 }
-
-data class FilterData(
-    val ratingFrom: Int = 1,
-    val ratingTo: Int = 10,
-    val selectedCountry: List<Int> = listOf(1),
-    val selectedGenre: List<Int> = listOf(1),
-    var yearsFrom: Int = 1900,
-    val yearsTo: Int = 2024,
-    val typeSearchFilter: String = "FILM",
-    val sortSearchFilter: String = "RATING",
-    )

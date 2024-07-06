@@ -12,6 +12,7 @@ data class SearchFilm(
     val genres: List<Genre>,
     val nameEn: String?,
     val nameRu: String?,
+    val nameOriginal: String?,
     val posterUrl: String,
     val posterUrlPreview: String,
     val rating: String,

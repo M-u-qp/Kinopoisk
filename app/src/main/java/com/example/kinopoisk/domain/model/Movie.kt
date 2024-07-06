@@ -15,6 +15,7 @@ data class Movie(
     val logoUrl: String?,
     val nameEn: String?,
     val nameRu: String?,
+    val nameOriginal: String?,
     val posterUrl: String?,
     val posterUrlPreview: String?,
     val ratingAgeLimits: String?,

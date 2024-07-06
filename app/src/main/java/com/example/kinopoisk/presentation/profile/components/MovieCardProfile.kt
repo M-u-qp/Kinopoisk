@@ -72,7 +72,7 @@ fun MovieCardProfile(
             }
         }
         //Название фильма
-        val nameMovie = normalizeTitleMovie(movie.nameRu ?: movie.nameEn ?: "")
+        val nameMovie = normalizeTitleMovie(movie.nameRu ?: movie.nameEn ?: movie.nameOriginal ?: "")
         Text(
             modifier = modifier.padding(top = Dimens.ExtraSmallPadding2),
             text = nameMovie,

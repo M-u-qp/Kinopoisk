@@ -101,7 +101,7 @@ fun MovieDetailsCard(
                 )
                 //Название
                 Text(
-                    text = (movie.nameRu ?: movie.nameEn).toString(),
+                    text = (movie.nameRu ?: movie.nameEn ?: movie.nameOriginal).toString(),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = Dimens.SmallFontSize2
                     ),

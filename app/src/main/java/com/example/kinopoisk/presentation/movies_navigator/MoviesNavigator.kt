@@ -146,7 +146,7 @@ fun MoviesNavigator() {
                 val viewModel: SearchViewModel = hiltViewModel()
                 val state = viewModel.state.value
                 if (navController.previousBackStackEntry?.destination?.route == Route.SearchFilterScreen.route) {
-                    navController.previousBackStackEntry?.savedStateHandle?.get<FilterData>("filterData")
+                    navController.previousBackStackEntry?.savedStateHandle?.get<List<FilterData>>("filterData")
                         ?.let { filterData ->
                             SearchScreen(
                                 state = state,
@@ -158,7 +158,7 @@ fun MoviesNavigator() {
                                     )
                                 },
                                 navigateToSearchFilter = { navController.navigate(route = Route.SearchFilterScreen.route) },
-                                filterData = listOf(filterData)
+                                filterData = filterData
                             )
                         }
                 }else {

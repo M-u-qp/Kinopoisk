@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.kinopoisk.domain.model.CountryFilter
 import com.example.kinopoisk.domain.model.GenreFilter
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
+import com.example.kinopoisk.presentation.common.SortSearchFilter
+import com.example.kinopoisk.presentation.common.TypeSearchFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,7 +26,13 @@ class SearchFilterViewModel @Inject constructor(
     }
 
     fun updateRatingSlider(ratingPosition: ClosedFloatingPointRange<Float>) {
-        _state.value = _state.value.copy(ratingPosition = ratingPosition)
+        _state.value = _state.value.copy(
+            ratingPosition = ratingPosition,
+            filterData = FilterData(
+                ratingFrom = ratingPosition.start.toInt(),
+                ratingTo = ratingPosition.endInclusive.toInt()
+            )
+        )
     }
 
     fun updateVisibleDialogCountriesOrGenres(show: Boolean) {
@@ -36,11 +44,17 @@ class SearchFilterViewModel @Inject constructor(
     }
 
     fun updateSelectedCountry(countryFilter: CountryFilter) {
-        _state.value = _state.value.copy(selectedCountry = countryFilter)
+        _state.value = _state.value.copy(
+            selectedCountry = countryFilter,
+            filterData = FilterData(selectedCountry = listOf(countryFilter.id))
+        )
     }
 
     fun updateSelectedGenre(genreFilter: GenreFilter) {
-        _state.value = _state.value.copy(selectedGenre = genreFilter)
+        _state.value = _state.value.copy(
+            selectedGenre = genreFilter,
+            filterData = FilterData(selectedGenre = listOf(genreFilter.id))
+        )
     }
 
     fun updateVisibleDialogDatePicker(show: Boolean) {
@@ -48,7 +62,31 @@ class SearchFilterViewModel @Inject constructor(
     }
 
     fun updateYearsPosition(yearsPosition: IntRange) {
-        _state.value = _state.value.copy(yearsPosition = yearsPosition)
+        _state.value = _state.value.copy(
+            yearsPosition = yearsPosition,
+            filterData = FilterData(
+                yearsFrom = yearsPosition.last,
+                yearsTo = yearsPosition.first
+                )
+        )
+    }
+
+    fun updateType(typeSearchFilter: TypeSearchFilter) {
+        _state.value = _state.value.copy(
+            typeSearchFilter = typeSearchFilter,
+            filterData = FilterData(
+                typeSearchFilter = typeSearchFilter.name
+            )
+        )
+    }
+
+    fun updateSort(sortSearchFilter: SortSearchFilter) {
+        _state.value = _state.value.copy(
+            sortSearchFilter = sortSearchFilter,
+            filterData = FilterData(
+                sortSearchFilter = sortSearchFilter.name
+            )
+        )
     }
 
     private fun getCountriesAndGenres() {

@@ -108,7 +108,7 @@ fun MovieCardCollection(
                 }
             }
             //Название фильма
-            val fullNameMovie = item.nameRu ?: item.nameEn ?: ""
+            val fullNameMovie = item.nameRu ?: item.nameEn ?: item.nameOriginal ?: ""
             val nameMovie = normalizeTitleMovie(fullNameMovie)
             Text(
                 modifier = Modifier

@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.Flow
 interface KinopoiskRepository {
 
     //Получение коллекций
-    fun getTopPopularAll(): Flow<PagingData<CollectionItem>>
+    fun getTopPopularAll(type: String): Flow<PagingData<CollectionItem>>
 
     suspend fun getSimilarMovies(id: Int): Resource<List<SimilarItem>>
 

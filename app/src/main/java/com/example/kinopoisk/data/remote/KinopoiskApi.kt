@@ -19,9 +19,10 @@ import retrofit2.http.Query
 interface KinopoiskApi {
 
     //Коллекции
-    @GET("/api/v2.2/films/collections?type=TOP_POPULAR_ALL")
+    @GET("/api/v2.2/films/collections")
     suspend fun getTopPopularAll(
         @Header("X-API-KEY") apiKey: String,
+        @Query("type") type: String,
         @Query("page") page: Int
     ): CollectionsResponse
 

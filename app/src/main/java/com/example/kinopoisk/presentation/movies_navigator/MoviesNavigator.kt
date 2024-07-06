@@ -117,10 +117,8 @@ fun MoviesNavigator() {
         ) {
             composable(route = Route.HomeScreen.route) {
                 val viewModel: HomeViewModel = hiltViewModel()
-                val movies = viewModel.topPopularAll.collectAsLazyPagingItems()
                 HomeScreen(
                     viewModel = viewModel,
-                    movies = movies,
                     navigateToSearch = {
                         navigateToTab(
                             navController = navController,

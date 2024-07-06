@@ -9,7 +9,7 @@ class GetCollections(
     private val kinopoiskRepository: KinopoiskRepository
 ) {
 
-    operator fun invoke(): Flow<PagingData<CollectionItem>>{
-        return kinopoiskRepository.getTopPopularAll()
+    operator fun invoke(type: String): Flow<PagingData<CollectionItem>>{
+        return kinopoiskRepository.getTopPopularAll(type = type)
     }
 }

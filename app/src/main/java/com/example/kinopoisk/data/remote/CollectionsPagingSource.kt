@@ -8,7 +8,8 @@ import com.example.kinopoisk.domain.model.CollectionItem
 
 class CollectionsPagingSource(
     private val kinopoiskApi: KinopoiskApi,
-    private val context: Context
+    private val context: Context,
+    private val type: String
 ) : PagingSource<Int, CollectionItem>() {
 
     private var totalCollectionsCount = 0
@@ -24,6 +25,7 @@ class CollectionsPagingSource(
         return try {
             val collectionsResponse = kinopoiskApi.getTopPopularAll(
                 page = page,
+                type = type,
                 apiKey = context.getString(R.string.API_KEY)
                 )
             totalCollectionsCount += collectionsResponse.items.size

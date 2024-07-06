@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -21,13 +23,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.CollectionDB
 import com.example.kinopoisk.domain.model.CollectionItem
 import com.example.kinopoisk.presentation.Dimens.MediumFontSize1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
+import com.example.kinopoisk.presentation.common.TitleCollections
 import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import com.example.kinopoisk.presentation.home.components.MoviesListCollection
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +39,6 @@ import kotlinx.coroutines.withContext
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    movies: LazyPagingItems<CollectionItem>,
     navigateToSearch: () -> Unit,
     navigateToDetails: (Int) -> Unit,
     navigateToAllMovies: (List<CollectionItem>) -> Unit
@@ -53,11 +55,22 @@ fun HomeScreen(
         }
     }
 
+    LaunchedEffect(key1 = true) {
+        withContext(Dispatchers.IO) {
+            TitleCollections.entries.forEach { title ->
+                viewModel.getCollection(title.name)
+            }
+        }
+    }
+
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = MediumPadding2, start = MediumPadding2)
             .statusBarsPadding()
+            .verticalScroll(state = scrollState)
     ) {
         Row(
             modifier = Modifier
@@ -82,11 +95,25 @@ fun HomeScreen(
             }
         }
 
-        MoviesListCollection(
-            modifier = Modifier.padding(top = MediumPadding1),
-            movies = movies,
-            onClick = { navigateToDetails(it) },
-            navigateToAllMovies = navigateToAllMovies
-        )
+        val popularMovies = state.popularMovies?.collectAsLazyPagingItems()
+        popularMovies?.let {
+            MoviesListCollection(
+                modifier = Modifier.padding(top = MediumPadding1),
+                movies = popularMovies,
+                onClick = { navigateToDetails(it) },
+                navigateToAllMovies = navigateToAllMovies,
+                collectionName = TitleCollections.TOP_POPULAR_MOVIES.value
+            )
+        }
+        val popularSerials = state.popularSerials?.collectAsLazyPagingItems()
+        popularSerials?.let {
+            MoviesListCollection(
+                modifier = Modifier.padding(top = MediumPadding1),
+                movies = popularSerials,
+                onClick = { navigateToDetails(it) },
+                navigateToAllMovies = navigateToAllMovies,
+                collectionName = TitleCollections.POPULAR_SERIES.value
+            )
+        }
     }
 }

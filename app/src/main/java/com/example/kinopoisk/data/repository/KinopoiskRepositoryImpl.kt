@@ -49,13 +49,14 @@ class KinopoiskRepositoryImpl(
     }
 
     //Коллекции
-    override fun getTopPopularAll(): Flow<PagingData<CollectionItem>> {
+    override fun getTopPopularAll(type: String): Flow<PagingData<CollectionItem>> {
         return Pager(
             config = PagingConfig(pageSize = 10),
             pagingSourceFactory = {
                 CollectionsPagingSource(
                     kinopoiskApi = kinopoiskApi,
-                    context = context
+                    context = context,
+                    type = type
                 )
             }
         ).flow

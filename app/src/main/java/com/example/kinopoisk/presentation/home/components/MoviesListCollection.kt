@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,25 +16,25 @@ import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding3
 import com.example.kinopoisk.presentation.common.EmptyScreen
 import com.example.kinopoisk.presentation.common.MovieCardCollectionShimmerEffect
 import com.example.kinopoisk.presentation.common.TitleCollection
-import com.example.kinopoisk.presentation.common.TitleCollections
 
 @Composable
 fun MoviesListCollection(
     modifier: Modifier = Modifier,
     movies: LazyPagingItems<CollectionItem>,
     onClick: (Int) -> Unit,
+    collectionName: String,
     navigateToAllMovies: (List<CollectionItem>) -> Unit
 ) {
     val handlePagingResult = handlePagingResult(movies = movies)
     if (handlePagingResult) {
         Column {
             TitleCollection(
-                nameCollection = TitleCollections.TOP_POPULAR_ALL.value,
+                nameCollection = collectionName,
                 onClick = { navigateToAllMovies(movies.itemSnapshotList.items) }
             )
 
             LazyRow(
-                modifier = modifier.fillMaxSize(),
+                modifier = modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
                 contentPadding = PaddingValues(all = ExtraSmallPadding3)
             ) {

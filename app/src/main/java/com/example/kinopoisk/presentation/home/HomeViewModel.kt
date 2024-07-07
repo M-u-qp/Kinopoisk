@@ -113,8 +113,8 @@ class HomeViewModel @Inject constructor(
     //Получить подборку по стране и жанру
     fun getDynamicCollection1() {
         if (state.value.dynamicMovies1 == null) {
-            val randomCountry = state.value.countriesAndGenres?.countries?.random()
-            val randomGenre = state.value.countriesAndGenres?.genres?.random()
+            val randomCountry = state.value.countriesAndGenres?.countries?.take(10)?.random()
+            val randomGenre = state.value.countriesAndGenres?.genres?.take(5)?.random()
             val lazyResult =
                 randomCountry?.let { country ->
                     randomGenre?.let { genre ->

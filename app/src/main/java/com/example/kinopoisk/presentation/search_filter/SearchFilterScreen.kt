@@ -384,7 +384,7 @@ fun SearchFilterScreen(
                 )
             }
             Text(
-                modifier = Modifier.padding(start = MediumPadding1),
+                modifier = Modifier.padding(horizontal = MediumPadding1),
                 text = if (state.viewedMovies) {
                     "Показывать уже просмотренные"
                 } else {

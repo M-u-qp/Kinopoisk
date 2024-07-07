@@ -14,6 +14,8 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -24,6 +26,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -355,6 +358,41 @@ fun SearchFilterScreen(
                     bottomStart = CornerSize(0.dp),
                     topEnd = CornerSize(LargeCornerSize),
                     bottomEnd = CornerSize(LargeCornerSize)
+                )
+            )
+        }
+        Spacer(modifier = Modifier.height(SmallPadding1))
+        HorizontalDivider()
+        Spacer(modifier = Modifier.height(MediumPadding1))
+
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(start = MediumPadding2),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = {
+                viewModel.updateViewed(!state.viewedMovies)
+            }) {
+                Icon(
+                    painter = painterResource(
+                        id = if (state.viewedMovies) {
+                            R.drawable.ic_viewed
+                        } else {
+                            R.drawable.ic_unviewed
+                        }
+                    ),
+                    contentDescription = null
+                )
+            }
+            Text(
+                modifier = Modifier.padding(start = MediumPadding1),
+                text = if (state.viewedMovies) {
+                    "Показывать уже просмотренные"
+                } else {
+                    "Не показывать уже просмотренные"
+                },
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = colorResource(id = R.color.black_text),
+                    fontSize = Dimens.MediumFontSize2,
                 )
             )
         }

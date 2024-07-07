@@ -71,7 +71,9 @@ fun SearchScreen(
                 val filterMovies = pagingFilterMovies.collectAsLazyPagingItems()
                 MoviesListFilterSearch(
                     filterMovies = filterMovies,
-                    onClick = { (navigateToDetails(it.filmId)) }
+                    onClick = { (navigateToDetails(it.filmId)) },
+                    state = state,
+                    viewed = filterData[0].viewedMovies
                 )
             }
         }

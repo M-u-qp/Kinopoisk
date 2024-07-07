@@ -90,6 +90,15 @@ class SearchFilterViewModel @Inject constructor(
         )
     }
 
+    fun updateViewed(viewed: Boolean) {
+        _state.value = _state.value.copy(
+            viewedMovies = viewed,
+            filterData = FilterData(
+                viewedMovies = viewed
+            )
+        )
+    }
+
     private fun getCountriesAndGenres() {
         if (state.value.listCountriesAndGenres == null) {
             viewModelScope.launch {

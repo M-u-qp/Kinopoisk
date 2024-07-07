@@ -21,7 +21,7 @@ data class SearchFilterState(
     val selectedGenre: GenreFilter = GenreFilter(id = 11, genre = "боевик"),
 
     var showDialogDatePicker: Boolean = false,
-    var yearsPosition: IntRange = listLast100Years().last() .. listLast100Years().first(),
+    var yearsPosition: IntRange = listLast100Years().last()..listLast100Years().first(),
 
     val typeSearchFilter: TypeSearchFilter = TypeSearchFilter.ALL,
     val sortSearchFilter: SortSearchFilter = SortSearchFilter.YEAR,
@@ -33,12 +33,13 @@ data class SearchFilterState(
 
 @Parcelize
 data class FilterData(
-val ratingFrom: Int = 1,
-val ratingTo: Int = 10,
-val selectedCountry: List<Int> = listOf(1),
-val selectedGenre: List<Int> = listOf(11),
-var yearsFrom: Int = listLast100Years().last(),
-val yearsTo: Int = listLast100Years().first(),
-val typeSearchFilter: String = TypeSearchFilter.ALL.name,
-val sortSearchFilter: String = SortSearchFilter.YEAR.name,
-): Parcelable
+    val ratingFrom: Int = 1,
+    val ratingTo: Int = 10,
+    val selectedCountry: List<Int> = listOf(1),
+    val selectedGenre: List<Int> = listOf(11),
+    var yearsFrom: Int = listLast100Years().last(),
+    val yearsTo: Int = listLast100Years().first(),
+    val typeSearchFilter: String = TypeSearchFilter.ALL.name,
+    val sortSearchFilter: String = SortSearchFilter.YEAR.name,
+    val viewedMovies: Boolean = false
+) : Parcelable

@@ -6,17 +6,27 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
+import com.example.kinopoisk.presentation.common.TitleCollectionsDB
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val moviesUseCases: MoviesUseCases
+    private val moviesUseCases: MoviesUseCases,
+    private val collectionsUseCases: CollectionsUseCases
 ) : ViewModel() {
 
     private val _state = mutableStateOf(SearchState())
     val state: State<SearchState> = _state
+
+    init {
+        viewModelScope.launch {
+            getMoviesCollection(TitleCollectionsDB.VIEWED.value)
+        }
+    }
 
     fun onEvent(event: SearchEvent) {
         when (event) {
@@ -72,5 +82,11 @@ class SearchViewModel @Inject constructor(
             keyword = state.value.keyword
         ).cachedIn(viewModelScope)
         _state.value = _state.value.copy(movies = movies)
+    }
+
+    private suspend fun getMoviesCollection(nameCollection: String) {
+        collectionsUseCases.getCollectionInDB(nameCollection).collect{ listMovies ->
+            _state.value = _state.value.copy(moviesCollection = listMovies)
+        }
     }
 }

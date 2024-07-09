@@ -17,6 +17,7 @@ import com.example.kinopoisk.presentation.details.details_movie.DetailsState
 fun DetailsTopBar(
     onLikeClick: () -> Unit,
     onBookmarkClick: () -> Unit,
+    onViewedClick: () -> Unit,
     onShareClick: () -> Unit,
     onBrowsingClick: () -> Unit,
     onDotsClick: () -> Unit,
@@ -55,6 +56,23 @@ fun DetailsTopBar(
                 } else {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_bookmark_border),
+                        contentDescription = null,
+                        tint = colorResource(id = R.color.body_icon)
+                    )
+                }
+            }
+        }
+        IconButton(onClick = onViewedClick) {
+            state.listMovie.forEach { movie ->
+                if (state.movie?.kinopoiskId == movie?.kinopoiskId && movie?.collectionName == TitleCollectionsDB.VIEWED.value) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_viewed),
+                        contentDescription = null,
+                        tint = colorResource(id = R.color.body_icon)
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_unviewed),
                         contentDescription = null,
                         tint = colorResource(id = R.color.body_icon)
                     )

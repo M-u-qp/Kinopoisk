@@ -78,14 +78,19 @@ class DetailsViewModel @Inject constructor(
 
     fun onEvent(event: DetailsEvent) {
         when (event) {
-            //Клик по иконке Закладка ( добавить/удалить фильм из Хочу посмотреть )
+            //Клик по иконке Закладка ( добавить/удалить фильм в Хочу посмотреть )
             is DetailsEvent.ReadyToViewMovie -> {
                 addDeleteMovieInDB(event.movie, TitleCollectionsDB.READY_TO_VIEW.value)
             }
 
-            //Клик по иконке Лайк ( добавить/удалить фильм из Понравилось )
+            //Клик по иконке Лайк ( добавить/удалить фильм в Понравилось )
             is DetailsEvent.FavoriteMovie -> {
                 addDeleteMovieInDB(event.movie, TitleCollectionsDB.FAVORITE.value)
+            }
+
+            //Клик по иконке Глазик( добавить/удалить фильм в Просмотрено )
+            is  DetailsEvent.Viewed -> {
+                addDeleteMovieInDB(event.movie, TitleCollectionsDB.VIEWED.value)
             }
 
             //Клик по иконке Троеточие ( выбор своей коллекции из списка в диалоге или создать новую )
@@ -105,8 +110,8 @@ class DetailsViewModel @Inject constructor(
                 }
             }
             //Ивент авто добавления фильма в просмотренные
-            is DetailsEvent.AutoAddMovieInViewed -> {
-                autoAddMovieInViewed(event.movie, TitleCollectionsDB.VIEWED.value)
+            is DetailsEvent.AutoAddMovieInInteresting -> {
+                autoAddMovieInInteresting(event.movie, TitleCollectionsDB.INTERESTING.value)
             }
 
             is DetailsEvent.RemoveSideEffect -> {
@@ -115,8 +120,8 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    //Добавление фильма в коллекцию "Просмотрено" в БД
-    private fun autoAddMovieInViewed(movie: Movie, collectionName: String) {
+    //Добавление фильма в коллекцию "Вам было интересно" в БД
+    private fun autoAddMovieInInteresting(movie: Movie, collectionName: String) {
         _state.value = _state.value.copy(movieViewed = false)
         viewModelScope.launch {
             val movieForDB = movie.copy(collectionName = collectionName)

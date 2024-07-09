@@ -105,7 +105,7 @@ fun DetailsScreen(
     }
     //Добавить фильм в просмотренные в авторежиме
     state.movie?.let { movie ->
-        event(DetailsEvent.AutoAddMovieInViewed(movie))
+        event(DetailsEvent.AutoAddMovieInInteresting(movie))
     }
 
     //Получить похожие фильмы
@@ -127,6 +127,7 @@ fun DetailsScreen(
                     movie = movie,
                     onLikeClick = { event(DetailsEvent.FavoriteMovie(movie)) },
                     onBookmarkClick = { event(DetailsEvent.ReadyToViewMovie(movie)) },
+                    onViewedClick = { event(DetailsEvent.Viewed(movie)) },
                     onShareClick = {
                         Intent(Intent.ACTION_SEND).also {
                             it.putExtra(Intent.EXTRA_TEXT, movie.webUrl)

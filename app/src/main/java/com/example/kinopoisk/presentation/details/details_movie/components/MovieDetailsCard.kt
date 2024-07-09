@@ -38,6 +38,7 @@ fun MovieDetailsCard(
     movie: Movie,
     onLikeClick: () -> Unit,
     onBookmarkClick: () -> Unit,
+    onViewedClick: () -> Unit,
     onShareClick: () -> Unit,
     onBrowsingClick: () -> Unit,
     onDotsClick: () -> Unit,
@@ -158,6 +159,7 @@ fun MovieDetailsCard(
             DetailsTopBar(
                 onLikeClick = onLikeClick,
                 onBookmarkClick = onBookmarkClick,
+                onViewedClick = onViewedClick,
                 onShareClick = onShareClick,
                 onBrowsingClick = onBrowsingClick,
                 onDotsClick = onDotsClick,

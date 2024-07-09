@@ -8,7 +8,8 @@ enum class TitleCollections(val value: String) {
 enum class TitleCollectionsDB(val value: String) {
     READY_TO_VIEW("Хочу посмотреть"),
     FAVORITE("Понравилось"),
-    VIEWED("Просмотрено")
+    VIEWED("Просмотрено"),
+    INTERESTING("Вам было интересно")
 }
 
 enum class TypeGalleryRequest(val value: String) {

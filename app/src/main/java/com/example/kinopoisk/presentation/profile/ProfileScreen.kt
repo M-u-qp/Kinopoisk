@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kinopoisk.R
 import com.example.kinopoisk.domain.model.CollectionDB
+import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding2
 import com.example.kinopoisk.presentation.Dimens.LargePadding1
 import com.example.kinopoisk.presentation.Dimens.MediumFontSize2
@@ -60,6 +64,9 @@ fun ProfileScreen(
     val scope = rememberCoroutineScope()
     val sizeViewedCollection =
         state.listCollectionsAndSize[TitleCollectionsDB.VIEWED.value]?.size ?: 0
+    val sizeInterestingCollection =
+        state.listCollectionsAndSize[TitleCollectionsDB.INTERESTING.value]?.size ?: 0
+    val scrollState = rememberScrollState()
 
     if (state.showDialogForCreateCollection) {
         DialogCreateCollection()
@@ -73,10 +80,15 @@ fun ProfileScreen(
         viewModel.getCollection(TitleCollectionsDB.VIEWED.value)
     }
 
+    LaunchedEffect(key1 = true) {
+        viewModel.getCollection(TitleCollectionsDB.INTERESTING.value)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = MediumPadding2, top = LargePadding1)
+            .verticalScroll(state = scrollState)
     ) {
 
         TitleCommon(
@@ -177,12 +189,15 @@ fun ProfileScreen(
         }
 
         val listCollections = state.allCollections.filter { collection ->
+            collection.nameCollection != TitleCollectionsDB.INTERESTING.value &&
             collection.nameCollection != TitleCollectionsDB.VIEWED.value
         }
 
-        LazyVerticalGrid(
-            modifier = Modifier.padding(end = MediumPadding2),
-            columns = GridCells.Fixed(2),
+        LazyHorizontalGrid(
+            modifier = Modifier
+                .padding(end = MediumPadding2)
+                .heightIn(max = Dimens.LazyVerticalGridHeight),
+            rows = GridCells.Fixed(2),
             horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2),
             verticalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
         ) {
@@ -247,6 +262,68 @@ fun ProfileScreen(
                                 onDismiss = { viewModel.updateShowDialogAreYouSure(false) }
                             )
                         }
+                    }
+                }
+            }
+        }
+
+        TitleCommon(
+            modifier = Modifier.padding(top = MediumPadding1),
+            nameTitle = TitleCollectionsDB.INTERESTING.value,
+            varParam = sizeViewedCollection.toString(),
+            onClick = { navigateToCollection(TitleCollectionsDB.INTERESTING.value) }
+        )
+
+        Spacer(modifier = Modifier.height(MediumPadding1))
+
+        LazyRow(
+            modifier = Modifier,
+            horizontalArrangement = Arrangement.spacedBy(ExtraSmallPadding2)
+        ) {
+            if (sizeInterestingCollection != 0) {
+                state.listCollectionsAndSize[TitleCollectionsDB.INTERESTING.value]?.let { collection ->
+                    items(collection) {
+                        it?.let { movie ->
+                            MovieCardProfile(
+                                movie = movie,
+                                onClick = { navigateToDetails(movie.kinopoiskId) }
+                            )
+                        }
+                    }
+                }
+            }
+
+            if (sizeInterestingCollection != 0) {
+                //Иконка очистки коллекции
+                item {
+                    Column(
+                        modifier = Modifier
+                            .padding(
+                                start = SmallPadding1,
+                                end = SmallPadding1
+                            )
+                            .height(MovieCardSizeHeight),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        IconButton(onClick = {
+                            scope.launch {
+                                viewModel.deleteMoviesInCollection(collectionName = TitleCollectionsDB.INTERESTING.value)
+                            }
+                        }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_delete),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                        Text(
+                            text = stringResource(id = R.string.Clear_history),
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontSize = SmallFontSize2,
+                                color = colorResource(id = R.color.black_text)
+                            )
+                        )
                     }
                 }
             }

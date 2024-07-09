@@ -38,6 +38,7 @@ import com.example.kinopoisk.domain.usecases.staff.GetListStaff
 import com.example.kinopoisk.domain.usecases.staff.GetStaff
 import com.example.kinopoisk.domain.usecases.staff.StaffUseCases
 import com.example.kinopoisk.util.Constants.BASE_URL
+import com.example.kinopoisk.util.Constants.MOVIES_DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -162,11 +163,11 @@ object AppModule {
     fun provideMoviesDatabase(
         application: Application
     ): MoviesDatabase {
-//        return Room.databaseBuilder(
-        return Room.inMemoryDatabaseBuilder(
+        return Room.databaseBuilder(
+//        return Room.inMemoryDatabaseBuilder(
             context = application,
-            klass = MoviesDatabase::class.java
-//            name = MOVIES_DATABASE_NAME
+            klass = MoviesDatabase::class.java,
+            name = MOVIES_DATABASE_NAME
         )
             .addTypeConverter(MoviesTypeConvertor())
             .fallbackToDestructiveMigration()

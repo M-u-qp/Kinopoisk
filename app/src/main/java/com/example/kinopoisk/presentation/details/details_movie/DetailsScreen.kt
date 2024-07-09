@@ -163,26 +163,30 @@ fun DetailsScreen(
                         )
                     }
                     //Короткое описание фильма
-                    Text(
-                        text = movie.shortDescription ?: "",
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = MediumFontSize2
-                        ),
-                        color = colorResource(id = R.color.black_text)
-                    )
+                    if (movie.shortDescription != null) {
+                        Text(
+                            text = movie.shortDescription,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = MediumFontSize2
+                            ),
+                            color = colorResource(id = R.color.black_text)
+                        )
+                    }
                     //Основное описание фильма
-                    Text(
-                        modifier = Modifier.padding(top = MediumPadding3),
-                        text = movie.description ?: "",
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Medium,
-                            fontSize = MediumFontSize2
-                        ),
-                        color = colorResource(id = R.color.black_text),
-                        maxLines = 5,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                    if (movie.description != null) {
+                        Text(
+                            modifier = Modifier.padding(top = MediumPadding3),
+                            text = movie.description,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Medium,
+                                fontSize = MediumFontSize2
+                            ),
+                            color = colorResource(id = R.color.black_text),
+                            maxLines = 5,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 }
             }
         }

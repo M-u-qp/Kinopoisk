@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.kinopoisk.presentation.Dimens.MediumPadding1
 import com.example.kinopoisk.presentation.Dimens.MediumPadding2
@@ -21,30 +22,29 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun SearchScreen(
+    viewModel: SearchViewModel = hiltViewModel(),
     state: SearchState,
     event: (SearchEvent) -> Unit,
     navigateToDetails: (Int) -> Unit,
     navigateToSearchFilter: () -> Unit,
-    filterData: List<FilterData>
+    filterData: FilterData?
 ) {
 
     LaunchedEffect(key1 = true) {
         withContext(Dispatchers.IO) {
-            if (filterData.isNotEmpty()) {
-                filterData.forEach { filterItem ->
-                    event(
-                        SearchEvent.UpdateFilterQueryAndSearch(
-                            ratingFrom = filterItem.ratingFrom,
-                            ratingTo = filterItem.ratingTo,
-                            selectedCountry = filterItem.selectedCountry,
-                            selectedGenre = filterItem.selectedGenre,
-                            yearsFrom = filterItem.yearsFrom,
-                            yearsTo = filterItem.yearsTo,
-                            typeSearchFilter = filterItem.typeSearchFilter,
-                            sortSearchFilter = filterItem.sortSearchFilter
-                        )
+            if (filterData != null) {
+                event(
+                    SearchEvent.UpdateFilterQueryAndSearch(
+                        ratingFrom = filterData.ratingFrom,
+                        ratingTo = filterData.ratingTo,
+                        selectedCountry = filterData.selectedCountry,
+                        selectedGenre = filterData.selectedGenre,
+                        yearsFrom = filterData.yearsFrom,
+                        yearsTo = filterData.yearsTo,
+                        typeSearchFilter = filterData.typeSearchFilter,
+                        sortSearchFilter = filterData.sortSearchFilter
                     )
-                }
+                )
             }
         }
     }
@@ -60,29 +60,33 @@ fun SearchScreen(
             text = state.keyword,
             readOnly = false,
             onValueChange = { event(SearchEvent.UpdateSearchQuery(it)) },
-            onSearch = { event(SearchEvent.SearchMovies) },
+            onSearch = {
+                viewModel.updateFilterMovies()
+                event(SearchEvent.SearchMovies)
+            },
             navigateToScreenFilter = navigateToSearchFilter
         )
 
         Spacer(modifier = Modifier.height(MediumPadding1))
 
-        if (state.filterMovies != null) {
+        if (state.filterMovies != null && filterData != null) {
             state.filterMovies.let { pagingFilterMovies ->
                 val filterMovies = pagingFilterMovies.collectAsLazyPagingItems()
                 MoviesListFilterSearch(
                     filterMovies = filterMovies,
                     onClick = { (navigateToDetails(it.filmId)) },
                     state = state,
-                    viewed = filterData[0].viewedMovies
+                    viewed = filterData.viewedMovies
                 )
             }
-        }
-        state.movies?.let { pagingSearchMovies ->
-            val movies = pagingSearchMovies.collectAsLazyPagingItems()
-            MoviesListSearch(
-                movies = movies,
-                onClick = { navigateToDetails(it.filmId) },
-            )
+        } else {
+            state.movies?.let { pagingSearchMovies ->
+                val movies = pagingSearchMovies.collectAsLazyPagingItems()
+                MoviesListSearch(
+                    movies = movies,
+                    onClick = { navigateToDetails(it.filmId) },
+                )
+            }
         }
     }
 }

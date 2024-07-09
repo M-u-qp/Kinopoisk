@@ -10,36 +10,34 @@ import com.example.kinopoisk.presentation.common.listLast100Years
 import kotlinx.parcelize.Parcelize
 
 data class SearchFilterState(
-    var ratingPosition: ClosedFloatingPointRange<Float> = 1f..10f,
+    val ratingPosition: ClosedFloatingPointRange<Float> = 1f..10f,
 
     val listCountriesAndGenres: CountriesAndGenres? = null,
     val errorListCountriesAndGenres: String? = null,
 
-    var showDialogCountriesOrGenres: Boolean = false,
-    var selectedCountryOrGenre: String = "",
+    val showDialogCountriesOrGenres: Boolean = false,
+    val selectedCountryOrGenre: String = "",
     val selectedCountry: CountryFilter = CountryFilter(id = 1, country = "США"),
     val selectedGenre: GenreFilter = GenreFilter(id = 11, genre = "боевик"),
 
-    var showDialogDatePicker: Boolean = false,
-    var yearsPosition: IntRange = listLast100Years().last()..listLast100Years().first(),
+    val showDialogDatePicker: Boolean = false,
+    val yearsPosition: IntRange = listLast100Years().last()..listLast100Years().first(),
 
     val typeSearchFilter: TypeSearchFilter = TypeSearchFilter.ALL,
     val sortSearchFilter: SortSearchFilter = SortSearchFilter.YEAR,
 
     val viewedMovies: Boolean = false,
-
-    val filterData: FilterData? = null
 )
 
 @Parcelize
 data class FilterData(
-    val ratingFrom: Int = 1,
-    val ratingTo: Int = 10,
-    val selectedCountry: List<Int> = listOf(1),
-    val selectedGenre: List<Int> = listOf(11),
-    var yearsFrom: Int = listLast100Years().last(),
-    val yearsTo: Int = listLast100Years().first(),
-    val typeSearchFilter: String = TypeSearchFilter.ALL.name,
-    val sortSearchFilter: String = SortSearchFilter.YEAR.name,
-    val viewedMovies: Boolean = false
+    val ratingFrom: Int,
+    val ratingTo: Int,
+    val selectedCountry: List<Int>,
+    val selectedGenre: List<Int>,
+    val yearsFrom: Int,
+    val yearsTo: Int,
+    val typeSearchFilter: String,
+    val sortSearchFilter: String,
+    val viewedMovies: Boolean
 ) : Parcelable

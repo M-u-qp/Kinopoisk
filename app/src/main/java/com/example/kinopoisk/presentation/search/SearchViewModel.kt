@@ -1,6 +1,5 @@
 package com.example.kinopoisk.presentation.search
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -74,7 +73,6 @@ class SearchViewModel @Inject constructor(
             yearTo = yearsTo
         ).cachedIn(viewModelScope)
         _state.value = _state.value.copy(filterMovies = filterMovies)
-        Log.d("TAG", "VM - $filterMovies")
     }
 
     private fun searchMovies() {
@@ -88,5 +86,9 @@ class SearchViewModel @Inject constructor(
         collectionsUseCases.getCollectionInDB(nameCollection).collect{ listMovies ->
             _state.value = _state.value.copy(moviesCollection = listMovies)
         }
+    }
+
+    fun updateFilterMovies() {
+        _state.value = _state.value.copy(filterMovies = null)
     }
 }

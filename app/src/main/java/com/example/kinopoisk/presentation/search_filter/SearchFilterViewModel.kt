@@ -29,10 +29,6 @@ class SearchFilterViewModel @Inject constructor(
     fun updateRatingSlider(ratingPosition: ClosedFloatingPointRange<Float>) {
         _state.value = _state.value.copy(
             ratingPosition = ratingPosition,
-            filterData = FilterData(
-                ratingFrom = ratingPosition.start.toInt(),
-                ratingTo = ratingPosition.endInclusive.toInt()
-            )
         )
     }
 
@@ -47,14 +43,12 @@ class SearchFilterViewModel @Inject constructor(
     fun updateSelectedCountry(countryFilter: CountryFilter) {
         _state.value = _state.value.copy(
             selectedCountry = countryFilter,
-            filterData = FilterData(selectedCountry = listOf(countryFilter.id))
         )
     }
 
     fun updateSelectedGenre(genreFilter: GenreFilter) {
         _state.value = _state.value.copy(
             selectedGenre = genreFilter,
-            filterData = FilterData(selectedGenre = listOf(genreFilter.id))
         )
     }
 
@@ -65,37 +59,38 @@ class SearchFilterViewModel @Inject constructor(
     fun updateYearsPosition(yearsPosition: IntRange) {
         _state.value = _state.value.copy(
             yearsPosition = yearsPosition,
-            filterData = FilterData(
-                yearsFrom = yearsPosition.last,
-                yearsTo = yearsPosition.first
-                )
         )
     }
 
     fun updateType(typeSearchFilter: TypeSearchFilter) {
         _state.value = _state.value.copy(
             typeSearchFilter = typeSearchFilter,
-            filterData = FilterData(
-                typeSearchFilter = typeSearchFilter.name
-            )
         )
     }
 
     fun updateSort(sortSearchFilter: SortSearchFilter) {
         _state.value = _state.value.copy(
             sortSearchFilter = sortSearchFilter,
-            filterData = FilterData(
-                sortSearchFilter = sortSearchFilter.name
-            )
         )
     }
 
     fun updateViewed(viewed: Boolean) {
         _state.value = _state.value.copy(
             viewedMovies = viewed,
-            filterData = FilterData(
-                viewedMovies = viewed
-            )
+        )
+    }
+
+    fun updateFilterData(): FilterData {
+        return FilterData(
+            ratingFrom = state.value.ratingPosition.start.toInt(),
+            ratingTo = state.value.ratingPosition.endInclusive.toInt(),
+            selectedCountry = listOf(state.value.selectedCountry.id),
+            selectedGenre = listOf(state.value.selectedGenre.id),
+            yearsFrom = state.value.yearsPosition.last,
+            yearsTo = state.value.yearsPosition.first,
+            typeSearchFilter = state.value.typeSearchFilter.name,
+            sortSearchFilter = state.value.sortSearchFilter.name,
+            viewedMovies = state.value.viewedMovies
         )
     }
 

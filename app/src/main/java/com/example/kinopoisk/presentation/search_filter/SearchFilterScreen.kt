@@ -51,7 +51,7 @@ fun SearchFilterScreen(
     viewModel: SearchFilterViewModel = hiltViewModel(),
     state: SearchFilterState,
     navigateUp: () -> Unit,
-    navigateToSearch: (List<FilterData>) -> Unit
+    navigateToSearch: (FilterData?) -> Unit
 ) {
 
     val selectedButtonType = remember { mutableStateOf(state.typeSearchFilter) }
@@ -366,7 +366,9 @@ fun SearchFilterScreen(
         Spacer(modifier = Modifier.height(MediumPadding1))
 
         Row(
-            modifier = Modifier.fillMaxWidth().padding(start = MediumPadding2),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = MediumPadding2),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = {
@@ -404,8 +406,8 @@ fun SearchFilterScreen(
         Button(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = {
-                state.filterData?.let {
-                    navigateToSearch(listOf(state.filterData))
+                scope.launch {
+                    navigateToSearch(viewModel.updateFilterData())
                 }
             }
         ) {

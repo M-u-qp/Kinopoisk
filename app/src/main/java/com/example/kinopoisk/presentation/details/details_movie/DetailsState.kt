@@ -36,5 +36,7 @@ data class DetailsState(
     val similarMovies: List<SimilarItem> = emptyList(),
     val errorSimilar: String? = null,
 
-    val galleryItem: Flow<PagingData<GalleryItem>> = flowOf()
+    val galleryItem: Flow<PagingData<GalleryItem>> = flowOf(),
+    var showGalleryDialog: Boolean = false,
+    var currentIndex: Int = 0,
 )

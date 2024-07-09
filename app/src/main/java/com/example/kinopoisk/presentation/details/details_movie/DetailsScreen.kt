@@ -287,7 +287,9 @@ fun DetailsScreen(
             ) {
                 GalleryMovie(
                     images = galleryMovieStill,
-                    navigateToAllGallery = { navigateToAllGallery(movieId) }
+                    navigateToAllGallery = { navigateToAllGallery(movieId) },
+                    state = state,
+                    viewModel = viewModel
                 )
             }
         }

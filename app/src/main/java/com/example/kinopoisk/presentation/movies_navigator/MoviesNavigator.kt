@@ -168,7 +168,7 @@ fun MoviesNavigator() {
                                 filterData = filterData
                             )
                         }
-                }else {
+                } else {
                     SearchScreen(
                         state = state,
                         event = viewModel::onEvent,
@@ -253,7 +253,7 @@ fun MoviesNavigator() {
                                     movieId = movieIdGallery
                                 )
                             },
-                            navigateToAllSeasons = { seasonsItems->
+                            navigateToAllSeasons = { seasonsItems ->
                                 navigateToAll(
                                     navController = navController,
                                     listAll = seasonsItems,
@@ -420,9 +420,11 @@ private fun navigateToAll(navController: NavController, listAll: List<*>, type: 
         "staff" -> {
             navController.navigate(route = Route.AllStaffScreen.route)
         }
+
         "seasons" -> {
             navController.navigate(route = Route.AllSeasonsScreen.route)
         }
+
         else -> {
             navController.navigate(route = Route.AllMovieScreen.route)
         }

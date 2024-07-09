@@ -69,4 +69,7 @@ class AllGalleryViewModel @Inject constructor(
     fun updateVisibleGalleryDialog(show: Boolean) {
         _state.value = _state.value.copy(showGalleryDialog = show)
     }
+    fun updateCurrentImage(index: Int) {
+        _state.value = _state.value.copy(currentIndex = index)
+    }
 }

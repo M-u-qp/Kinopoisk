@@ -10,5 +10,6 @@ data class AllGalleryState(
     val imageGalleryShooting: Flow<PagingData<GalleryItem>> = flowOf(),
     val imageGalleryFanArt: Flow<PagingData<GalleryItem>> = flowOf(),
     val imageGalleryConcept: Flow<PagingData<GalleryItem>> = flowOf(),
-    var showGalleryDialog: Boolean = false
+    var showGalleryDialog: Boolean = false,
+    var currentIndex: Int = 0
 )

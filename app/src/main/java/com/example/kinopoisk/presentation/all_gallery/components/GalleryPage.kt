@@ -38,7 +38,8 @@ fun GalleryPage(
                     movieId = movieId,
                     tab = tab,
                     viewModel = viewModel,
-                    images = images
+                    images = images,
+                    state = state
                 )
             }
 
@@ -48,7 +49,8 @@ fun GalleryPage(
                     movieId = movieId,
                     tab = tab,
                     viewModel = viewModel,
-                    images = images
+                    images = images,
+                    state = state
                 )
             }
 
@@ -58,7 +60,8 @@ fun GalleryPage(
                     movieId = movieId,
                     tab = tab,
                     viewModel = viewModel,
-                    images = images
+                    images = images,
+                    state = state
                 )
             }
 
@@ -68,7 +71,8 @@ fun GalleryPage(
                     movieId = movieId,
                     tab = tab,
                     viewModel = viewModel,
-                    images = images
+                    images = images,
+                    state = state
                 )
             }
 
@@ -82,14 +86,19 @@ private fun HandleGalleryPage(
     movieId: Int,
     tab: String,
     viewModel: AllGalleryViewModel,
-    images: LazyPagingItems<GalleryItem>
+    images: LazyPagingItems<GalleryItem>,
+    state: AllGalleryState
 ) {
     viewModel.getGalleryMovie(id = movieId, type = tab)
     val handlePagingResult = handlePagingResult(images = images)
     if (handlePagingResult) {
 
         if (viewModel.state.value.showGalleryDialog) {
-            GalleryDialog(listImages = images.itemSnapshotList.items, viewModel = viewModel)
+            GalleryDialog(
+                listImages = images.itemSnapshotList.items,
+                viewModel = viewModel,
+                state = state
+            )
         }
 
         if (images.itemSnapshotList.isNotEmpty()) {
@@ -104,7 +113,10 @@ private fun HandleGalleryPage(
                     images[index]?.let {
                         GalleryMovieItem(
                             galleryItem = it,
-                            onClick = { viewModel.updateVisibleGalleryDialog(true) }
+                            onClick = {
+                                viewModel.updateVisibleGalleryDialog(true)
+                                viewModel.updateCurrentImage(index)
+                            }
                         )
                     }
                 }

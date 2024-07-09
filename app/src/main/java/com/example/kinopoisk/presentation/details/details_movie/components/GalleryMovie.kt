@@ -14,14 +14,26 @@ import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.presentation.Dimens
 import com.example.kinopoisk.presentation.common.EmptyScreen
 import com.example.kinopoisk.presentation.common.TitleCommon
+import com.example.kinopoisk.presentation.details.details_movie.DetailsState
+import com.example.kinopoisk.presentation.details.details_movie.DetailsViewModel
 
 @Composable
 fun GalleryMovie(
     images: LazyPagingItems<GalleryItem>,
-    navigateToAllGallery: () -> Unit
+    navigateToAllGallery: () -> Unit,
+    state: DetailsState,
+    viewModel: DetailsViewModel
 ) {
     val handlePagingResult = handlePagingResult(images = images)
     if (handlePagingResult) {
+
+        if (state.showGalleryDialog) {
+            GalleryDialogStill(
+                listImages = images.itemSnapshotList.items,
+                viewModel = viewModel,
+                state = state
+            )
+        }
 
         if (images.itemSnapshotList.isNotEmpty()) {
             Column {
@@ -38,7 +50,10 @@ fun GalleryMovie(
                 ) {
                     items(count = images.itemCount) { index ->
                         images[index]?.let {
-                            GalleryMovieItem(galleryItem = it, onClick = {})
+                            GalleryMovieItem(galleryItem = it, onClick = {
+                                viewModel.updateVisibleGalleryDialog(true)
+                                viewModel.updateCurrentImage(index)
+                            })
                         }
                     }
                 }

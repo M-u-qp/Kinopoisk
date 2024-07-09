@@ -184,11 +184,19 @@ class DetailsViewModel @Inject constructor(
         _state.value = _state.value.copy(showDialogForCreateCollection = show)
     }
 
+    fun updateCurrentImage(index: Int) {
+        _state.value = _state.value.copy(currentIndex = index)
+    }
+
     fun updateShowErrorDialog(show: Boolean, collectionName: String) {
         _state.value = _state.value.copy(
             showErrorDialog = show,
             errorCollectionName = collectionName
         )
+    }
+
+    fun updateVisibleGalleryDialog(show: Boolean) {
+        _state.value = _state.value.copy(showGalleryDialog = show)
     }
 
 

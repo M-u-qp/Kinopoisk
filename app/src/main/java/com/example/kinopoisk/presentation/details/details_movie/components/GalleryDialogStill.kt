@@ -1,4 +1,4 @@
-package com.example.kinopoisk.presentation.all_gallery.components
+package com.example.kinopoisk.presentation.details.details_movie.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,15 +15,15 @@ import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.kinopoisk.domain.model.GalleryItem
-import com.example.kinopoisk.presentation.all_gallery.AllGalleryState
-import com.example.kinopoisk.presentation.all_gallery.AllGalleryViewModel
+import com.example.kinopoisk.presentation.details.details_movie.DetailsState
+import com.example.kinopoisk.presentation.details.details_movie.DetailsViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun GalleryDialog(
+fun GalleryDialogStill(
     listImages: List<GalleryItem>,
-    viewModel: AllGalleryViewModel,
-    state: AllGalleryState
+    viewModel: DetailsViewModel,
+    state: DetailsState
 ) {
     val context = LocalContext.current
     val pagerState = rememberPagerState(initialPage = state.currentIndex) { listImages.size }
@@ -34,7 +34,7 @@ fun GalleryDialog(
         viewModel.updateVisibleGalleryDialog(showDialog.value)
     },
         properties = DialogProperties(usePlatformDefaultWidth = false)
-        ) {
+    ) {
         HorizontalPager(modifier = Modifier, state = pagerState) { index ->
             AsyncImage(
                 modifier = Modifier.fillMaxSize(),

@@ -51,13 +51,16 @@ fun HomeScreen(
 ) {
 
     val state = viewModel.state.collectAsState().value
-    TitleCollectionsDB.entries.forEach { collectionToAdd ->
-        if (state.listCollections.none { collectionDB -> collectionDB.nameCollection == collectionToAdd.value }) {
-            LaunchedEffect(true) {
+
+    LaunchedEffect(Unit) {
+        val saved = viewModel.readFlagCollections()
+        if (!saved) {
+            TitleCollectionsDB.entries.forEach { collectionToAdd ->
                 withContext(Dispatchers.IO) {
                     viewModel.addCollectionInDB(CollectionDB(nameCollection = collectionToAdd.value))
                 }
             }
+            viewModel.saveFlagCollections()
         }
     }
 

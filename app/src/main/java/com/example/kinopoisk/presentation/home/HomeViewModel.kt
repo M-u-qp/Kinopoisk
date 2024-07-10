@@ -3,6 +3,7 @@ package com.example.kinopoisk.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kinopoisk.domain.model.CollectionDB
+import com.example.kinopoisk.domain.usecases.app_entry.AppEntryUseCases
 import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
 import com.example.kinopoisk.domain.utils.Resource
@@ -10,13 +11,15 @@ import com.example.kinopoisk.presentation.common.TitleCollections
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val collectionsUseCases: CollectionsUseCases,
-    private val moviesUseCases: MoviesUseCases
+    private val moviesUseCases: MoviesUseCases,
+    private val appEntryUseCases: AppEntryUseCases
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())
@@ -27,6 +30,18 @@ class HomeViewModel @Inject constructor(
             getAllCollectionInDB()
         }
         getCountriesAndGenres()
+    }
+
+    //Сохранить флаг о добавление коллекций при первичном запуске приложения
+    fun saveFlagCollections() {
+        viewModelScope.launch {
+            appEntryUseCases.saveFlagCollections()
+        }
+    }
+
+    //Получить флаг первичного сохранения коллекций
+    suspend fun readFlagCollections(): Boolean {
+        return appEntryUseCases.readFlagCollections().first()
     }
 
     //Получить список подборок из БД

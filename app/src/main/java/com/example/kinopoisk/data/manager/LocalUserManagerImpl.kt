@@ -27,10 +27,22 @@ class LocalUserManagerImpl(
         }
     }
 
+    override suspend fun saveFlagCollections() {
+        context.dataStore.edit { settings ->
+            settings[PreferencesKeys.COLLECTIONS_KEY] = true
+        }
+    }
+
+    override fun readFlagCollections(): Flow<Boolean> {
+        return context.dataStore.data.map { preferences ->
+            preferences[PreferencesKeys.COLLECTIONS_KEY] ?: false
+        }
+    }
 }
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = USER_SETTINGS)
 
 private object PreferencesKeys {
     val APP_ENTRY = booleanPreferencesKey(name = Constants.APP_ENTRY)
+    val COLLECTIONS_KEY = booleanPreferencesKey(name = Constants.COLLECTIONS_KEY)
 }

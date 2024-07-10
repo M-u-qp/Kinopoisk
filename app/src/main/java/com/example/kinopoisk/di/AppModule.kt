@@ -12,7 +12,9 @@ import com.example.kinopoisk.domain.manager.LocalUserManager
 import com.example.kinopoisk.domain.repository.KinopoiskRepository
 import com.example.kinopoisk.domain.usecases.app_entry.AppEntryUseCases
 import com.example.kinopoisk.domain.usecases.app_entry.ReadAppEntry
+import com.example.kinopoisk.domain.usecases.app_entry.ReadFlagCollections
 import com.example.kinopoisk.domain.usecases.app_entry.SaveAppEntry
+import com.example.kinopoisk.domain.usecases.app_entry.SaveFlagCollections
 import com.example.kinopoisk.domain.usecases.collections.AddCollection
 import com.example.kinopoisk.domain.usecases.collections.CollectionsUseCases
 import com.example.kinopoisk.domain.usecases.collections.DeleteCollection
@@ -66,7 +68,9 @@ object AppModule {
         localUserManager: LocalUserManager
     ) = AppEntryUseCases(
         readAppEntry = ReadAppEntry(localUserManager),
-        saveAppEntry = SaveAppEntry(localUserManager)
+        saveAppEntry = SaveAppEntry(localUserManager),
+        saveFlagCollections = SaveFlagCollections(localUserManager),
+        readFlagCollections = ReadFlagCollections(localUserManager)
     )
 
     @Provides

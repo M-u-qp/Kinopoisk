@@ -64,6 +64,13 @@ fun HomeScreen(
         }
     }
 
+    //Получить все фильмы из базы
+    LaunchedEffect(key1 = true) {
+        withContext(Dispatchers.IO) {
+            viewModel.getAllMoviesInDB()
+        }
+    }
+
     LaunchedEffect(key1 = true) {
         withContext(Dispatchers.IO) {
             TitleCollections.entries.forEach { title ->
@@ -127,6 +134,7 @@ fun HomeScreen(
         popularMovies?.let {
             MoviesListCollection(
                 modifier = Modifier.padding(top = MediumPadding1),
+                state = state,
                 movies = popularMovies,
                 onClick = { navigateToDetails(it) },
                 navigateToAllMovies = navigateToAllMovies,
@@ -139,6 +147,7 @@ fun HomeScreen(
         popularSerials?.let {
             MoviesListCollection(
                 modifier = Modifier.padding(top = MediumPadding1),
+                state = state,
                 movies = popularSerials,
                 onClick = { navigateToDetails(it) },
                 navigateToAllMovies = navigateToAllMovies,
@@ -164,6 +173,8 @@ fun HomeScreen(
             items(count = state.premieres.size) { index ->
                 val premieres = state.premieres
                 MovieCardCollection(
+                    movieId = premieres[index].kinopoiskId,
+                    state = state,
                     nameMovie = premieres[index].nameRu ?: premieres[index].nameEn ?: "",
                     genreMovie = premieres[index].genres,
                     posterUrl = premieres[index].posterUrl,
@@ -175,6 +186,7 @@ fun HomeScreen(
         val dynamicCollection1 = state.dynamicMovies1?.collectAsLazyPagingItems()
         dynamicCollection1?.let {
             MoviesListCollection(
+                state = state,
                 movies = dynamicCollection1,
                 onClick = { navigateToDetails(it) },
                 collectionName = state.randomCountryAndGenre1,
@@ -186,6 +198,7 @@ fun HomeScreen(
         val dynamicCollection2 = state.dynamicMovies2?.collectAsLazyPagingItems()
         dynamicCollection2?.let {
             MoviesListCollection(
+                state = state,
                 movies = dynamicCollection2,
                 onClick = { navigateToDetails(it) },
                 collectionName = state.randomCountryAndGenre2,

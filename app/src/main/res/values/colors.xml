@@ -18,4 +18,5 @@
     <color name="body_icon">#B5B5C9</color>
     <color name="input_background">#fff</color>
     <color name="very_light_gray">#F3F3F3</color>
+    <color name="poster_gradient">#3D3BFF</color>
 </resources>

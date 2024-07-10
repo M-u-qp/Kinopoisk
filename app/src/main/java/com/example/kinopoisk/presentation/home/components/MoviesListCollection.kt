@@ -17,10 +17,12 @@ import com.example.kinopoisk.presentation.Dimens.ExtraSmallPadding3
 import com.example.kinopoisk.presentation.common.EmptyScreen
 import com.example.kinopoisk.presentation.common.MovieCardCollectionShimmerEffect
 import com.example.kinopoisk.presentation.common.TitleCollection
+import com.example.kinopoisk.presentation.home.HomeState
 
 @Composable
 fun MoviesListCollection(
     modifier: Modifier = Modifier,
+    state: HomeState,
     movies: LazyPagingItems<*>,
     onClick: (Int) -> Unit,
     collectionName: String,
@@ -44,6 +46,8 @@ fun MoviesListCollection(
                     ) {
                         items(count = movieItems.size) { index ->
                             MovieCardCollection(
+                                movieId = movieItems[index].kinopoiskId,
+                                state = state,
                                 nameMovie = movieItems[index].nameRu ?: movieItems[index].nameEn
                                 ?: movieItems[index].nameOriginal ?: "",
                                 genreMovie = movieItems[index].genres,
@@ -69,6 +73,8 @@ fun MoviesListCollection(
                     ) {
                         items(count = movieItems.size) { index ->
                             MovieCardCollection(
+                                movieId = movieItems[index].kinopoiskId,
+                                state = state,
                                 nameMovie = movieItems[index].nameRu ?: movieItems[index].nameEn
                                 ?: movieItems[index].nameOriginal ?: "",
                                 genreMovie = movieItems[index].genres,

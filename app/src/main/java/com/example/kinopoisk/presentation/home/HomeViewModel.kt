@@ -32,6 +32,13 @@ class HomeViewModel @Inject constructor(
         getCountriesAndGenres()
     }
 
+    //Получение всех фильмов в БД
+    suspend fun getAllMoviesInDB() {
+        moviesUseCases.getAllMoviesInDB().collect {
+            _state.value = _state.value.copy(listMovie = it)
+        }
+    }
+
     //Сохранить флаг о добавление коллекций при первичном запуске приложения
     fun saveFlagCollections() {
         viewModelScope.launch {

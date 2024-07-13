@@ -17,7 +17,8 @@ class SearchFilterMovies(
         ratingFrom: Int,
         ratingTo: Int,
         yearFrom: Int,
-        yearTo: Int
+        yearTo: Int,
+        keyword: String
     ): Flow<PagingData<FilterItem>> {
         return kinopoiskRepository.searchFilterMovies(
             countries = countries,
@@ -27,7 +28,8 @@ class SearchFilterMovies(
             ratingFrom = ratingFrom,
             ratingTo = ratingTo,
             yearFrom = yearFrom,
-            yearTo = yearTo
+            yearTo = yearTo,
+            keyword = keyword
         )
     }
 }

@@ -42,13 +42,13 @@ class SearchFilterViewModel @Inject constructor(
 
     fun updateSelectedCountry(countryFilter: CountryFilter) {
         _state.value = _state.value.copy(
-            selectedCountry = countryFilter,
+            selectedCountry = listOf(countryFilter),
         )
     }
 
     fun updateSelectedGenre(genreFilter: GenreFilter) {
         _state.value = _state.value.copy(
-            selectedGenre = genreFilter,
+            selectedGenre = listOf(genreFilter),
         )
     }
 
@@ -80,17 +80,28 @@ class SearchFilterViewModel @Inject constructor(
         )
     }
 
+    fun updateKeyword(keyword: String) {
+        _state.value = _state.value.copy(
+            keyword = keyword
+        )
+    }
+
     fun updateFilterData(): FilterData {
+        val country = if (state.value.selectedCountry.isEmpty()) emptyList()
+        else listOf(state.value.selectedCountry.first()?.id ?: 0)
+        val genre = if (state.value.selectedGenre.isEmpty()) emptyList()
+        else listOf(state.value.selectedGenre.first()?.id ?: 0)
         return FilterData(
             ratingFrom = state.value.ratingPosition.start.toInt(),
             ratingTo = state.value.ratingPosition.endInclusive.toInt(),
-            selectedCountry = listOf(state.value.selectedCountry.id),
-            selectedGenre = listOf(state.value.selectedGenre.id),
+            selectedCountry = country,
+            selectedGenre = genre,
             yearsFrom = state.value.yearsPosition.last,
             yearsTo = state.value.yearsPosition.first,
             typeSearchFilter = state.value.typeSearchFilter.name,
             sortSearchFilter = state.value.sortSearchFilter.name,
-            viewedMovies = state.value.viewedMovies
+            viewedMovies = state.value.viewedMovies,
+            keyword = state.value.keyword ?: "keyword"
         )
     }
 

@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -51,7 +52,8 @@ fun SearchFilterScreen(
     viewModel: SearchFilterViewModel = hiltViewModel(),
     state: SearchFilterState,
     navigateUp: () -> Unit,
-    navigateToSearch: (FilterData?) -> Unit
+    navigateToSearch: (FilterData?) -> Unit,
+    keyword: String
 ) {
 
     val selectedButtonType = remember { mutableStateOf(state.typeSearchFilter) }
@@ -68,6 +70,10 @@ fun SearchFilterScreen(
 
     if (state.showDialogDatePicker) {
         DialogDatePicker(viewModel = viewModel)
+    }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.updateKeyword(keyword)
     }
 
     Column(
@@ -174,8 +180,10 @@ fun SearchFilterScreen(
                 viewModel.updateVisibleDialogCountriesOrGenres(true)
                 viewModel.updateSelectedCountryOrGenre("Страна")
             }) {
+                val country = if (state.selectedCountry.isEmpty()) "Выберите страну"
+                else state.selectedCountry.first()?.country ?: "Выберите страну"
                 Text(
-                    text = state.selectedCountry.country,
+                    text = country,
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = colorResource(id = R.color.gray_text),
                         fontSize = Dimens.SmallFontSize1,
@@ -208,8 +216,10 @@ fun SearchFilterScreen(
                 viewModel.updateVisibleDialogCountriesOrGenres(true)
                 viewModel.updateSelectedCountryOrGenre("Жанр")
             }) {
+                val genre = if (state.selectedGenre.isEmpty()) "Выберите жанр"
+                else state.selectedGenre.first()?.genre ?: "Выберите жанр"
                 Text(
-                    text = state.selectedGenre.genre,
+                    text = genre,
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = colorResource(id = R.color.gray_text),
                         fontSize = Dimens.SmallFontSize1,
@@ -273,7 +283,7 @@ fun SearchFilterScreen(
                 )
             )
             val textRating =
-                if (state.ratingPosition.start.toInt() == 1 && state.ratingPosition.endInclusive.toInt() == 10) {
+                if (state.ratingPosition.start.toInt() == 0 && state.ratingPosition.endInclusive.toInt() == 10) {
                     stringResource(id = R.string.any)
                 } else {
                     "с ${state.ratingPosition.start.toInt()} до ${state.ratingPosition.endInclusive.toInt()}"

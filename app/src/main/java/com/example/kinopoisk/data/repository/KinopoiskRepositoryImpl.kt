@@ -17,13 +17,11 @@ import com.example.kinopoisk.data.remote.DynamicMoviesPagingSource
 import com.example.kinopoisk.data.remote.GalleryMoviesPagingSource
 import com.example.kinopoisk.data.remote.KinopoiskApi
 import com.example.kinopoisk.data.remote.SearchFilterMoviesPagingSource
-import com.example.kinopoisk.data.remote.SearchMoviesPagingSource
 import com.example.kinopoisk.domain.model.CollectionDB
-import com.example.kinopoisk.domain.model.SearchFilm
-import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.CollectionItem
 import com.example.kinopoisk.domain.model.CountriesAndGenres
 import com.example.kinopoisk.domain.model.FilterItem
+import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.model.PremieresItem
 import com.example.kinopoisk.domain.model.SeasonsItem
@@ -117,19 +115,6 @@ class KinopoiskRepositoryImpl(
     }
 
     //Поиск
-    override fun searchMovies(keyword: String): Flow<PagingData<SearchFilm>> {
-        return Pager(
-            config = PagingConfig(pageSize = 10),
-            pagingSourceFactory = {
-                SearchMoviesPagingSource(
-                    kinopoiskApi = kinopoiskApi,
-                    keyword = keyword,
-                    context = context
-                )
-            }
-        ).flow
-    }
-
     override fun searchFilterMovies(
         countries: List<Int>,
         genres: List<Int>,
@@ -138,7 +123,8 @@ class KinopoiskRepositoryImpl(
         ratingFrom: Int,
         ratingTo: Int,
         yearFrom: Int,
-        yearTo: Int
+        yearTo: Int,
+        keyword: String
     ): Flow<PagingData<FilterItem>> {
         return Pager(
             config = PagingConfig(pageSize = 10),
@@ -153,7 +139,8 @@ class KinopoiskRepositoryImpl(
                     ratingFrom = ratingFrom,
                     ratingTo = ratingTo,
                     yearFrom = yearFrom,
-                    yearTo = yearTo
+                    yearTo = yearTo,
+                    keyword = keyword
                 )
             }
         ).flow

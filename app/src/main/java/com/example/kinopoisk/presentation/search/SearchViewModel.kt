@@ -37,8 +37,8 @@ class SearchViewModel @Inject constructor(
                 searchMovies()
             }
 
-            is SearchEvent.UpdateFilterQueryAndSearch -> {
-                searchFilterMovies(
+            is SearchEvent.UpdateFilterQuery -> {
+                _state.value = _state.value.copy(
                     ratingFrom = event.ratingFrom,
                     ratingTo = event.ratingTo,
                     selectedCountry = event.selectedCountry,
@@ -46,40 +46,27 @@ class SearchViewModel @Inject constructor(
                     yearsFrom = event.yearsFrom,
                     yearsTo = event.yearsTo,
                     typeSearchFilter = event.typeSearchFilter,
-                    sortSearchFilter = event.sortSearchFilter
+                    sortSearchFilter = event.sortSearchFilter,
+                    keyword = event.keyword,
+                    viewedMovies = event.viewedMovies
                 )
             }
         }
     }
 
-    private fun searchFilterMovies(
-        ratingFrom: Int,
-        ratingTo: Int,
-        selectedCountry: List<Int>,
-        selectedGenre: List<Int>,
-        yearsFrom: Int,
-        yearsTo: Int,
-        typeSearchFilter: String,
-        sortSearchFilter: String,
-    ) {
+    private fun searchMovies() {
         val filterMovies = moviesUseCases.searchFilterMovies(
-            countries = selectedCountry,
-            genres = selectedGenre,
-            order = sortSearchFilter,
-            type = typeSearchFilter,
-            ratingFrom = ratingFrom,
-            ratingTo = ratingTo,
-            yearFrom = yearsFrom,
-            yearTo = yearsTo
+            countries = state.value.selectedCountry,
+            genres = state.value.selectedGenre,
+            order = state.value.sortSearchFilter,
+            type = state.value.typeSearchFilter,
+            ratingFrom = state.value.ratingFrom,
+            ratingTo = state.value.ratingTo,
+            yearFrom = state.value.yearsFrom,
+            yearTo = state.value.yearsTo,
+            keyword = state.value.keyword ?: "keyword"
         ).cachedIn(viewModelScope)
         _state.value = _state.value.copy(filterMovies = filterMovies)
-    }
-
-    private fun searchMovies() {
-        val movies = moviesUseCases.searchMovies(
-            keyword = state.value.keyword
-        ).cachedIn(viewModelScope)
-        _state.value = _state.value.copy(movies = movies)
     }
 
     private suspend fun getMoviesCollection(nameCollection: String) {
@@ -88,7 +75,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun updateFilterMovies() {
-        _state.value = _state.value.copy(filterMovies = null)
+    fun updateResetFilter(reset: Boolean) {
+        _state.value = _state.value.copy(resetFilter = reset)
     }
 }

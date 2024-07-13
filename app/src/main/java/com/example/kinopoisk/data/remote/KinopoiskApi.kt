@@ -2,10 +2,9 @@ package com.example.kinopoisk.data.remote
 
 import com.example.kinopoisk.data.remote.dto.CollectionsResponse
 import com.example.kinopoisk.data.remote.dto.CountriesAndGenresResponse
-import com.example.kinopoisk.data.remote.dto.MovieResponse
-import com.example.kinopoisk.data.remote.dto.SearchMoviesResponse
 import com.example.kinopoisk.data.remote.dto.ListStaffResponse
 import com.example.kinopoisk.data.remote.dto.MovieGalleryResponse
+import com.example.kinopoisk.data.remote.dto.MovieResponse
 import com.example.kinopoisk.data.remote.dto.PremieresResponse
 import com.example.kinopoisk.data.remote.dto.SearchFilterMoviesResponse
 import com.example.kinopoisk.data.remote.dto.SerialSeasonsResponse
@@ -51,14 +50,6 @@ interface KinopoiskApi {
         @Query("page") page: Int
     ): SearchFilterMoviesResponse
 
-    //Поиск
-    @GET("/api/v2.1/films/search-by-keyword")
-    suspend fun searchMovies(
-        @Header("X-API-KEY") apiKey: String,
-        @Query("keyword") keyword: String,
-        @Query("page") page: Int
-    ): SearchMoviesResponse
-
     //Список стран и жанров для фильтра
     @GET("/api/v2.2/films/filters")
     suspend fun getCountriesAndGenres(
@@ -84,6 +75,7 @@ interface KinopoiskApi {
         @Query("ratingTo") ratingTo: Int,
         @Query("yearFrom") yearFrom: Int,
         @Query("yearTo") yearTo: Int,
+        @Query("keyword") keyword: String,
         @Query("page") page: Int
     ): SearchFilterMoviesResponse
 

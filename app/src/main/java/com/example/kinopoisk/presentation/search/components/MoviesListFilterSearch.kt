@@ -18,8 +18,7 @@ fun MoviesListFilterSearch(
     modifier: Modifier = Modifier,
     filterMovies: LazyPagingItems<FilterItem>,
     onClick: (SearchFilm) -> Unit,
-    state: SearchState,
-    viewed: Boolean
+    state: SearchState
 ) {
 
     val handlePagingResultFilterSearch = handlePagingResultSearch(movies = filterMovies)
@@ -32,7 +31,7 @@ fun MoviesListFilterSearch(
         ) {
             if (filterMovies.itemSnapshotList.isNotEmpty()) {
                 items(count = filterMovies.itemCount) { index ->
-                    if (viewed) {
+                    if (state.viewedMovies) {
                         filterMovies.itemSnapshotList.items.filter { movie ->
                             !state.moviesCollection.any { it?.kinopoiskId == movie.kinopoiskId }
                         }[index].let {

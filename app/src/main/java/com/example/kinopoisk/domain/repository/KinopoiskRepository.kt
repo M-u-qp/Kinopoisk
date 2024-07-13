@@ -2,11 +2,10 @@ package com.example.kinopoisk.domain.repository
 
 import androidx.paging.PagingData
 import com.example.kinopoisk.domain.model.CollectionDB
-import com.example.kinopoisk.domain.model.SearchFilm
-import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.CollectionItem
 import com.example.kinopoisk.domain.model.CountriesAndGenres
 import com.example.kinopoisk.domain.model.FilterItem
+import com.example.kinopoisk.domain.model.GalleryItem
 import com.example.kinopoisk.domain.model.Movie
 import com.example.kinopoisk.domain.model.PremieresItem
 import com.example.kinopoisk.domain.model.SeasonsItem
@@ -31,7 +30,6 @@ interface KinopoiskRepository {
     ): Flow<PagingData<FilterItem>>
 
     //Поиск
-    fun searchMovies(keyword: String): Flow<PagingData<SearchFilm>>
     fun searchFilterMovies(
         countries: List<Int>,
         genres: List<Int>,
@@ -40,7 +38,8 @@ interface KinopoiskRepository {
         ratingFrom: Int,
         ratingTo: Int,
         yearFrom: Int,
-        yearTo: Int
+        yearTo: Int,
+        keyword: String
     ): Flow<PagingData<FilterItem>>
 
     //Список стран и жанров для фильтра

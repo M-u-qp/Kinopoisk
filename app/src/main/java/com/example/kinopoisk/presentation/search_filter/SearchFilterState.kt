@@ -10,15 +10,15 @@ import com.example.kinopoisk.presentation.common.listLast100Years
 import kotlinx.parcelize.Parcelize
 
 data class SearchFilterState(
-    val ratingPosition: ClosedFloatingPointRange<Float> = 1f..10f,
+    val ratingPosition: ClosedFloatingPointRange<Float> = 0f..10f,
 
     val listCountriesAndGenres: CountriesAndGenres? = null,
     val errorListCountriesAndGenres: String? = null,
 
     val showDialogCountriesOrGenres: Boolean = false,
     val selectedCountryOrGenre: String = "",
-    val selectedCountry: CountryFilter = CountryFilter(id = 1, country = "США"),
-    val selectedGenre: GenreFilter = GenreFilter(id = 11, genre = "боевик"),
+    val selectedCountry: List<CountryFilter?> = emptyList(),
+    val selectedGenre: List<GenreFilter?> = emptyList(),
 
     val showDialogDatePicker: Boolean = false,
     val yearsPosition: IntRange = listLast100Years().last()..listLast100Years().first(),
@@ -27,6 +27,7 @@ data class SearchFilterState(
     val sortSearchFilter: SortSearchFilter = SortSearchFilter.YEAR,
 
     val viewedMovies: Boolean = false,
+    val keyword: String? = null
 )
 
 @Parcelize
@@ -39,5 +40,6 @@ data class FilterData(
     val yearsTo: Int,
     val typeSearchFilter: String,
     val sortSearchFilter: String,
-    val viewedMovies: Boolean
+    val viewedMovies: Boolean,
+    val keyword: String
 ) : Parcelable

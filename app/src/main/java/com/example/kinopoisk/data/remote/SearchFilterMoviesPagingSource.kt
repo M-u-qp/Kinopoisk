@@ -16,6 +16,7 @@ class SearchFilterMoviesPagingSource(
     private val ratingTo: Int,
     private val yearFrom: Int,
     private val yearTo: Int,
+    private val keyword: String,
     private val context: Context
 ) : PagingSource<Int, FilterItem>() {
 
@@ -40,6 +41,7 @@ class SearchFilterMoviesPagingSource(
                 ratingTo = ratingTo,
                 yearFrom = yearFrom,
                 yearTo = yearTo,
+                keyword = keyword,
                 page = page
             )
             totalMoviesCount += moviesResponse.items.size

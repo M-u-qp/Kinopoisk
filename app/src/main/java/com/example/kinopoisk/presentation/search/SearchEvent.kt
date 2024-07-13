@@ -4,7 +4,7 @@ sealed class SearchEvent {
 
     data class UpdateSearchQuery(val keyword: String) : SearchEvent()
     data object SearchMovies : SearchEvent()
-    data class UpdateFilterQueryAndSearch(
+    data class UpdateFilterQuery(
         val ratingFrom: Int,
         val ratingTo: Int,
         val selectedCountry: List<Int>,
@@ -13,5 +13,7 @@ sealed class SearchEvent {
         val yearsTo: Int,
         val typeSearchFilter: String,
         val sortSearchFilter: String,
+        val viewedMovies: Boolean,
+        val keyword: String
     ) : SearchEvent()
 }

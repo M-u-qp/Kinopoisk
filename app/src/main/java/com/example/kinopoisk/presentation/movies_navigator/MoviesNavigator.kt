@@ -156,7 +156,6 @@ fun MoviesNavigator() {
                     navController.previousBackStackEntry?.savedStateHandle?.get<FilterData?>("filterData")
                         ?.let { filterData ->
                             SearchScreen(
-                                viewModel = viewModel,
                                 state = state,
                                 event = viewModel::onEvent,
                                 navigateToDetails = { movieId ->
@@ -165,13 +164,17 @@ fun MoviesNavigator() {
                                         movieId = movieId
                                     )
                                 },
-                                navigateToSearchFilter = { navController.navigate(route = Route.SearchFilterScreen.route) },
+                                navigateToSearchFilter = { keyword ->
+                                    navigateToSearchFilter(
+                                        navController = navController,
+                                        keyword = keyword
+                                    )
+                                },
                                 filterData = filterData
                             )
                         }
                 } else {
                     SearchScreen(
-                        viewModel = viewModel,
                         state = state,
                         event = viewModel::onEvent,
                         navigateToDetails = { movieId ->
@@ -180,7 +183,11 @@ fun MoviesNavigator() {
                                 movieId = movieId
                             )
                         },
-                        navigateToSearchFilter = { navController.navigate(route = Route.SearchFilterScreen.route) },
+                        navigateToSearchFilter = { keyword ->
+                            navigateToSearchFilter(
+                                navController = navController,
+                                keyword = keyword
+                            ) },
                         filterData = null
                     )
                 }
@@ -188,17 +195,21 @@ fun MoviesNavigator() {
             composable(route = Route.SearchFilterScreen.route) {
                 val viewModel: SearchFilterViewModel = hiltViewModel()
                 val state = viewModel.state.value
-                SearchFilterScreen(
-                    viewModel = viewModel,
-                    navigateUp = { navController.navigateUp() },
-                    state = state,
-                    navigateToSearch = { filterData ->
-                        navigateToSearch(
-                            navController = navController,
-                            filterData = filterData
+                navController.previousBackStackEntry?.savedStateHandle?.get<String>("keyword")
+                    ?.let { keyword ->
+                        SearchFilterScreen(
+                            viewModel = viewModel,
+                            navigateUp = { navController.navigateUp() },
+                            state = state,
+                            navigateToSearch = { filterData ->
+                                navigateToSearch(
+                                    navController = navController,
+                                    filterData = filterData
+                                )
+                            },
+                            keyword = keyword
                         )
                     }
-                )
             }
             composable(route = Route.DetailsScreen.route) {
                 val viewModel: DetailsViewModel = hiltViewModel()
@@ -444,5 +455,10 @@ private fun navigateToAllGallery(
 ) {
     navController.currentBackStackEntry?.savedStateHandle?.set("galleryAll", movieId)
     navController.navigate(route = Route.AllGalleryScreen.route)
+}
+
+private fun navigateToSearchFilter(navController: NavController, keyword: String) {
+    navController.currentBackStackEntry?.savedStateHandle?.set("keyword", keyword)
+    navController.navigate(route = Route.SearchFilterScreen.route)
 }
 

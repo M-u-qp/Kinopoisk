@@ -25,7 +25,7 @@ fun RatingSlider(
     modifier: Modifier = Modifier,
     viewModel: SearchFilterViewModel
 ) {
-    var startRatingPosition by remember { mutableFloatStateOf(1f) }
+    var startRatingPosition by remember { mutableFloatStateOf(0f) }
     var endRatingPosition by remember { mutableFloatStateOf(10f) }
 
     Column(modifier = modifier) {
@@ -41,7 +41,7 @@ fun RatingSlider(
                         .toFloat()
                 )
             },
-            valueRange = 1f..10f,
+            valueRange = 0f..10f,
             steps = 9,
             onValueChangeFinished = {
                 viewModel.updateRatingSlider(
@@ -56,7 +56,7 @@ fun RatingSlider(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = "1",
+            Text(text = "0",
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = colorResource(id = R.color.gray_text),
                     fontSize = Dimens.SmallFontSize1,
@@ -79,7 +79,7 @@ fun RatingSlider(
                         .toFloat()
                 )
             },
-            valueRange = 1f..10f,
+            valueRange = 0f..10f,
             steps = 9,
             onValueChangeFinished = {
                 viewModel.updateRatingSlider(

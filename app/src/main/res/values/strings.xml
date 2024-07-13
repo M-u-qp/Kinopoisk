@@ -24,6 +24,7 @@
     <string name="Search_in_period_before">Искать в период до</string>
     <string name="any">любой</string>
     <string name="Search">Поиск</string>
+    <string name="Reset_filter">Сбросить фильтр</string>
 
     <!-- Details -->
     <string name="Film_stars">В фильме снимались</string>

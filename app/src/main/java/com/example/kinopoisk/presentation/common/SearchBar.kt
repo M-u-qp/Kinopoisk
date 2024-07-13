@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.kinopoisk.R
 import com.example.kinopoisk.presentation.Dimens.IconSize
+import com.example.kinopoisk.presentation.search.SearchState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,7 +45,8 @@ fun SearchBar(
     onClick: (() -> Unit)? = null,
     onValueChange: (String) -> Unit,
     onSearch: () -> Unit,
-    navigateToScreenFilter: () -> Unit
+    navigateToScreenFilter: () -> Unit,
+    state: SearchState
 ) {
 
     val interactionSource = remember {
@@ -57,7 +59,7 @@ fun SearchBar(
         }
     }
 
-    Box(modifier = modifier) {
+    Box(modifier = modifier.fillMaxWidth()) {
 
         Row(
             modifier = Modifier
@@ -65,19 +67,21 @@ fun SearchBar(
                 .zIndex(1f),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(modifier = Modifier
-                .width(1.dp)
-                .background(Color.Black))
+            Box(
+                modifier = Modifier
+                    .width(1.dp)
+                    .background(Color.Black)
+            )
             IconButton(
                 onClick = { navigateToScreenFilter() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_settings_search),
                     contentDescription = null,
                     modifier = Modifier.size(IconSize),
-                    tint = colorResource(id = R.color.body)
+                    tint = if (state.resetFilter) colorResource(id = R.color.body)
+                    else MaterialTheme.colorScheme.primary
                 )
             }
-
         }
 
         TextField(

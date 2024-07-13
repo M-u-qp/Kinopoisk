@@ -34,7 +34,6 @@ import com.example.kinopoisk.domain.usecases.movies.GetMovie
 import com.example.kinopoisk.domain.usecases.movies.GetSerialSeasons
 import com.example.kinopoisk.domain.usecases.movies.MoviesUseCases
 import com.example.kinopoisk.domain.usecases.movies.SearchFilterMovies
-import com.example.kinopoisk.domain.usecases.movies.SearchMovies
 import com.example.kinopoisk.domain.usecases.movies.UpsertMovie
 import com.example.kinopoisk.domain.usecases.staff.GetListStaff
 import com.example.kinopoisk.domain.usecases.staff.GetStaff
@@ -137,7 +136,6 @@ object AppModule {
         kinopoiskRepository: KinopoiskRepository,
     ): MoviesUseCases {
         return MoviesUseCases(
-            searchMovies = SearchMovies(kinopoiskRepository),
             getMovie = GetMovie(kinopoiskRepository),
             upsertMovie = UpsertMovie(kinopoiskRepository),
             deleteMovie = DeleteMovie(kinopoiskRepository),

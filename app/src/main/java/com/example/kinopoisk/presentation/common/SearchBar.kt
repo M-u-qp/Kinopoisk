@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,7 +35,6 @@ import com.example.kinopoisk.R
 import com.example.kinopoisk.presentation.Dimens.IconSize
 import com.example.kinopoisk.presentation.search.SearchState
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
@@ -107,8 +105,8 @@ fun SearchBar(
                 )
             },
             shape = MaterialTheme.shapes.medium,
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = colorResource(id = R.color.input_background),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = colorResource(id = R.color.input_background),
                 unfocusedTextColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
                 cursorColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
                 disabledIndicatorColor = Color.Transparent,

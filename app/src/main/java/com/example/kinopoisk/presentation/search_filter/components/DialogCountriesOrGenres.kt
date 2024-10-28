@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -43,7 +42,6 @@ import com.example.kinopoisk.presentation.common.NavigateUpButton
 import com.example.kinopoisk.presentation.search_filter.SearchFilterState
 import com.example.kinopoisk.presentation.search_filter.SearchFilterViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DialogCountriesOrGenres(
     state: SearchFilterState,
@@ -104,8 +102,8 @@ fun DialogCountriesOrGenres(
                             )
                         },
                         shape = MaterialTheme.shapes.extraLarge,
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = colorResource(id = R.color.very_light_gray),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = colorResource(id = R.color.very_light_gray),
                             unfocusedTextColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
                             cursorColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
                             disabledIndicatorColor = Color.Transparent,
@@ -189,8 +187,8 @@ fun DialogCountriesOrGenres(
                             )
                         },
                         shape = MaterialTheme.shapes.extraLarge,
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = colorResource(id = R.color.very_light_gray),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = colorResource(id = R.color.very_light_gray),
                             unfocusedTextColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
                             cursorColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
                             disabledIndicatorColor = Color.Transparent,
